@@ -1,7 +1,0 @@
-# Current time Fri Jan 31 14:48:41 2025
-# Program = vish
-# Id = "10.6c"
-# Version = "2017.07"
-# Date = "Jul 25 2017"
-# Platform = linux
-# 0    0xf7c5ebd6: '__strlen_sse2_bsf + 0x16' in '/lib/libc.so.6'

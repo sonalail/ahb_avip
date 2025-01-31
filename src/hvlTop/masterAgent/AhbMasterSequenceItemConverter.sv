@@ -2,15 +2,8 @@
 `ifndef AHBMASTERSEQUENCEITEMCONVERTER_INCLUDED_
 `define AHBMASTERSEQUENCEITEMCONVERTER_INCLUDED_
 
-//--------------------------------------------------------------------------------------------
-// Class : AhbMasterSequenceItemConverter
-//  This class converts seq_item transactions into struct data items and vice versa
-//--------------------------------------------------------------------------------------------
 class AhbMasterSequenceItemConverter extends uvm_object;
 
-  //-------------------------------------------------------
-  // Externally defined Tasks and Functions
-  //-------------------------------------------------------
   extern function new(string name = "AhbMasterSequenceItemConverter");
   extern static function void fromClass(input AhbMasterTransaction inputConv, output ahbTransferCharStruct  outputConv);
   extern static function void toClass(input ahbTransferCharStruct  inputConv, ref AhbMasterTransaction outputConv);
@@ -18,23 +11,10 @@ class AhbMasterSequenceItemConverter extends uvm_object;
 
 endclass : AhbMasterSequenceItemConverter
 
-//-------------------------------------------------------
-// Construct:new
-// 
-// Parameters:
-//  name - AhbMasterSequenceItemConverter
-//-------------------------------------------------------
 function AhbMasterSequenceItemConverter::new(string name = "AhbMasterSequenceItemConverter");
   super.new(name);
 endfunction: new
 
-//--------------------------------------------------------------------------------------------
-// Function: fromClass
-//  Converting seq_item transactions into struct data items
-//
-// Parameters:
-//  name - AhbMasterTransaction, ahbTransferCharStruct
-//--------------------------------------------------------------------------------------------
 function void AhbMasterSequenceItemConverter::fromClass(input AhbMasterTransaction inputConv, output ahbTransferCharStruct outputConv);
   `uvm_info("AhbMasterSequenceItemConverterClass",$sformatf("-------------------------------------------------------------"),UVM_HIGH);
 
@@ -86,18 +66,14 @@ function void AhbMasterSequenceItemConverter::fromClass(input AhbMasterTransacti
   outputConv.hready = inputConv.hready;
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hready = %b", outputConv.hready), UVM_HIGH);
 
+  outputConv.noOfWaitStates = inputConv.noOfWaitStatesDetected;
+  `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing noOfWaitStates = %b", outputConv.noOfWaitStates), UVM_HIGH);
+
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 
 endfunction : fromClass
 
 
-//--------------------------------------------------------------------------------------------
-// Function: toClass
-// Converting struct data items into seq_item transactions
-//
-// Parameters:
-// name - AhbMasterTransaction, ahbTransferCharStruct
-//--------------------------------------------------------------------------------------------
 function void AhbMasterSequenceItemConverter::toClass(input ahbTransferCharStruct inputConv, ref AhbMasterTransaction outputConv);
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 
@@ -149,14 +125,13 @@ function void AhbMasterSequenceItemConverter::toClass(input ahbTransferCharStruc
   outputConv.hready = inputConv.hready;
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hready = %b", outputConv.hready), UVM_HIGH);
 
+  outputConv.noOfWaitStatesDetected = inputConv.noOfWaitStates;
+  `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing noOfWaitStatesDetected = %b", outputConv.noOfWaitStatesDetected), UVM_HIGH);
+
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 
 endfunction : toClass
 
-//--------------------------------------------------------------------------------------------
-// Function : do_print method
-//  Print method can be added to display the data members values
-//---------------------------------------------------------------------------------------------
 function void AhbMasterSequenceItemConverter::do_print(uvm_printer printer);
  ahbTransferCharStruct ahbStruct;
   super.do_print(printer);

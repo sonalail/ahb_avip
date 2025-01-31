@@ -24,6 +24,9 @@
   ahbRespEnum hresp;
  // ahbRespEnum hexokay;
   bit hready;
+
+  int noOfWaitStatesDetected;
+
   extern function new  (string name = "AhbMasterTransaction");
   extern function void do_copy(uvm_object rhs);
   extern function bit  do_compare(uvm_object rhs, uvm_comparer comparer);
@@ -208,6 +211,7 @@ printer.print_field ("hreadyout", hreadyout, $bits(hreadyout), UVM_HEX);
 printer.print_string ("hresp", hresp.name());
 //printer.print_string ("hexokay", hexokay.name());
 printer.print_field ("hready", hready, $bits(hready), UVM_HEX);
+printer.print_field ("noOfwaitStatesDetected", noOfWaitStatesDetected, $bits(noOfWaitStatesDetected), UVM_HEX);
 
 endfunction : do_print
 

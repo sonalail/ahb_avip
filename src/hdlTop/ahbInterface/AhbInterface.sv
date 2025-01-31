@@ -8,11 +8,11 @@ import AhbGlobalPackage::*;
 // Declaration of pin level signals for AHB interface
 //--------------------------------------------------------------------------------------------
 
-interface AhbInterface(input logic hclk, input logic hresetn);
+interface AhbInterface(input hclk, input hresetn);
   
   // Variable : haddr
   // Byte address of the transfer
-  logic [ADDR_WIDTH-1:0] haddr;
+ logic  [ADDR_WIDTH-1:0] haddr;
 
   //Variable : hselx
   //Indicates the number of slaves

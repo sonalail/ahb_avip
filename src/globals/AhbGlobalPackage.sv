@@ -118,7 +118,7 @@ typedef enum logic [2:0] {
   //  This struct datatype includes all key transfer characteristics
   //-------------------------------------------------------
 typedef struct {
-logic [ADDR_WIDTH-1:0]  haddr;          // Address of the transfer
+logic  [ADDR_WIDTH-1:0]  haddr;          // Address of the transfer
 ahbBurstEnum            hburst;         // Burst type
 logic                   hmastlock;      // Locked sequence indicator
 ahbProtectionEnum       hprot;          // Protection type

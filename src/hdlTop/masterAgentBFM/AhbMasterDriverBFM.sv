@@ -62,13 +62,21 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     waitForResetn();
     @(posedge hclk);
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_HIGH)
-    haddr       <= dataPacket.haddr;
-    htrans      <=  dataPacket.htrans;// Non-sequential transfer
-    hsize       <= dataPacket.hsize; 
-    hburst      <= dataPacket.hburst;// SINGLE burst
-    hwrite      <= dataPacket.hwrite;  
-    hwdata      <= dataPacket.hwrite ? dataPacket.hwdata : '0; 
-    hmastlock <= dataPacket.hmastlock; 
+     	haddr       <= dataPacket.haddr;
+	hburst      <= dataPacket.hburst;
+	hmastlock   <= dataPacket.hmastlock;
+	hprot       <= dataPacket.hprot;
+	hsize       <= dataPacket.hsize;
+	hnonsec     <= dataPacket.hnonsec;
+	hexcl       <= dataPacket.hexcl;
+	hmaster     <= dataPacket.hmaster;
+	htrans      <= dataPacket.htrans; // Non-sequential transfer
+	hwdata      <= dataPacket.hwrite ? dataPacket.hwdata : '0;
+	hwstrb      <= dataPacket.hwstrb;
+	hwrite      <= dataPacket.hwrite;
+	hselx       <= dataPacket.hselx;
+
+    countWaitStates(dataPacket);
     wait(dataPacket.hready);  
     if (hresp == 1) begin  
       `uvm_error(name, $sformatf("Error Response Detected on Single Transfer at Address: %0h", haddr));
@@ -90,19 +98,27 @@ interface AhbMasterDriverBFM (input  bit  hclk,
       default: burst_length = 1;
     endcase
     @(posedge hclk);
-    haddr       <= dataPacket.haddr;
-    hburst      <= dataPacket.hburst;  
-    hsize       <= dataPacket.hsize;  
-    hwrite      <= dataPacket.hwrite; 
-    htrans      <=dataPacket.htrans; 
-    hwdata      <= dataPacket.hwrite ? dataPacket.hwdata : '0;
-    hmastlock <= dataPacket.hmastlock; 
-    `uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
+        haddr       <= dataPacket.haddr;
+	hburst      <= dataPacket.hburst;
+	hmastlock   <= dataPacket.hmastlock;
+	hprot       <= dataPacket.hprot;
+	hsize       <= dataPacket.hsize;
+	hnonsec     <= dataPacket.hnonsec;
+	hexcl       <= dataPacket.hexcl;
+	hmaster     <= dataPacket.hmaster;
+	htrans      <= dataPacket.htrans; // Non-sequential transfer
+	hwdata      <= dataPacket.hwrite ? dataPacket.hwdata : '0;
+	hwstrb      <= dataPacket.hwstrb;
+	hwrite      <= dataPacket.hwrite;
+	hselx       <= dataPacket.hselx;
+
+	
+`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
                               dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_HIGH);
     
     for (int i = 0; i < burst_length; i++) begin
       @(posedge hclk);
-     
+      countWaitStates(dataPacket);
       wait(hready);
       if (hresp == 1) begin
         `uvm_error(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr));
@@ -157,6 +173,14 @@ driveIdle();
     hmastlock <= 0;
     `uvm_info(name, "Bus is now IDLE", UVM_LOW);
   endtask
+
+task countWaitStates(inout ahbTransferCharStruct dataPacket);
+    dataPacket.noOfWaitStates = 0;
+    while (dataPacket.hready !== 1) begin
+        dataPacket.noOfWaitStates++;
+    end
+    `uvm_info(name, $sformatf("Wait states counted: %0d", dataPacket.noOfWaitStates), UVM_LOW);
+endtask
 
 endinterface
 `endif

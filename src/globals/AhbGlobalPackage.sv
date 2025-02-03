@@ -68,6 +68,7 @@ typedef enum logic [2:0] {
 
 typedef struct {
 logic  [ADDR_WIDTH-1:0]  haddr;          // Address of the transfer
+logic  [NO_OF_SLAVES-1:0] hselx;        // slave select 
 ahbBurstEnum            hburst;         // Burst type
 logic                   hmastlock;      // Locked sequence indicator
 ahbProtectionEnum       hprot;          // Protection type

@@ -20,6 +20,12 @@ package AhbGlobalPackage;
 
   parameter int HPROT_WIDTH = 4;
 
+  parameter int SLAVE_MEMORY_SIZE = 12;
+
+  parameter int SLAVE_MEMORY_GAP = 5;
+
+  parameter int MEMORY_WIDTH = 8;
+
   typedef enum logic [2:0] {
     SINGLE      = 3'b000,
     INCR        = 3'b001,
@@ -87,16 +93,11 @@ logic                   hready;         // Combined transfer completion
 int                     noOfWaitStates;
   } ahbTransferCharStruct;
 
-   //-------------------------------------------------------
-  // Struct : ahbTransferConfigStruct 
-  //  This struct datatype consists of all configurations
-  //  which are used for seq item conversion
-  //-------------------------------------------------------
+ 
   typedef struct{
-   
     logic [ADDR_WIDTH-1:0] haddr;          // Address of the transfer
-   // bit [ADDRESS_WIDTH-1:0]min_address;
-   // bit [ADDRESS_WIDTH-1:0]max_address; 
+     bit [ADDR_WIDTH-1:0]minimumAddress;
+     bit [ADDR_WIDTH-1:0]maximumAddress; 
    // int slave_id;
   } ahbTransferConfigStruct ;
 

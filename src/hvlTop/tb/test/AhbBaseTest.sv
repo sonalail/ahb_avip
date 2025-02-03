@@ -38,10 +38,10 @@ function void AhbBaseTest::setupAhbEnvironmentConfig();
    setupAhbMasterAgentConfig();
 
   
-// ahbEnvironmentConfig.ahbSlaveAgentConfig = new[ahbEnvironmentConfig.ahbSlaveAgentConfig.noOfSlaves];
- //  foreach(ahbEnvironmentConfig.ahbSlaveAgentConfig[i]) begin
- // 	 ahbEnvironmentConfig.ahbSlaveAgentConfig[i] = AhbSlaveAgentConfig::type_id::create($sformatf("AhbSlaveAgentConfig[%0d]",i));
-  // end
+/*ahbEnvironmentConfig.ahbSlaveAgentConfig = new[ahbEnvironmentConfig.ahbSlaveAgentConfig.noOfSlaves];
+   foreach(ahbEnvironmentConfig.ahbSlaveAgentConfig[i]) begin
+  	 ahbEnvironmentConfig.ahbSlaveAgentConfig[i] = AhbSlaveAgentConfig::type_id::create($sformatf("AhbSlaveAgentConfig[%0d]",i));
+   end*/
 
   setupAhbSlaveAgentConfig();
  
@@ -98,8 +98,8 @@ function void AhbBaseTest::setupAhbSlaveAgentConfig();
      ahbEnvironmentConfig.ahbSlaveAgentConfig[i] = AhbSlaveAgentConfig::type_id::create($sformatf("AhbSlaveAgentConfig[%0d]",i));
   //   ahbEnvironmentConfig.ahbSlaveAgentConfig[i].slave_id       = i;
   //   ahbEnvironmentConfig.ahbSlaveAgentConfig[i].slave_selected = 0;
-  //   ahbEnvironmentConfig.ahbSlaveAgentConfig[i].min_address    = ahbEnvironmentConfig.ahbMasterAgentConfig.master_min_addr_range_array[i];
-  //   ahbEnvironmentConfig.ahbSlaveAgentConfig[i].max_address    = ahbEnvironmentConfig.ahbMasterAgentConfig.master_max_addr_range_array[i];
+     ahbEnvironmentConfig.ahbSlaveAgentConfig[i].minimumAddress    = ahbEnvironmentConfig.ahbMasterAgentConfig[i].masterMinimumAddressRangeArray[i];
+     ahbEnvironmentConfig.ahbSlaveAgentConfig[i].maximumAddress    = ahbEnvironmentConfig.ahbMasterAgentConfig[i].masterMaximumAddressRangeArray[i];
     if(SLAVE_AGENT_ACTIVE === 1) begin
       ahbEnvironmentConfig.ahbSlaveAgentConfig[i].is_active = uvm_active_passive_enum'(UVM_ACTIVE);
     end

@@ -22,9 +22,8 @@
   bit [DATA_WIDTH-1:0] hrdata;
   bit hreadyout;
   ahbRespEnum hresp;
- // ahbRespEnum hexokay;
+  rand bit hexokay;
   bit hready;
-
   int noOfWaitStatesDetected;
 
   extern function new  (string name = "AhbMasterTransaction");
@@ -124,9 +123,6 @@ constraint addr_8beat_wrap {
 }    
 }
 
-
-
-
 endclass : AhbMasterTransaction
 
 function AhbMasterTransaction::new(string name = "AhbMasterTransaction");
@@ -157,9 +153,9 @@ hwrite     = ahbMasterTransaction.hwrite;
 hrdata     = ahbMasterTransaction.hrdata;
 hreadyout  = ahbMasterTransaction.hreadyout;
 hresp      = ahbMasterTransaction.hresp;
-//hexokay    = ahbMasterTransaction.hexokay;
+hexokay    = ahbMasterTransaction.hexokay;
 hready     = ahbMasterTransaction.hready;
-
+noOfWaitStatesDetected = ahbMasterTransaction.noOfWaitStatesDetected;
 endfunction : do_copy
 
 function bit AhbMasterTransaction::do_compare (uvm_object rhs, uvm_comparer comparer);
@@ -187,8 +183,9 @@ hwrite   == ahbMasterTransaction.hwrite   &&
 hrdata   == ahbMasterTransaction.hrdata   &&
 hreadyout == ahbMasterTransaction.hreadyout &&
 hresp    == ahbMasterTransaction.hresp    &&
-//hexokay  == ahbMasterTransaction.hexokay  &&
-hready   == ahbMasterTransaction.hready;
+hexokay  == ahbMasterTransaction.hexokay  &&
+hready   == ahbMasterTransaction.hready &&
+noOfWaitStatesDetected == ahbMasterTransaction.noOfWaitStatesDetected;
 
 endfunction : do_compare
 function void AhbMasterTransaction::do_print(uvm_printer printer);
@@ -209,7 +206,7 @@ printer.print_field ("hwrite", hwrite, $bits(hwrite), UVM_BIN);
 printer.print_field  ("hrdata", hrdata, $bits(hrdata), UVM_HEX);
 printer.print_field ("hreadyout", hreadyout, $bits(hreadyout), UVM_HEX);
 printer.print_string ("hresp", hresp.name());
-//printer.print_string ("hexokay", hexokay.name());
+printer.print_field ("hexokay", hexokay,$bits(hexokay),UVM_HEX);
 printer.print_field ("hready", hready, $bits(hready), UVM_HEX);
 printer.print_field ("noOfwaitStatesDetected", noOfWaitStatesDetected, $bits(noOfWaitStatesDetected), UVM_HEX);
 

@@ -70,6 +70,17 @@ constraint trans_val {
     soft hsize <= DATA_WIDTH;
 }
 
+
+constraint hmaster_logic {
+    if (NO_OF_MASTERS == 1)
+      soft hmaster == '0;
+    else if (htrans == IDLE || htrans == BUSY)
+    soft  hmaster == hmaster;
+    else
+      soft  hmaster inside {[0 : NO_OF_MASTERS-1]};
+}
+
+
 constraint addr_boundary {
     if (hsize == HALFWORD)
         soft haddr[0] == 0;
@@ -91,6 +102,26 @@ constraint addr_vals {
     if (hburst inside {INCR, INCR4, INCR8, INCR16}) {
         soft haddr == haddr + 2**hsize; // Increment haddr based on hsize
     }
+}
+
+constraint hwstrb_logic {
+    if (hsize == BYTE)
+     soft   hwstrb == 8'h01 << haddr[1:0]; 
+    else if (hsize == HALFWORD)
+      soft  hwstrb == 8'h03 << (haddr[1] << 1); 
+    else if (hsize == WORD)
+      soft  hwstrb == 8'h0F; 
+    else if (hsize == DOUBLEWORD)
+     soft   hwstrb == 8'hFF; 
+    else if (hsize >= LINE4)
+    soft    hwstrb == {DATA_WIDTH/8{1'b1}}; 
+}
+
+constraint hselx_logic {
+    if (htrans == IDLE)
+     soft hselx == '0;
+    else 
+        $onehot(hselx);
 }
 
 

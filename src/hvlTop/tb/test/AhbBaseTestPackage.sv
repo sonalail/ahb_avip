@@ -16,6 +16,7 @@ package AhbBaseTestPackage;
   import AhbVirtualSequencePackage::*;
 
   `include "AhbBaseTest.sv"
+  `include "Ahb32bitSingleWritetest.sv"
 
 endpackage : AhbBaseTestPackage
 

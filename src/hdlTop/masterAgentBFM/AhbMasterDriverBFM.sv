@@ -92,9 +92,9 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     int burst_length;
     automatic logic [ADDR_WIDTH-1:0] current_address = dataPacket.haddr;
      case (dataPacket.hburst)
-      {3'b001, 3'b010} : burst_length = 4;  // INCR4, WRAP4
-      {3'b011, 3'b100} : burst_length = 8;  // INCR8, WRAP8
-      {3'b101, 3'b110}: burst_length = 16; // INCR16, WRAP16
+      3'b010, 3'b011 : burst_length = 4;  // INCR4, WRAP4
+      3'b100, 3'b101 : burst_length = 8;  // INCR8, WRAP8
+      3'b110, 3'b111 : burst_length = 16; // INCR16, WRAP16
       default: burst_length = 1;
     endcase
     @(posedge hclk);

@@ -1,57 +1,31 @@
 `ifndef AHBSLAVEDRIVERPROXY_INCLUDED_
 `define AHBSLAVEDRIVERPROXY_INCLUDED_
 
-//--------------------------------------------------------------------------------------------
-//  Class: AhbSlaveDriverProxy
-//  This is the proxy driver on the HVL side
-//  It receives the transactions and converts them to task calls for the HDL driver
-//--------------------------------------------------------------------------------------------
 class AhbSlaveDriverProxy extends uvm_driver#(AhbSlaveTransaction);
   `uvm_component_utils(AhbSlaveDriverProxy)
 
-  //Variable : ahbSlaveTransaction
-  //Declaring handle for apb slave transaction
   AhbSlaveTransaction ahbSlaveTransaction;
 
-  // Variable: ahbSlaveDriverBFM;
-  // Handle for  AhbSlaveDriverBFM
   virtual AhbSlaveDriverBFM ahbSlaveDriverBFM;
 
-  // Variable: ahbSlaveAgentConfig;
-  // Handle for apb Slave agent configuration
   AhbSlaveAgentConfig ahbSlaveAgentConfig;
 
-  //-------------------------------------------------------
-  // Externally defined Tasks and Functions
-  //-------------------------------------------------------
+
   extern function new(string name = "AhbSlaveDriverProxy", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void connect_phase(uvm_phase phase);
   extern function void end_of_elaboration_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
-//  extern virtual task taskWrite(inout apbTransferCharStruct structPacket);
-//  extern virtual task taskRead(inout apbTransferCharStruct structPacket);
+  extern virtual task checkForHresp(inout ahbTransferCharStruct structPacket );
+  extern virtual task taskWrite(inout ahbTransferCharStruct structPacket);
+  extern virtual task taskRead(inout ahbTransferCharStruct structPacket);
+
 endclass : AhbSlaveDriverProxy
-  
-//--------------------------------------------------------------------------------------------
-//  Construct: new
-//  Initializes memory for new object
-//
-//  Parameters:
-//  name - AhbSlaveDriverProxy
-//  parent - parent under which this component is created
-//--------------------------------------------------------------------------------------------
+
 function AhbSlaveDriverProxy::new(string name = "AhbSlaveDriverProxy", uvm_component parent = null);
   super.new(name, parent);
 endfunction : new
 
-//--------------------------------------------------------------------------------------------
-//  Function: build_phase
-//  AhbSlaveDriverBFM congiguration is obtained in build phase
-//
-//  Parameters:
-//  phase - uvm phase
-//--------------------------------------------------------------------------------------------
 function void AhbSlaveDriverProxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
   if(!uvm_config_db #(virtual AhbSlaveDriverBFM)::get(this,"","AhbSlaveDriverBFM", ahbSlaveDriverBFM)) 
@@ -61,73 +35,103 @@ function void AhbSlaveDriverProxy::build_phase(uvm_phase phase);
 
 endfunction : build_phase
 
-//--------------------------------------------------------------------------------------------
-//  Function: connect_phase
-//  Connects driver proxy and driver bfm
-//
-//  Parameters:
-//  phase - stores the current phase
-//--------------------------------------------------------------------------------------------
 function void AhbSlaveDriverProxy::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
 endfunction : connect_phase
 
-
-//-------------------------------------------------------
-// Function: end_of_elaboration_phase
-//Description: connects driver_proxy and driver_bfm
-//
-// Parameters:
-//  phase - stores the current phase
-//-------------------------------------------------------
 function void AhbSlaveDriverProxy::end_of_elaboration_phase(uvm_phase phase);
   super.end_of_elaboration_phase(phase);
   ahbSlaveDriverBFM.ahbSlaveDriverProxy = this;
 endfunction : end_of_elaboration_phase
 
-//--------------------------------------------------------------------------------------------
-// Task: run_phase
-// Gets the sequence_item, converts them to struct compatible transactions
-// and sends them to the BFM to drive the data over the interface
-//
-// Parameters:
-//  phase - uvm phase
-//--------------------------------------------------------------------------------------------
 task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
   
-  //wait for system reset
   ahbSlaveDriverBFM.waitForResetn();
-  `uvm_info(get_type_name(), $sformatf("INSIDE run phase "),UVM_LOW);
- 
+  `uvm_info(get_type_name(), $sformatf(" run phase inside slave driver proxy \n "), UVM_NONE);
+  
   forever begin
+    ahbTransferCharStruct structPacket;
+    ahbTransferConfigStruct structConfig;
     
+    checkForHresp(structPacket);
+    `uvm_info("DEBUG_NA", $sformatf("AFTER HRESP_CHECK_5 -struct:: %p", structPacket), UVM_MEDIUM); 
     
     seq_item_port.get_next_item(req);
-  
-    seq_item_port.item_done();
+    `uvm_info(get_type_name(), $sformatf("REQ-SLAVE_TX \n %s",req.sprint),UVM_LOW);
+    
+    //Converting transaction to struct data_packet
+    AhbSlaveSequenceItemConverter::fromClass(req, structPacket); 
 
+    //Converting configurations to struct cfg packet
+    AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
+
+    //drive the converted data packets to the slave driver bfm
+    ahbSlaveDriverBFM.slaveDriveToBFM(structPacket,structConfig);
+  
+    //converting the struct data items into transcations 
+    AhbSlaveSequenceItemConverter::toClass(structPacket, req);  
+    `uvm_info(get_type_name(), $sformatf("AFTER :: received req packet \n  %s",req.sprint),UVM_LOW);
+    
+    seq_item_port.item_done();
   end
 endtask : run_phase
 
-//--------------------------------------------------------------------------------------------
-// Task: task_write
-// This task is used to write the data into the slave memory
-// Parameters:
-//  struct_packet   - apb_transfer_char_s
-//--------------------------------------------------------------------------------------------
-/*    task AhbSlaveDriverProxy::taskWrite(inout apbTransferCharStruct structPacket);
-
+task AhbSlaveDriverProxy::taskWrite(inout ahbTransferCharStruct structPacket);
+  `uvm_info("DEBUG_NA", $sformatf("taskWrite"), UVM_HIGH); 
+  
+  for(int i=0; i<(DATA_WIDTH/8); i++) begin
+    `uvm_info("DEBUG_NA", $sformatf("task_write inside for loop :: %0d", i), UVM_HIGH);
+    `uvm_info("DEBUG_NA", $sformatf("task_write inside for loop hwstrb = %0b", structPacket.hwstrb[i]), UVM_HIGH);
+    
+    if(structPacket.hwstrb[i] == 1) begin
+      ahbSlaveAgentConfig.slaveMemoryTask(structPacket.haddr+i,structPacket.hwdata[8*i+7 -: 8]);
+      `uvm_info("DEBUG_NA", $sformatf("task_write inside for loop data = %0h", 
+                                      ahbSlaveAgentConfig.slaveMemory[structPacket.haddr+i]), UVM_HIGH);
+    end
+  end
 endtask : taskWrite
-*/
-//--------------------------------------------------------------------------------------------
-// Task: task_read
-// This task is used to read the data from the slave memory
-// Parameters:
-//  struct_packet   - apb_transfer_char_s
-//--------------------------------------------------------------------------------------------
-/*    task AhbSlaveDriverProxy::taskRead(inout apbTransferCharStruct structPacket);
+
+task AhbSlaveDriverProxy::taskRead(inout ahbTransferCharStruct structPacket);
+  `uvm_info("DEBUG_NA", $sformatf("task_read"), UVM_HIGH);
+  
+  for(int i=0; i<(DATA_WIDTH/8); i++) begin
+    if(ahbSlaveAgentConfig.slaveMemory.exists(structPacket.haddr)) begin
+      structPacket.hrdata[8*i+7 -: 8] = ahbSlaveAgentConfig.slaveMemory[structPacket.haddr + i];
+    end
+    else begin
+      `uvm_error(get_type_name(), $sformatf("Selected address has no data"));
+      structPacket. hresp  = ERROR;
+      structPacket.hrdata  = 'h0;
+    end
+  end 
 
 endtask : taskRead
-    */
+    
+
+task AhbSlaveDriverProxy:: checkForHresp(inout ahbTransferCharStruct structPacket);
+  
+  `uvm_info("DEBUG_NA", $sformatf("AFTER HRESP_CHECK_1 struct :: %p", structPacket), UVM_HIGH);
+  if(structPacket.haddr inside {[ ahbSlaveAgentConfig.minimumAddress: ahbSlaveAgentConfig.maximumAddress]}) begin
+    structPacket.hresp = OKAY;
+    
+    if(structPacket.hwrite==1) begin
+      taskWrite(structPacket);
+    end
+    else begin
+      taskRead(structPacket);
+    end
+  end
+  else begin
+   structPacket.hresp  = ERROR;
+   structPacket.hrdata  = 'h0;
+  end
+  
+  `uvm_info("DEBUG_NA", $sformatf("AFTER HRESP_CHECK_2 minimumAddress = %0h, maximumAddress=%0h ",
+                                  ahbSlaveAgentConfig.minimumAddress, ahbSlaveAgentConfig.maximumAddress), UVM_HIGH);
+
+  `uvm_info("DEBUG_NA", $sformatf("AFTER HRESP_CHECK_3 struct-Haddr :: %0h", structPacket.haddr), UVM_HIGH);
+  `uvm_info("DEBUG_NA-hresp", $sformatf("AFTER HRESP_CHECK_4 struct :: %p", structPacket), UVM_HIGH);
+
+endtask : checkForHresp
 
 `endif

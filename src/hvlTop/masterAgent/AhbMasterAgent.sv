@@ -59,12 +59,6 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void AhbMasterAgent::build_phase(uvm_phase phase);
   super.build_phase(phase);
-
- 
-    // if(!uvm_config_db #(AhbMasterAgentConfig)::get(this,"",$sformatf("AhbMasterAgentConfig[%0d]",i),ahbMasterAgentConfig[i])) begin
-    //   `uvm_fatal("FATAL_MA_AGENT_CONFIG", $sformatf("Couldn't get the ahbMasterAgentConfig from config_db"))
-    // end
-
    if(ahbMasterAgentConfig.is_active == UVM_ACTIVE) begin
         ahbMasterSequencer = AhbMasterSequencer::type_id::create("ahbMasterSequencer",this);
         ahbMasterDriverProxy = AhbMasterDriverProxy::type_id::create("ahbMasterDriverProxy",this);
@@ -96,13 +90,14 @@ function void AhbMasterAgent::connect_phase(uvm_phase phase);
   end
   ahbMasterMonitorProxy.ahbMasterAgentConfig = ahbMasterAgentConfig;
 
+    ahbMasterMonitorProxy.ahbMasterAgentConfig = ahbMasterAgentConfig;
+
   if(ahbMasterAgentConfig.hasCoverage) begin
     ahbMasterCoverage.ahbMasterAgentConfig = ahbMasterAgentConfig;
   
     //Connecting AhbSlaveMonitorProxy port to AhbSlaveSequencerCoverage export
     ahbMasterMonitorProxy.ahbMasterAnalysisPort.connect(ahbMasterCoverage.analysis_export);
   end
-    ahbMasterMonitorProxy.ahbMasterAgentConfig = ahbMasterAgentConfig;
 
 endfunction : connect_phase
 

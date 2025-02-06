@@ -6,8 +6,6 @@ class AhbMasterAgentConfig extends uvm_object;
 
  uvm_active_passive_enum is_active = UVM_ACTIVE;  
 
- int noOfSlaves;
-
  bit hasCoverage;
 
  bit [ADDR_WIDTH-1:0]haddr;
@@ -34,7 +32,6 @@ function void AhbMasterAgentConfig::do_print(uvm_printer printer);
 
  printer.print_field ("is_active",    is_active,  $bits(is_active), UVM_DEC);
  printer.print_field ("hasCoverage", hasCoverage, $bits(hasCoverage), UVM_DEC);
- printer.print_field ("NO OF SLAVES", noOfSlaves, $bits(noOfSlaves), UVM_DEC);
 
 foreach(masterMaximumAddressRangeArray[i]) begin
     printer.print_field($sformatf("masterMinimumAddressRangeArray[%0d]",i),masterMinimumAddressRangeArray[i],

@@ -62,11 +62,13 @@ task AhbMasterDriverProxy::run_phase(uvm_phase phase);
     `uvm_info(get_type_name(), $sformatf("AFTER :: inside master driver proxy \n "), UVM_NONE);
  
 	AhbMasterSequenceItemConverter::fromClass(req, dataPacket);
- 
+ `uvm_info("SONAL","ail",UVM_LOW)
     AhbMasterConfigConverter::fromClass(ahbMasterAgentConfig, configPacket);
  
+ `uvm_info("THOR","ail",UVM_LOW)
 	ahbMasterDriverBFM.driveToBFM(dataPacket,configPacket);
  
+ `uvm_info("DRIVING","ail",UVM_LOW)
 	AhbMasterSequenceItemConverter::toClass(dataPacket, req);
 	`uvm_info(get_type_name(), $sformatf("AFTER :: received req packet \n %s", req.sprint()), UVM_NONE);
  

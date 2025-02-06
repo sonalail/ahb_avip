@@ -32,6 +32,8 @@ function void AhbSlaveDriverProxy::build_phase(uvm_phase phase);
     begin
     `uvm_fatal("FATAL SDP CANNOT GET SLAVE DRIVER BFM","cannot get() ahbSlaveDriverBFM");
   end
+  
+    `uvm_info("",$sformatf("INBUILDPHASE"), UVM_HIGH);
 
 endfunction : build_phase
 
@@ -45,7 +47,8 @@ function void AhbSlaveDriverProxy::end_of_elaboration_phase(uvm_phase phase);
 endfunction : end_of_elaboration_phase
 
 task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
-  
+`uvm_info(get_type_name(), $sformatf(" BEFORERESET \n "), UVM_NONE);
+
   ahbSlaveDriverBFM.waitForResetn();
   `uvm_info(get_type_name(), $sformatf(" run phase inside slave driver proxy \n "), UVM_NONE);
   

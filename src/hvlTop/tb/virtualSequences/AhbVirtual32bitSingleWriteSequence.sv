@@ -21,15 +21,21 @@ task AhbVirtual32bitSingleWriteSequence::body();
   super.body();
   ahbMaster32bitSingleWriteSequence = AhbMaster32bitSingleWriteSequence::type_id::create("ahbMaster32bitSingleWriteSequence");
   ahbSlave32bitSingleWriteSequence  = AhbSlave32bitSingleWriteSequence::type_id::create("ahbSlave32bitSingleWriteSequence");
-  fork
+/*  fork
     forever begin
       ahbSlave32bitSingleWriteSequence.start(p_sequencer.ahbSlaveSequencer);
     end
-  join_none
+  join_none*/
 
-  repeat(5) begin
+  repeat(1) begin
     ahbMaster32bitSingleWriteSequence.start(p_sequencer.ahbMasterSequencer);
+	`uvm_info("virtual sequence","out of virtual sequence",UVM_LOW)
   end
+/*  repeat(1)begin
+  	ahbSlave32bitSingleWriteSequence.start(p_sequencer.ahbSlaveSequencer);
+  	`uvm_info("virtual sequence","out of virtual sequence",UVM_LOW)
+	end
+*/	
  endtask : body
 
 `endif

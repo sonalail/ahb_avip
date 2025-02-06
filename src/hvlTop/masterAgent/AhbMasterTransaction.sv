@@ -187,6 +187,7 @@ hresp      = ahbMasterTransaction.hresp;
 hexokay    = ahbMasterTransaction.hexokay;
 hready     = ahbMasterTransaction.hready;
 noOfWaitStatesDetected = ahbMasterTransaction.noOfWaitStatesDetected;
+
 endfunction : do_copy
 
 function bit AhbMasterTransaction::do_compare (uvm_object rhs, uvm_comparer comparer);

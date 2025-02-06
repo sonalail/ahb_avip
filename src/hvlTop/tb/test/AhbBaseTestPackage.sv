@@ -8,15 +8,15 @@ package AhbBaseTestPackage;
 
   import AhbGlobalPackage::*;
   import AhbMasterPackage::*;
-  import AhbSlavePackage::*;
+  import AhbSlavePackage::*; 
+  import AhbEnvironmentPackage::*;
   import AhbMasterSequencePackage::*;
   import AhbSlaveSequencePackage::*;
   import AhbVirtualSequencePackage::*;
-  import AhbEnvironmentPackage::*;
-  import AhbVirtualSequencePackage::*;
 
   `include "AhbBaseTest.sv"
-  `include "Ahb32bitSingleWritetest.sv"
+  `include "Ahb32bitSingleWriteTest.sv"
+
 
 endpackage : AhbBaseTestPackage
 

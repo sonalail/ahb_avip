@@ -1,4 +1,3 @@
-
 `ifndef AHBMASTERDRIVERBFM_INCLUDED_
 `define AHBMASTERDRIVERBFM_INCLUDED_
 import AhbGlobalPackage::*;
@@ -36,6 +35,8 @@ interface AhbMasterDriverBFM (input  bit  hclk,
   end
 
   task waitForResetn();
+    @(negedge hresetn);
+   `uvm_info(name ,$sformatf("SYSTEM RESET DETECTED"),UVM_HIGH)
     haddr       <= 0 ; 
     hsize       <=3'b010 ;  
     hburst      <= SINGLE; 
@@ -43,26 +44,28 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     hwrite      <= 0; 
     hwdata      <= 0; 
     hmastlock <= 0;
-    @(negedge hresetn);
-   `uvm_info(name ,$sformatf("SYSTEM RESET DETECTED"),UVM_HIGH)
     @(posedge hresetn);
     `uvm_info(name ,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_HIGH)
   endtask: waitForResetn
 
   task driveToBFM(inout ahbTransferCharStruct dataPacket, input ahbTransferConfigStruct configPacket);
-    `uvm_info(name,$sformatf("dataPacket = \n%p",dataPacket), UVM_HIGH);
-    `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_HIGH);
-    `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_HIGH);
-     if (dataPacket.hburst == SINGLE) driveSingleTransfer(dataPacket);
-     else if (dataPacket.hburst != SINGLE) driveBurstTransfer(dataPacket);
-    else if (dataPacket.htrans == BUSY) driveBusyTransfer(dataPacket);
+    `uvm_info(name,$sformatf("dataPacket = \n%p",dataPacket), UVM_LOW);
+    `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_LOW);
+    `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
+     if (dataPacket.hburst == SINGLE)
+	 	driveSingleTransfer(dataPacket);
+     else if (dataPacket.hburst != SINGLE)
+	 	driveBurstTransfer(dataPacket);
+    else if (dataPacket.htrans == BUSY)
+		driveBusyTransfer(dataPacket);
   endtask: driveToBFM
 
   task driveSingleTransfer(inout ahbTransferCharStruct dataPacket);
-    waitForResetn();
+    //waitForResetn();
+	`uvm_info("INSIDESINGLETRANSFER","BFM",UVM_LOW);
     @(posedge hclk);
-    `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_HIGH)
-     	haddr       <= dataPacket.haddr;
+    `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
+    haddr       <= dataPacket.haddr;
 	hburst      <= dataPacket.hburst;
 	hmastlock   <= dataPacket.hmastlock;
 	hprot       <= dataPacket.hprot;
@@ -76,16 +79,19 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	hwrite      <= dataPacket.hwrite;
 	hselx       <= dataPacket.hselx;
 
-    countWaitStates(dataPacket);
-    wait(dataPacket.hready);  
+    `uvm_info(name,$sformatf("DRIVING IS DONE"),UVM_LOW)
+    //countWaitStates(dataPacket);
+    wait(hready);  
+
     if (hresp == 1) begin  
       `uvm_error(name, $sformatf("Error Response Detected on Single Transfer at Address: %0h", haddr));
     end else if (!hwrite) begin  
-      `uvm_info(name, $sformatf("Read Data: %0h from Address: %0h", hrdata, haddr), UVM_HIGH);
-    end else begin 
-      `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", dataPacket.hwdata, haddr), UVM_HIGH);
+      `uvm_info(name, $sformatf("Read Data: %0h from Address: %0h", hrdata, haddr), UVM_LOW);
+    end else begin `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata, haddr), UVM_LOW);
+      `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata, haddr), UVM_LOW);
     end
     driveIdle();
+	
   endtask
 
   task driveBurstTransfer(inout ahbTransferCharStruct dataPacket);
@@ -97,8 +103,11 @@ interface AhbMasterDriverBFM (input  bit  hclk,
       3'b110, 3'b111 : burst_length = 16; // INCR16, WRAP16
       default: burst_length = 1;
     endcase
+	
     @(posedge hclk);
-        haddr       <= dataPacket.haddr;
+
+	if(dataPacket.hselx == 1)begin
+    haddr       <= dataPacket.haddr;
 	hburst      <= dataPacket.hburst;
 	hmastlock   <= dataPacket.hmastlock;
 	hprot       <= dataPacket.hprot;
@@ -146,10 +155,14 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     @(posedge hclk);
 driveIdle();    
 `uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_HIGH);
+end
   endtask
 
   task driveBusyTransfer(inout ahbTransferCharStruct dataPacket);
     @(posedge hclk);
+
+	if(dataPacket.hselx == 1)begin
+
     htrans     <= dataPacket.htrans == 2'b11 ? 2'b11 : 2'b10;  // Set to BUSY (2'b11) from dataPacket, otherwise use SEQ (2'b10)
     haddr      <= dataPacket.haddr;  // Use address from dataPacket
     hwrite     <= dataPacket.hwrite; // Use write control from dataPacket
@@ -160,6 +173,7 @@ driveIdle();
     @(posedge hclk);
     htrans <= dataPacket.htrans == 2'b11 ? 2'b10 : dataPacket.htrans;  
     `uvm_info(name, $sformatf("Continuing Sequential Transfer after BUSY at Address: %0h", haddr), UVM_LOW);
+  end
   endtask
 
   
@@ -176,7 +190,7 @@ driveIdle();
 
 task countWaitStates(inout ahbTransferCharStruct dataPacket);
     dataPacket.noOfWaitStates = 0;
-    while (dataPacket.hready !== 1) begin
+    while (hready !== 1) begin
         dataPacket.noOfWaitStates++;
     end
     `uvm_info(name, $sformatf("Wait states counted: %0d", dataPacket.noOfWaitStates), UVM_LOW);

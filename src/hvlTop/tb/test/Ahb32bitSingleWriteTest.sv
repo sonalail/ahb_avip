@@ -23,6 +23,7 @@ task Ahb32bitSingleWriteTest::run_phase(uvm_phase phase);
   `uvm_info(get_type_name(),$sformatf("Ahb32bitSingleWriteTest"),UVM_LOW);
   phase.raise_objection(this);
     ahbVirtual32bitSingleWriteSequence.start(ahbEnvironment.ahbVirtualSequencer);
+	#10;
   phase.drop_objection(this);
 
 endtask : run_phase

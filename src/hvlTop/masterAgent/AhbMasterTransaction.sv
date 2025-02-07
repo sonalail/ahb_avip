@@ -40,14 +40,6 @@ constraint addr_size {
     if (hburst == INCR16 || hburst == WRAP16) soft haddr== 16;
 }
 
-constraint wdata {
-    soft hwdata == hsize;
-}
-
-constraint trans_size {
-    soft htrans== haddr;
-}
-
 constraint first_trans_type {
     if (hburst == SINGLE) {
         soft htrans inside {IDLE, NONSEQ};
@@ -62,45 +54,6 @@ constraint incr_trans_type {
             soft htrans == NONSEQ;
         else
             soft htrans == SEQ;
-    }
-}
-
-
-constraint trans_val {
-    soft hsize <= DATA_WIDTH;
-}
-
-
-constraint hmaster_logic {
-    if (NO_OF_MASTERS == 1)
-      soft hmaster == '0;
-    else if (htrans == IDLE || htrans == BUSY)
-    soft  hmaster == hmaster;
-    else
-      soft  hmaster inside {[0 : NO_OF_MASTERS-1]};
-}
-
-
-constraint addr_boundary {
-    if (hsize == HALFWORD)
-        soft haddr[0] == 0;
-    if (hsize == WORD)
-        soft haddr[1:0] == 0;
-    if (hsize == DOUBLEWORD)
-        soft haddr[2:0] == 0;
-    if (hsize == LINE4)
-        soft haddr[3:0] == 0;
-    if (hsize == LINE8)
-        soft haddr[4:0] == 0;
-    if (hsize == LINE16)
-        soft haddr[5:0] == 0;
-    if (hsize == LINE32)
-        soft haddr[6:0] == 0;
-}
-
-constraint addr_vals {
-    if (hburst inside {INCR, INCR4, INCR8, INCR16}) {
-        soft haddr == haddr + 2**hsize; // Increment haddr based on hsize
     }
 }
 

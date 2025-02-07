@@ -45,7 +45,7 @@ task AhbMasterDriverProxy::run_phase(uvm_phase phase);
  
   ahbMasterDriverBFM.waitForResetn();
  
-  ahbMasterDriverBFM.driveIdle();
+//  ahbMasterDriverBFM.driveIdle();
  
   `uvm_info(get_type_name(), $sformatf(" run phase inside master driver proxy \n "), UVM_NONE);
  

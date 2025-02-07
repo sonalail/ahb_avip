@@ -6,8 +6,8 @@
 class AhbSlaveTransaction extends uvm_sequence_item;
   `uvm_object_utils(AhbSlaveTransaction)
 
-bit [ADDR_WIDTH-1:0] haddr;
-bit [NO_OF_SLAVES-1:0] hselx;
+	bit [ADDR_WIDTH-1:0] haddr;
+	bit [NO_OF_SLAVES-1:0] hselx;
 ahbBurstEnum hburst;
 bit hmastlock;
 ahbProtectionEnum hprot;
@@ -21,29 +21,29 @@ bit [(DATA_WIDTH/8)-1:0] hwstrb;
 bit hwrite;
 rand bit [DATA_WIDTH-1:0] hrdata;
 rand bit hreadyout;
-rand ahbRespEnum hresp;
+ ahbRespEnum hresp;
  rand bit hexokay;
- rand bit hready;
+ bit hready;
  
   extern function new(string name = "AhbSlaveTransaction");
   extern function void do_copy(uvm_object rhs);
   extern function bit do_compare(uvm_object rhs, uvm_comparer comparer);
   extern function void do_print(uvm_printer printer);
 
-  constraint c_hreadyout_timing {
+/*  constraint c_hreadyout_timing {
     if (hready == 1) {
       hreadyout == 1;
   }
-}
+}*/
 
-constraint c_hresp_valid {
+/*constraint c_hresp_valid {
   if (hreadyout == 1) {
     hresp == OKAY;
   }
-}
+}*/
 
 
-constraint c_hexokay_valid {
+/*constraint c_hexokay_valid {
   if (hexcl == 1) {
     hexokay == OKAY;
   } else {
@@ -52,14 +52,15 @@ constraint c_hexokay_valid {
   if (hresp == ERROR) {
     hexokay == 0;
   }
-}
+}*/
 
-task applyHreadyoutDelay();
+/*task applyHreadyoutDelay();
         if (hresp == ERROR) begin
             #1;  
             hreadyout = 1;
         end
     endtask
+*/
 
 endclass : AhbSlaveTransaction
 

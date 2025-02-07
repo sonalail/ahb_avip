@@ -51,22 +51,26 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_HIGH);
     `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_HIGH);
 	//wait(hselx)
-while(hselx == 0)
-begin
-@(posedge hclk);
-end
+	do begin
+		@(posedge hclk);
+	end while(hselx === 1'b0);
+
     `uvm_info(name,$sformatf("AFTERHSELASSERTED"), UVM_LOW);
     if(htrans==SINGLE) //drive_single_transfer
+	begin
       slaveDriveSingleTransfer(dataPacket);
-    else if(htrans==BUSY)
+	end
+    else if(htrans==BUSY) begin
       slaveDriveBusyTransfer(dataPacket);
-   else if(htrans!=SINGLE)
+	  end
+   else if(htrans!=SINGLE) begin
      slavedriveBurstTransfer(dataPacket);
+	 end
   endtask: slaveDriveToBFM
  
   task slaveDriveSingleTransfer(inout ahbTransferCharStruct dataPacket);
     //waitCycles(dataPacket);
-    @(posedge hclk);
+  //  @(posedge hclk);
    // if(hreadyout)
      hready <= 1;
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_HIGH)

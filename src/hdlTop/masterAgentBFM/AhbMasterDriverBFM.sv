@@ -37,13 +37,13 @@ interface AhbMasterDriverBFM (input  bit  hclk,
   task waitForResetn();
     @(negedge hresetn);
    `uvm_info(name ,$sformatf("SYSTEM RESET DETECTED"),UVM_HIGH)
-    haddr       <= 0 ; 
-    hsize       <=3'b010 ;  
-    hburst      <= SINGLE; 
+//    haddr       <= 0 ; 
+   // hsize       <=3'b010 ;  
+   // hburst      <= SINGLE; 
     htrans      <= IDLE;  
-    hwrite      <= 0; 
-    hwdata      <= 0; 
-    hmastlock <= 0;
+   // hwrite      <= 0; 
+  //  hwdata      <= 0; 
+  //  hmastlock <= 0;
     @(posedge hresetn);
     `uvm_info(name ,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_HIGH)
   endtask: waitForResetn
@@ -53,14 +53,18 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_LOW);
     `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
      if (dataPacket.hburst == SINGLE)
+	 begin
 	 	driveSingleTransfer(dataPacket);
-     else if (dataPacket.hburst != SINGLE)
+	end
+     else if (dataPacket.hburst != SINGLE) begin
 	 	driveBurstTransfer(dataPacket);
-    else if (dataPacket.htrans == BUSY)
+		end
+    else if (dataPacket.htrans == BUSY) begin
 		driveBusyTransfer(dataPacket);
+		end
   endtask: driveToBFM
 
-  task driveSingleTransfer(inout ahbTransferCharStruct dataPacket);
+  task driveSingleTransfer(inout ahbTransferCharStruct dataPacket);//waitForResetn();
     //waitForResetn();
 	`uvm_info("INSIDESINGLETRANSFER","BFM",UVM_LOW);
     @(posedge hclk);
@@ -77,7 +81,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	hwdata      <= dataPacket.hwrite ? dataPacket.hwdata : '0;
 	hwstrb      <= dataPacket.hwstrb;
 	hwrite      <= dataPacket.hwrite;
-	hselx       <= dataPacket.hselx;
+	hselx       <= 1'b1;
 
     `uvm_info(name,$sformatf("DRIVING IS DONE"),UVM_LOW)
     //countWaitStates(dataPacket);

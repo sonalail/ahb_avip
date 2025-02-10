@@ -45,30 +45,20 @@ task AhbMasterDriverProxy::run_phase(uvm_phase phase);
  
   ahbMasterDriverBFM.waitForResetn();
  
-//  ahbMasterDriverBFM.driveIdle();
- 
   `uvm_info(get_type_name(), $sformatf(" run phase inside master driver proxy \n "), UVM_NONE);
  
  
-  forever begin
+forever begin
  
-  	ahbTransferCharStruct dataPacket;
-    ahbTransferConfigStruct configPacket;
+ ahbTransferCharStruct dataPacket;
+ ahbTransferConfigStruct configPacket;
  
     seq_item_port.get_next_item(req);
  
 	`uvm_info(get_type_name(), $sformatf("REQ-MASTERTX \n %s",req.sprint),UVM_HIGH);
- 
-    `uvm_info(get_type_name(), $sformatf("AFTER :: inside master driver proxy \n "), UVM_NONE);
- 
 	AhbMasterSequenceItemConverter::fromClass(req, dataPacket);
- `uvm_info("SONAL","ail",UVM_LOW)
-    AhbMasterConfigConverter::fromClass(ahbMasterAgentConfig, configPacket);
- 
- `uvm_info("THOR","ail",UVM_LOW)
+        AhbMasterConfigConverter::fromClass(ahbMasterAgentConfig, configPacket);
 	ahbMasterDriverBFM.driveToBFM(dataPacket,configPacket);
- 
- `uvm_info("DRIVING","ail",UVM_LOW)
 	AhbMasterSequenceItemConverter::toClass(dataPacket, req);
 	`uvm_info(get_type_name(), $sformatf("AFTER :: received req packet \n %s", req.sprint()), UVM_NONE);
  

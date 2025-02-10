@@ -45,39 +45,24 @@ function void AhbSlaveDriverProxy::end_of_elaboration_phase(uvm_phase phase);
 endfunction : end_of_elaboration_phase
 
 task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
-`uvm_info(get_type_name(), $sformatf(" BEFORERESET \n "), UVM_NONE);
-
   ahbSlaveDriverBFM.waitForResetn();
-  `uvm_info(get_type_name(), $sformatf(" run phase inside slave driver proxy \n "), UVM_NONE);
   
   forever begin
     ahbTransferCharStruct structPacket;
     ahbTransferConfigStruct structConfig;
     
-  //  checkForHresp(structPacket);
-  //  `uvm_info("DEBUG_NA", $sformatf("AFTER HRESP_CHECK_5 -struct:: %p", structPacket), UVM_MEDIUM); 
     `uvm_info(get_type_name(), "Waiting for a transaction...", UVM_LOW)
     seq_item_port.get_next_item(req);
     `uvm_info(get_type_name(), "Transaction received!", UVM_LOW)
 
     `uvm_info(get_type_name(), $sformatf("REQ-SLAVE_TX \n %s",req.sprint),UVM_LOW);
     
-    //Converting transaction to struct data_packet
     AhbSlaveSequenceItemConverter::fromClass(req, structPacket); 
-    `uvm_info(get_type_name(), $sformatf("Converted structPacket: %p", structPacket), UVM_HIGH)
 
-    //Converting configurations to struct cfg packet
     AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
-    `uvm_info(get_type_name(), $sformatf("Converted structConfig: %p", structConfig), UVM_HIGH)
 
-    `uvm_info("", "BEFOREDRIVETOBFM", UVM_MEDIUM); 
-    //drive the converted data packets to the slave driver bfm
-    `uvm_info("DEBUG", "BEFORE CALLING slaveDriveToBFM", UVM_HIGH)
      ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
-    `uvm_info("DEBUG", "AFTER CALLING slaveDriveToBFM", UVM_HIGH)
 
-    `uvm_info("", "AFTERDRIVETOBFM", UVM_MEDIUM); 
-    //converting the struct data items into transcations 
     AhbSlaveSequenceItemConverter::toClass(structPacket, req);  
     `uvm_info(get_type_name(), $sformatf("AFTER :: received req packet \n  %s",req.sprint),UVM_LOW);
     

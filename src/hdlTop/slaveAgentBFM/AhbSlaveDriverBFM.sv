@@ -4,24 +4,24 @@
 import AhbGlobalPackage::*;
  
 interface AhbSlaveDriverBFM (input  bit   hclk,
-                            input  bit  hresetn,
+                             input  bit  hresetn,
 			     input logic [2:0] hburst,
-			      input logic hmastlock,
-                              input logic [ADDR_WIDTH-1:0] haddr,                             
-                              input logic [HPROT_WIDTH-1:0] hprot,
-                              input logic [2:0] hsize,
-                              input logic hnonsec,
-                              input logic hexcl,
-                              input logic [HMASTER_WIDTH-1:0] hmaster,
-                              input logic [1:0] htrans, 
-   			       input logic [DATA_WIDTH-1:0] hwdata,
-                              input logic [(DATA_WIDTH/8)-1:0]hwstrb,
-                              input logic hwrite,                             
-                              output logic [DATA_WIDTH-1:0] hrdata,
-			       output logic hreadyout,
-			        output logic hresp,
-                              output logic hexokay,
-                              output logic hready,                                                           
+			     input logic hmastlock,
+                             input logic [ADDR_WIDTH-1:0] haddr,                             
+                             input logic [HPROT_WIDTH-1:0] hprot,
+                             input logic [2:0] hsize,
+                             input logic hnonsec,
+                             input logic hexcl,
+                             input logic [HMASTER_WIDTH-1:0] hmaster,
+                             input logic [1:0] htrans, 
+   			     input logic [DATA_WIDTH-1:0] hwdata,
+                             input logic [(DATA_WIDTH/8)-1:0]hwstrb,
+                             input logic hwrite,                             
+                             output logic [DATA_WIDTH-1:0] hrdata,
+			     output logic hreadyout,
+			     output logic hresp,
+                             output logic hexokay,
+                             output logic hready,                                                           
                              input logic [NO_OF_SLAVES-1:0]hselx
                             );
  
@@ -39,24 +39,24 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
   end
  
   task waitForResetn();
-@(negedge hresetn);
-    `uvm_info(name,$sformatf("SYSTEM RESET DETECTED"),UVM_LOW)  
-    hreadyout=1;//Default to 1
+	@(negedge hresetn);
+   	 	`uvm_info(name,$sformatf("SYSTEM RESET DETECTED"),UVM_LOW)  
+   		 hreadyout=1;
         @(posedge hresetn);
-    `uvm_info(name,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_LOW)
+    		`uvm_info(name,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_LOW)
   endtask: waitForResetn
 
   task slaveDriveToBFM(inout ahbTransferCharStruct dataPacket, input ahbTransferConfigStruct configPacket);
-    `uvm_info(name,$sformatf("dataPacket = \n%p",dataPacket), UVM_HIGH);
-    `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_HIGH);
-    `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_HIGH);
-	//wait(hselx)
+	  `uvm_info(name,$sformatf("dataPacket = \n%p",dataPacket), UVM_LOW);
+	  `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_LOW);
+	  `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
+	
 	do begin
 		@(posedge hclk);
 	end while(hselx === 1'b0);
 
-    `uvm_info(name,$sformatf("AFTERHSELASSERTED"), UVM_LOW);
-    if(htrans==SINGLE) //drive_single_transfer
+    	`uvm_info(name,$sformatf("AFTERHSELASSERTED"), UVM_LOW);
+    if(htrans==SINGLE) 
 	begin
       slaveDriveSingleTransfer(dataPacket);
 	end
@@ -69,19 +69,16 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
   endtask: slaveDriveToBFM
  
   task slaveDriveSingleTransfer(inout ahbTransferCharStruct dataPacket);
-    //waitCycles(dataPacket);
-  //  @(posedge hclk);
-   // if(hreadyout)
-     hready <= 1;
-    `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_HIGH)
+    `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
+    hready 		   <= 1;
     dataPacket.haddr       <= haddr;
-    dataPacket.htrans      <= ahbTransferEnum'(htrans);// Non-sequential transfer
-    dataPacket.hsize       <= ahbHsizeEnum'(hsize); // Use the hsize from dataPacket
-    dataPacket.hburst      <= ahbBurstEnum'(hburst);// SINGLE burst
-    dataPacket.hwrite      <= hwrite;  // Use hwrite from dataPacket
-    dataPacket.hmastlock   <= hmastlock; // Use master lock from dataPacket
-    hresp       <= 0;
-	dataPacket.hselx      <= hselx;
+    dataPacket.htrans      <= ahbTransferEnum'(htrans);
+    dataPacket.hsize       <= ahbHsizeEnum'(hsize); 
+    dataPacket.hburst      <= ahbBurstEnum'(hburst);
+    dataPacket.hwrite      <= hwrite;  
+    dataPacket.hmastlock   <= hmastlock; 
+    hresp       	   <= 0;
+    dataPacket.hselx       <= hselx;
  
     if(hwrite) begin
       dataPacket.hwdata <= hwdata;
@@ -97,16 +94,14 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
  
   task slavedriveBurstTransfer(inout ahbTransferCharStruct dataPacket);
     int burst_length;
-    // Determine burst length based on burst type from dataPacket
     case (hburst)
-      3'b010, 3'b011: burst_length = 4;  // INCR4, WRAP4
-      3'b100, 3'b101: burst_length = 8;  // INCR8, WRAP8
-      3'b110, 3'b111: burst_length = 16; // INCR16, WRAP16
+      3'b010, 3'b011: burst_length = 4;  
+      3'b100, 3'b101: burst_length = 8;  
+      3'b110, 3'b111: burst_length = 16; 
       default: burst_length = 1;
     endcase
  
     waitCycles(dataPacket);
-    // Initialize Address Phase (Non-sequential for the first transfer)
     @(posedge hclk);
     //if(dataPacket.hreadyout)begin
       dataPacket.hready<=1;
@@ -119,8 +114,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     dataPacket.hmastlock   = hmastlock; 
     dataPacket.hselx       = hselx;
 	`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
-                              dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_HIGH);
-    // Loop through burst transfers
+				  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);
     for (int i = 0; i < burst_length; i++) begin
       @(posedge hclk);
       if(hwrite && dataPacket.hresp != 1 ) begin
@@ -136,7 +130,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
         hresp  <= dataPacket.hresp;
         `uvm_error(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr));
       end
-      `uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_HIGH);
+	    `uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
 	  end
   endtask: slavedriveBurstTransfer
  
@@ -149,7 +143,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     dataPacket.htrans     = ahbTransferEnum'(htrans);  
     dataPacket.haddr      = haddr; 
     dataPacket.hwrite     = hwrite; 
-    hresp      <= dataPacket.hresp;//okay(0)
+    hresp      <= dataPacket.hresp;
     if(hwrite  && dataPacket.hresp != 1 ) begin
       dataPacket.hwdata = hwdata;
       dataPacket.hwstrb  = hwstrb;
@@ -171,7 +165,7 @@ task waitCycles(inout ahbTransferCharStruct dataPacket);
 //   end
  
   repeat(dataPacket.noOfWaitStates) begin
-      `uvm_info(name,$sformatf(" DRIVING WAIT STATE"),UVM_HIGH);
+	  `uvm_info(name,$sformatf(" DRIVING WAIT STATE"),UVM_LOW);
       @(posedge hclk);
       dataPacket.hready<=0;
   end

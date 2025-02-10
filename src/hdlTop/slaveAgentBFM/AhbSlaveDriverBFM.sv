@@ -47,8 +47,8 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
   endtask: waitForResetn
 
   task slaveDriveToBFM(inout ahbTransferCharStruct dataPacket, input ahbTransferConfigStruct configPacket);
-	  `uvm_info(name,$sformatf("dataPacket = \n%p",dataPacket), UVM_LOW);
-	  `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_LOW);
+//	  `uvm_info(name,$sformatf("dataPacket = \n%p",dataPacket), UVM_LOW);
+//	  `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_LOW);
 	  `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
 	
 	do begin
@@ -85,6 +85,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
       dataPacket.hwstrb <= hwstrb;
     end
     else if(!hwrite) begin
+	@(posedge hclk);
       hrdata <= dataPacket.hrdata;
     end
 /*   else if(hresp == 1) begin

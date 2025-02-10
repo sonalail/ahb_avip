@@ -79,7 +79,7 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     else begin
       ahbDataPacket.hrdata = hrdata;
     end
-	  `uvm_info(name, $sformatf("MASTER SAMPLE DATA=%p", ahbDataPacket), UVM_LOW)
+	 // `uvm_info(name, $sformatf("MASTER SAMPLE DATA=%p", ahbDataPacket), UVM_LOW)
   endtask : sampleData
 
 endinterface : AhbMasterMonitorBFM

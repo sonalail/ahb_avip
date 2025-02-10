@@ -52,7 +52,6 @@ task AhbMasterMonitorProxy::run_phase(uvm_phase phase);
     ahbMasterMonitorBFM.sampleData (structDataPacket,  structConfigPacket);
     AhbMasterSequenceItemConverter :: toClass(structDataPacket, ahbMasterPacket);
 
-    `uvm_info(get_type_name(),$sformatf("Received packet from master monitor bfm: , \n %s", ahbMasterPacket.sprint()),UVM_HIGH)
 
     $cast(ahbMasterClonePacket, ahbMasterPacket.clone());
     `uvm_info(get_type_name(),$sformatf("Sending packet via analysis_port: , \n %s", ahbMasterClonePacket.sprint()),UVM_HIGH)

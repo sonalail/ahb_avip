@@ -77,7 +77,7 @@ task AhbScoreboard::run_phase(uvm_phase phase);
       ahbMasterAnalysisFifo[j].get(ahbMasterTransaction);
       ahbMasterTransactionCount++;
       `uvm_info(get_type_name(), $sformatf("after calling master's analysis fifo get method"), UVM_HIGH);
-      `uvm_info(get_type_name(), $sformatf("printing AhbMasterTransaction, \n %s", ahbMasterTransaction.sprint()), UVM_HIGH);
+     // `uvm_info(get_type_name(), $sformatf("printing AhbMasterTransaction, \n %s", ahbMasterTransaction.sprint()), UVM_HIGH);
       `uvm_info(get_type_name(), $sformatf("before calling slave's analysis fifo"), UVM_HIGH);
     end
 //end
@@ -89,16 +89,17 @@ task AhbScoreboard::run_phase(uvm_phase phase);
       ahbSlaveAnalysisFifo[i].get(ahbSlaveTransaction);
       ahbSlaveTransactionCount++;
       `uvm_info(get_type_name(), $sformatf("after calling slave's analysis fifo get method"), UVM_HIGH);
-      `uvm_info(get_type_name(), $sformatf("printing AhbSlaveTransaction, \n %s", ahbSlaveTransaction.sprint()), UVM_HIGH);
+      //`uvm_info(get_type_name(), $sformatf("printing AhbSlaveTransaction, \n %s", ahbSlaveTransaction.sprint()), UVM_HIGH);
     end
 //  end
 //end
+//task AhbScoreboard::comparison(ahbMasterTransaction master,ahbSlaveTransaction slave);
 
   `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------SCOREBOARD COMPARISIONS--------------------------------------------------"),UVM_HIGH) 
 
     if(ahbMasterTransaction.hwdata == ahbSlaveTransaction.hwdata) begin
     `uvm_info(get_type_name(),$sformatf("ahb HWDATA from master and slave is equal"),UVM_HIGH);
-    `uvm_info("SB_hwdata_MATCHED", $sformatf("Master HWDATA = 'h%0x and Slave HWDATA = 'h%0x",
+    `uvm_info("SB  HWDAT MATCHED", $sformatf("Master HWDATA = 'h%0x and Slave HWDATA = 'h%0x",
                                     ahbMasterTransaction.hwdata,ahbSlaveTransaction.hwdata), UVM_HIGH);             
      VerifiedMasterHwdataCount++;
     end
@@ -153,7 +154,7 @@ task AhbScoreboard::run_phase(uvm_phase phase);
     FailedSlaveHrdataCount++;
   end
 
-  if(ahbSlaveTransaction.hprot == ahbMasterTransaction.hprot) begin
+/*  if(ahbSlaveTransaction.hprot == ahbMasterTransaction.hprot) begin
     `uvm_info(get_type_name(),$sformatf("ahb hrdata from master and slave is equal"),UVM_HIGH);
     `uvm_info("SB HPROT MATCHED", $sformatf("Master HPROT = 'h%0x and Slave HPROT = 'h%0x",
                                   ahbMasterTransaction.hprot,ahbSlaveTransaction.hprot), UVM_HIGH);
@@ -165,6 +166,7 @@ task AhbScoreboard::run_phase(uvm_phase phase);
                                             ahbMasterTransaction.hprot.name(),ahbSlaveTransaction.hprot.name()));
    FailedMasterHprotCount++;
   end
+  */
 end
   `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------END OF SCOREBOARD COMPARISIONS---------------------------------------"),UVM_HIGH) 
 

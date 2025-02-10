@@ -51,7 +51,6 @@ task AhbSlaveMonitorProxy::run_phase(uvm_phase phase);
     ahbSlaveMonitorBFM.slaveSampleData (structDataPacket, structConfigPacket);
     AhbSlaveSequenceItemConverter :: toClass (structDataPacket, ahbSlavePacket);
 
-    `uvm_info(get_type_name(),$sformatf("Received packet from slave monitor BFM: , \n %s", ahbSlavePacket.sprint()),UVM_HIGH)
 
     //Clone and publish the cloned item to the subscribers
     $cast(ahbSlaveClonePacket, ahbSlavePacket.clone());

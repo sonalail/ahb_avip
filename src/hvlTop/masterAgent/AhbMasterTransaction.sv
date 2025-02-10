@@ -33,7 +33,7 @@
   
 constraint addr_size {
     soft haddr > 0;
-    if (hburst == SINGLE) soft haddr == 1;
+  //  if (hburst == SINGLE) soft haddr == 1;
     if (hburst == INCR) soft haddr < (1024 / (2 ** hsize));
     if (hburst == INCR4 || hburst == WRAP4) soft haddr == 4;
     if (hburst == INCR8 || hburst == WRAP8) soft haddr== 8;

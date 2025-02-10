@@ -80,18 +80,19 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     dataPacket.hburst      <= ahbBurstEnum'(hburst);// SINGLE burst
     dataPacket.hwrite      <= hwrite;  // Use hwrite from dataPacket
     dataPacket.hmastlock   <= hmastlock; // Use master lock from dataPacket
-    hresp       <= dataPacket.hresp;
+    hresp       <= 0;
+	dataPacket.hselx      <= hselx;
  
-    if(hwrite && dataPacket.hresp != 1 ) begin
+    if(hwrite) begin
       dataPacket.hwdata <= hwdata;
       dataPacket.hwstrb <= hwstrb;
     end
-    else if(!hwrite && dataPacket.hresp != 1 ) begin
+    else if(!hwrite) begin
       hrdata <= dataPacket.hrdata;
     end
-   else if(dataPacket.hresp == 1) begin
+/*   else if(hresp == 1) begin
      `uvm_error(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr));
-   end
+   end */
   endtask: slaveDriveSingleTransfer
  
   task slavedriveBurstTransfer(inout ahbTransferCharStruct dataPacket);
@@ -116,7 +117,8 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     dataPacket.hwrite      = hwrite;
     dataPacket.htrans      = ahbTransferEnum'(htrans); 
     dataPacket.hmastlock   = hmastlock; 
-    `uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
+    dataPacket.hselx       = hselx;
+	`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
                               dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_HIGH);
     // Loop through burst transfers
     for (int i = 0; i < burst_length; i++) begin

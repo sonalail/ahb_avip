@@ -1,15 +1,8 @@
 `ifndef AHBSLAVESEQUENCEITEMCONVERTER_INCLUDED_
 `define AHBSLAVESEQUENCEITEMCONVERTER_INCLUDED_
 
-//--------------------------------------------------------------------------------------------
-// Class : AhbSlaveSequenceItemConverter
-//  This class converts seq_item transactions into struct data items and vice versa
-//--------------------------------------------------------------------------------------------
 class AhbSlaveSequenceItemConverter extends uvm_object;
 
-  //-------------------------------------------------------
-  // Externally defined Tasks and Functions
-  //-------------------------------------------------------
   extern function new(string name = "AhbSlaveSequenceItemConverter");
   extern static function void fromClass(input AhbSlaveTransaction inputConv, output ahbTransferCharStruct outputConv);
   extern static function void toClass(input ahbTransferCharStruct inputConv, ref AhbSlaveTransaction outputConv);
@@ -17,27 +10,17 @@ class AhbSlaveSequenceItemConverter extends uvm_object;
 
 endclass : AhbSlaveSequenceItemConverter
 
-//-------------------------------------------------------
-// Construct:new
-// 
-// Parameters:
-//  name - AhbSlaveSequenceItemConverter
-//-------------------------------------------------------
 function AhbSlaveSequenceItemConverter::new(string name = "AhbSlaveSequenceItemConverter");
   super.new(name);
 endfunction: new
 
-//--------------------------------------------------------------------------------------------
-// Function: fromClass
-//  Converting seq_item transactions into struct data items
-//
-// Parameters:
-//  name - AhbSlaveTransaction, ahbTransferCharStruct
-//--------------------------------------------------------------------------------------------
     function void AhbSlaveSequenceItemConverter::fromClass(input AhbSlaveTransaction inputConv, output ahbTransferCharStruct outputConv);
       `uvm_info("ahbSlaveSequeceItemconverterClass",$sformatf("-------------------------------------------------------------"),UVM_HIGH);
 
-           $cast(outputConv.hprot, inputConv.hprot);
+      outputConv.haddr = inputConv.haddr;
+      `uvm_info("AhbSlaveSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_HIGH);
+
+       $cast(outputConv.hprot, inputConv.hprot);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hprot = %b", outputConv.hprot), UVM_HIGH);
 
       $cast(outputConv.hburst, inputConv.hburst);
@@ -82,23 +65,22 @@ endfunction: new
       output_conv.hexokay = input_conv.hexokay;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformat("After randomizing hexokay = %b", output_conv.hexokay), UVM_HIGH);
       */
-      $cast(outputConv.hready, inputConv.hready);
+      outputConv.hready =  inputConv.hready;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hready = %b", outputConv.hready), UVM_HIGH);
       
+      outputConv.hselx =  inputConv.hselx;
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hselx = %b", outputConv.hselx), UVM_HIGH);
+
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 
 
 endfunction : fromClass 
 
-//--------------------------------------------------------------------------------------------
-// Function: toClass
-// Converting struct data items into seq_item transactions
-//
-// Parameters:
-// name - AhbSlaveTransaction, ahbTransferCharStruct
-//--------------------------------------------------------------------------------------------
     function void AhbSlaveSequenceItemConverter::toClass(input ahbTransferCharStruct inputConv, ref AhbSlaveTransaction outputConv);
   `uvm_info("AhbSlaveSequenceItemConverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
+
+      outputConv.haddr = inputConv.haddr;
+      `uvm_info("AhbSlaveSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_HIGH);
 
     $cast(outputConv.hprot, inputConv.hprot);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hprot = %b", outputConv.hprot), UVM_HIGH);
@@ -145,17 +127,16 @@ endfunction : fromClass
       output_conv.hexokay = input_conv.hexokay;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformat("After randomizing hexokay = %b", output_conv.hexokay), UVM_HIGH);
       */
-      $cast(outputConv.hready, inputConv.hready);
+      outputConv.hready =  inputConv.hready;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hready = %b", outputConv.hready), UVM_HIGH);
       
+      outputConv.hselx =  inputConv.hselx;
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hselx = %b", outputConv.hselx), UVM_HIGH);
+
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 
 endfunction : toClass
 
-//-------------------------------------------------------
-// Function: do_print
-//  This function is used to print the sequence item data from the AhbSlaveSequenceItemConverter class
-//-------------------------------------------------------
 function void AhbSlaveSequenceItemConverter::do_print(uvm_printer printer);
   ahbTransferCharStruct ahbStruct;
   super.do_print(printer);
@@ -176,6 +157,7 @@ printer.print_field("hreadyout", ahbStruct.hreadyout, $bits(ahbStruct.hreadyout)
 printer.print_field("hresp", ahbStruct.hresp, $bits(ahbStruct.hresp), UVM_BIN);
 // printer.print_field("hexokay", ahbStruct.hexokay, $bits(ahbStruct.hexokay), UVM_BIN);
 printer.print_field("hready", ahbStruct.hready, $bits(ahbStruct.hready), UVM_BIN);
+printer.print_field("hselx", ahbStruct.hselx, $bits(ahbStruct.hselx), UVM_BIN);
 
 endfunction : do_print
 

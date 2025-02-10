@@ -62,8 +62,8 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     ahbDataPacket.hnonsec = hnonsec;
     ahbDataPacket.hprot = ahbProtectionEnum'(hprot);	
     ahbDataPacket.hresp = ahbRespEnum'(hresp);
-    
-    if(!hwrite) begin
+  	ahbDataPacket.hready = hready;  
+    if(hwrite) begin
       ahbDataPacket.hwdata = hwdata;
       ahbDataPacket.hwstrb  = hwstrb;
     end

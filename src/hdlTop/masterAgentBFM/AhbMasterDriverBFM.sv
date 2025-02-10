@@ -89,7 +89,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 
     if (hresp == 1) begin  
       `uvm_error(name, $sformatf("Error Response Detected on Single Transfer at Address: %0h", haddr));
-    end else if (!hwrite) begin  
+    end else if (!dataPacket.hwrite) begin  
       `uvm_info(name, $sformatf("Read Data: %0h from Address: %0h", hrdata, haddr), UVM_LOW);
     end else begin `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata, haddr), UVM_LOW);
       `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata, haddr), UVM_LOW);

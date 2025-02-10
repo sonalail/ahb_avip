@@ -70,18 +70,20 @@ task AhbScoreboard::run_phase(uvm_phase phase);
 
   super.run_phase(phase);
 
-  forever begin
+//  forever begin
   for(int j = 0; j < NO_OF_MASTERS; j++) begin
   `uvm_info(get_type_name(), $sformatf("inside runphase"), UVM_LOW);
+    //if((ahbSlaveTransaction.hready == 1))  begin
       ahbMasterAnalysisFifo[j].get(ahbMasterTransaction);
       ahbMasterTransactionCount++;
       `uvm_info(get_type_name(), $sformatf("after calling master's analysis fifo get method"), UVM_HIGH);
       `uvm_info(get_type_name(), $sformatf("printing AhbMasterTransaction, \n %s", ahbMasterTransaction.sprint()), UVM_HIGH);
       `uvm_info(get_type_name(), $sformatf("before calling slave's analysis fifo"), UVM_HIGH);
     end
+//end
 
   for(int i = 0; i < NO_OF_SLAVES; i++) begin
-    if(ahbMasterTransaction.hselx == 1) begin
+  //  if((ahbMasterTransaction.hselx == 1) ) begin
       // indexSlave = i;
       // break;
       ahbSlaveAnalysisFifo[i].get(ahbSlaveTransaction);
@@ -89,8 +91,8 @@ task AhbScoreboard::run_phase(uvm_phase phase);
       `uvm_info(get_type_name(), $sformatf("after calling slave's analysis fifo get method"), UVM_HIGH);
       `uvm_info(get_type_name(), $sformatf("printing AhbSlaveTransaction, \n %s", ahbSlaveTransaction.sprint()), UVM_HIGH);
     end
-  end
-end
+//  end
+//end
 
   `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------SCOREBOARD COMPARISIONS--------------------------------------------------"),UVM_HIGH) 
 

@@ -18,6 +18,9 @@ endfunction: new
 function void AhbMasterSequenceItemConverter::fromClass(input AhbMasterTransaction inputConv, output ahbTransferCharStruct outputConv);
   `uvm_info("AhbMasterSequenceItemConverterClass",$sformatf("-------------------------------------------------------------"),UVM_HIGH);
 
+  outputConv.haddr = inputConv.haddr;
+   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_HIGH);
+
   $cast(outputConv.hprot, inputConv.hprot);
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hprot = %b", outputConv.hprot), UVM_HIGH);
 
@@ -79,6 +82,9 @@ endfunction : fromClass
 
 function void AhbMasterSequenceItemConverter::toClass(input ahbTransferCharStruct inputConv, ref AhbMasterTransaction outputConv);
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
+
+  outputConv.haddr = inputConv.haddr;
+   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_HIGH);
 
   $cast(outputConv.hprot, inputConv.hprot);
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hprot = %b", outputConv.hprot), UVM_HIGH);

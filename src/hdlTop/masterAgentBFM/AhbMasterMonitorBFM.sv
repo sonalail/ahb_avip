@@ -48,16 +48,16 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
   endtask : waitForResetn
 
   task sampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
-    @(negedge hclk);
+    @(posedge hclk);
     
-    while($countones(hselx) !== 1 || hresp == 1) begin
+/*    while($countones(hselx) !== 1 || hresp == 1) begin
       `uvm_info(name, $sformatf("Inside while loop: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_HIGH)
-      @(negedge hclk);
-    end
+      @(posedge hclk);
+    end*/
 
-    while(hready !== 1) begin
+    while(hready !== 1 && hresp == 1) begin
       `uvm_info(name, $sformatf("Inside while loop: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_HIGH)
-      @(negedge hclk);
+      @(posedge hclk);
  
       ahbDataPacket.noOfWaitStates++;
     end
@@ -68,6 +68,9 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
 	ahbDataPacket.hburst  = ahbBurstEnum'(hburst);
 	ahbDataPacket.htrans  = ahbTransferEnum'(htrans);
 	ahbDataPacket.hmastlock = hmastlock;
+	ahbDataPacket.hready = hready;
+	ahbDataPacket.hresp = ahbRespEnum'(hresp);
+	ahbDataPacket.hselx = hselx;
 
     if (hwrite == 1) begin
       ahbDataPacket.hwdata = hwdata;

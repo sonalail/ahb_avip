@@ -5,8 +5,8 @@ import AhbGlobalPackage::*;
 
 interface AhbSlaveMonitorBFM (input  bit   hclk,
                               input  bit  hresetn,
-						      input logic [2:0] hburst,
- 						      input logic hmastlock,
+			      input logic [2:0] hburst,
+ 			      input logic hmastlock,
                               input logic [ADDR_WIDTH-1:0] haddr,                                                        
                               input logic [HPROT_WIDTH-1:0] hprot,
                               input logic [2:0] hsize,
@@ -14,11 +14,11 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
                               input logic hexcl,
                               input logic [HMASTER_WIDTH-1:0] hmaster,
                               input logic [1:0] htrans, 
-			     			  input logic [DATA_WIDTH-1:0] hwdata,
+			      input logic [DATA_WIDTH-1:0] hwdata,
                               input logic [(DATA_WIDTH/8)-1:0]hwstrb,    
                               input logic hwrite,                              
                               input logic [DATA_WIDTH-1:0] hrdata,
-			     			  input logic hreadyout,
+			      input logic hreadyout,
                               input logic hresp,
                               input logic hexokay,
                               input logic hready,                             
@@ -50,7 +50,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
  task slaveSampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
     @(posedge hclk);
     while( hready !=1 && hresp==1) begin
-      `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
+	    `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
       @(posedge hclk);
     end   
     ahbDataPacket.hselx  = hselx;
@@ -62,7 +62,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     ahbDataPacket.hnonsec = hnonsec;
     ahbDataPacket.hprot = ahbProtectionEnum'(hprot);	
     ahbDataPacket.hresp = ahbRespEnum'(hresp);
-  	ahbDataPacket.hready = hready;  
+    ahbDataPacket.hready = hready;  
     if(hwrite) begin
       ahbDataPacket.hwdata = hwdata;
       ahbDataPacket.hwstrb  = hwstrb;

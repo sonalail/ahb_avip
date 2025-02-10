@@ -69,7 +69,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	`uvm_info("INSIDESINGLETRANSFER","BFM",UVM_LOW);
     @(posedge hclk);
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
-    haddr       <= dataPacket.haddr;
+        haddr       <= dataPacket.haddr;
 	hburst      <= dataPacket.hburst;
 	hmastlock   <= dataPacket.hmastlock;
 	hprot       <= dataPacket.hprot;
@@ -111,7 +111,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     @(posedge hclk);
 
 	if(dataPacket.hselx == 1)begin
-    haddr       <= dataPacket.haddr;
+        haddr       <= dataPacket.haddr;
 	hburst      <= dataPacket.hburst;
 	hmastlock   <= dataPacket.hmastlock;
 	hprot       <= dataPacket.hprot;
@@ -127,7 +127,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 
 	
 `uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
-                              dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_HIGH);
+			  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);
     
     for (int i = 0; i < burst_length; i++) begin
       @(posedge hclk);
@@ -143,10 +143,10 @@ interface AhbMasterDriverBFM (input  bit  hclk,
      
       if (dataPacket.hwrite) begin
         hwdata <= dataPacket.hwdata[i]; 
-        `uvm_info(name, $sformatf("Burst Write: Data[%0d] = %0h to Address: %0h", i, dataPacket.hwdata[i], current_address), UVM_HIGH);
+	      `uvm_info(name, $sformatf("Burst Write: Data[%0d] = %0h to Address: %0h", i, dataPacket.hwdata[i], current_address), UVM_LOW);
       end else begin
         dataPacket.hrdata[i] = hrdata; 
-        `uvm_info(name, $sformatf("Burst Read: Data[%0d] = %0h from Address: %0h", i, hrdata, current_address), UVM_HIGH);
+	      `uvm_info(name, $sformatf("Burst Read: Data[%0d] = %0h from Address: %0h", i, hrdata, current_address), UVM_LOW);
       end
       if (dataPacket.hburst == 3'b011 || dataPacket.hburst == 3'b100 || dataPacket.hburst == 3'b110) begin
         current_address = (current_address & ~(burst_length - 1)) | ((current_address + (1 << dataPacket.hsize)) % burst_length);
@@ -158,7 +158,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     
     @(posedge hclk);
 driveIdle();    
-`uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_HIGH);
+		`uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
 end
   endtask
 

@@ -56,15 +56,15 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     end*/
 
     while(hready !== 1 && hresp == 1) begin
-      `uvm_info(name, $sformatf("Inside while loop: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_HIGH)
+	    `uvm_info(name, $sformatf("Inside while loop: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_LOW)
       @(posedge hclk);
  
       ahbDataPacket.noOfWaitStates++;
     end
 
-    ahbDataPacket.haddr = haddr;
-    ahbDataPacket.hwrite   = hwrite;
-    ahbDataPacket.hsize   = ahbHsizeEnum'(hsize);
+    	ahbDataPacket.haddr = haddr;
+    	ahbDataPacket.hwrite   = hwrite;
+    	ahbDataPacket.hsize   = ahbHsizeEnum'(hsize);
 	ahbDataPacket.hburst  = ahbBurstEnum'(hburst);
 	ahbDataPacket.htrans  = ahbTransferEnum'(htrans);
 	ahbDataPacket.hmastlock = hmastlock;
@@ -78,7 +78,7 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     else begin
       ahbDataPacket.hrdata = hrdata;
     end
-    `uvm_info(name, $sformatf("MASTER SAMPLE DATA=%p", ahbDataPacket), UVM_HIGH)
+	  `uvm_info(name, $sformatf("MASTER SAMPLE DATA=%p", ahbDataPacket), UVM_LOW)
   endtask : sampleData
 
 endinterface : AhbMasterMonitorBFM

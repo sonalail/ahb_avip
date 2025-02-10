@@ -62,15 +62,16 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
       ahbDataPacket.noOfWaitStates++;
     end
 
-    	ahbDataPacket.haddr = haddr;
-    	ahbDataPacket.hwrite   = hwrite;
-    	ahbDataPacket.hsize   = ahbHsizeEnum'(hsize);
+   	ahbDataPacket.haddr = haddr;
+    ahbDataPacket.hwrite   = hwrite;
+    ahbDataPacket.hsize   = ahbHsizeEnum'(hsize);
 	ahbDataPacket.hburst  = ahbBurstEnum'(hburst);
 	ahbDataPacket.htrans  = ahbTransferEnum'(htrans);
 	ahbDataPacket.hmastlock = hmastlock;
 	ahbDataPacket.hready = hready;
 	ahbDataPacket.hresp = ahbRespEnum'(hresp);
 	ahbDataPacket.hselx = hselx;
+	ahbDataPacket.hprot = ahbProtectionEnum'(hprot);
 
     if (hwrite == 1) begin
       ahbDataPacket.hwdata = hwdata;

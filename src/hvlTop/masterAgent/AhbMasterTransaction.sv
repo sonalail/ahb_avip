@@ -31,6 +31,14 @@
   extern function bit  do_compare(uvm_object rhs, uvm_comparer comparer);
   extern function void do_print(uvm_printer printer);
   
+constraint addr_size {
+    soft haddr > 0;
+  //  if (hburst == SINGLE) soft haddr == 1;
+    if (hburst == INCR) soft haddr < (1024 / (2 ** hsize));
+    if (hburst == INCR4 || hburst == WRAP4) soft haddr == 4;
+    if (hburst == INCR8 || hburst == WRAP8) soft haddr== 8;
+    if (hburst == INCR16 || hburst == WRAP16) soft haddr== 16;
+}
 
 constraint first_trans_type {
     if (hburst == SINGLE) {
@@ -70,6 +78,34 @@ constraint hselx_logic {
 }
 
 
+constraint addr_4beat_wrap {
+    if (hburst == WRAP4) {
+        if (hsize == BYTE)
+            soft haddr[1:0] == haddr[1:0] + 1;
+            soft haddr[ADDR_WIDTH-1:2] == haddr[ADDR_WIDTH-1:2];
+        if (hsize == HALFWORD)
+            soft haddr[2:1] == haddr[2:1] + 1;
+            soft haddr[ADDR_WIDTH-1:3] == haddr[ADDR_WIDTH-1:3];
+        if (hsize == WORD)
+            soft haddr[3:2] == haddr[3:2] + 1;
+            soft haddr[ADDR_WIDTH-1:4] == haddr[ADDR_WIDTH-1:4];
+ }
+}
+
+
+constraint addr_8beat_wrap {
+    if (hburst == WRAP8) {
+        if (hsize == BYTE)
+            soft haddr[2:0] == haddr[2:0] + 1;
+            soft haddr[ADDR_WIDTH-1:3] == haddr[ADDR_WIDTH-1:3];
+        if (hsize == HALFWORD)
+            soft haddr[3:1] == haddr[3:1] + 1;
+            soft haddr[ADDR_WIDTH-1:4] == haddr[ADDR_WIDTH-1:4];
+        if (hsize == WORD)
+            soft haddr[4:2] == haddr[4:2] + 1;
+            soft haddr[ADDR_WIDTH-1:5] == haddr[ADDR_WIDTH-1:5];
+}    
+}
 
 endclass : AhbMasterTransaction
 

@@ -5,12 +5,20 @@ class AhbSlaveAgentConfig extends uvm_object;
   
   `uvm_object_utils(AhbSlaveAgentConfig) 
   
+  //Variable: is_active
+  //Used to declare whether the agent is active or passive
   uvm_active_passive_enum is_active = UVM_ACTIVE;
   
+  //Variable: slave_id
+  //Gives the slave id
   //int slave_id;
   
+  //Variable: hasCoverage
+  //Used to set whether we need to create coverage or not
   bit hasCoverage;
   
+  //Variable: slave_selected
+  //Used to represent that this slave is selected
   //bit slave_selected;
 
   bit [ADDR_WIDTH-1:0]maximumAddress;

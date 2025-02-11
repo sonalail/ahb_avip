@@ -18,6 +18,7 @@ endfunction: new
 function void AhbMasterSequenceItemConverter::fromClass(input AhbMasterTransaction inputConv, output ahbTransferCharStruct outputConv);
   `uvm_info("AhbMasterSequenceItemConverterClass",$sformatf("-------------------------------------------------------------"),UVM_HIGH);
 
+
   outputConv.haddr = inputConv.haddr;
    `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_HIGH);
 

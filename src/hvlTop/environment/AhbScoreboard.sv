@@ -72,13 +72,10 @@ task AhbScoreboard::run_phase(uvm_phase phase);
 
   forever begin
   for(int j = 0; j < NO_OF_MASTERS; j++) begin
-  `uvm_info(get_type_name(), $sformatf("inside runphase"), UVM_LOW);
     //if((ahbSlaveTransaction.hready == 1))  begin
       ahbMasterAnalysisFifo[j].get(ahbMasterTransaction);
       ahbMasterTransactionCount++;
       `uvm_info(get_type_name(), $sformatf("after calling master's analysis fifo get method"), UVM_HIGH);
-     // `uvm_info(get_type_name(), $sformatf("printing AhbMasterTransaction, \n %s", ahbMasterTransaction.sprint()), UVM_HIGH);
-      `uvm_info(get_type_name(), $sformatf("before calling slave's analysis fifo"), UVM_HIGH);
     end
 //end
 
@@ -89,7 +86,6 @@ task AhbScoreboard::run_phase(uvm_phase phase);
       ahbSlaveAnalysisFifo[i].get(ahbSlaveTransaction);
       ahbSlaveTransactionCount++;
       `uvm_info(get_type_name(), $sformatf("after calling slave's analysis fifo get method"), UVM_HIGH);
-      //`uvm_info(get_type_name(), $sformatf("printing AhbSlaveTransaction, \n %s", ahbSlaveTransaction.sprint()), UVM_HIGH);
     end
 //  end
 //end
@@ -167,9 +163,8 @@ task AhbScoreboard::run_phase(uvm_phase phase);
    FailedMasterHprotCount++;
   end
   */
-end
   `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------END OF SCOREBOARD COMPARISIONS---------------------------------------"),UVM_HIGH) 
-
+end
 endtask : run_phase
 
 function void AhbScoreboard::check_phase(uvm_phase phase);

@@ -46,7 +46,6 @@ task AhbMasterDriverProxy::run_phase(uvm_phase phase);
   ahbMasterDriverBFM.waitForResetn();
  
  
-  `uvm_info(get_type_name(), $sformatf(" run phase inside master driver proxy \n "), UVM_NONE);
  
  
   forever begin
@@ -60,7 +59,7 @@ task AhbMasterDriverProxy::run_phase(uvm_phase phase);
  
  
 	AhbMasterSequenceItemConverter::fromClass(req, dataPacket);
-    AhbMasterConfigConverter::fromClass(ahbMasterAgentConfig, configPacket);
+        AhbMasterConfigConverter::fromClass(ahbMasterAgentConfig, configPacket);
  
 	ahbMasterDriverBFM.driveToBFM(dataPacket,configPacket);
  

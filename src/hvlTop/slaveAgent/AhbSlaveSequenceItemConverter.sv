@@ -15,7 +15,6 @@ function AhbSlaveSequenceItemConverter::new(string name = "AhbSlaveSequenceItemC
 endfunction: new
 
     function void AhbSlaveSequenceItemConverter::fromClass(input AhbSlaveTransaction inputConv, output ahbTransferCharStruct outputConv);
-      `uvm_info("ahbSlaveSequeceItemconverterClass",$sformatf("-------------------------------------------------------------"),UVM_HIGH);
 
       outputConv.haddr = inputConv.haddr;
       `uvm_info("AhbSlaveSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_HIGH);
@@ -71,13 +70,11 @@ endfunction: new
       outputConv.hselx =  inputConv.hselx;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hselx = %b", outputConv.hselx), UVM_HIGH);
 
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 
 
 endfunction : fromClass 
 
     function void AhbSlaveSequenceItemConverter::toClass(input ahbTransferCharStruct inputConv, ref AhbSlaveTransaction outputConv);
-  `uvm_info("AhbSlaveSequenceItemConverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 
       outputConv.haddr = inputConv.haddr;
       `uvm_info("AhbSlaveSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_HIGH);
@@ -133,7 +130,6 @@ endfunction : fromClass
       outputConv.hselx =  inputConv.hselx;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hselx = %b", outputConv.hselx), UVM_HIGH);
 
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 
 endfunction : toClass
 
@@ -155,7 +151,7 @@ printer.print_field("hwrite", ahbStruct.hwrite, $bits(ahbStruct.hwrite), UVM_BIN
 printer.print_field("hrdata", ahbStruct.hrdata, $bits(ahbStruct.hrdata), UVM_HEX);
 printer.print_field("hreadyout", ahbStruct.hreadyout, $bits(ahbStruct.hreadyout), UVM_BIN);
 printer.print_field("hresp", ahbStruct.hresp, $bits(ahbStruct.hresp), UVM_BIN);
-// printer.print_field("hexokay", ahbStruct.hexokay, $bits(ahbStruct.hexokay), UVM_BIN);
+printer.print_field("hexokay", ahbStruct.hexokay, $bits(ahbStruct.hexokay), UVM_BIN);
 printer.print_field("hready", ahbStruct.hready, $bits(ahbStruct.hready), UVM_BIN);
 printer.print_field("hselx", ahbStruct.hselx, $bits(ahbStruct.hselx), UVM_BIN);
 

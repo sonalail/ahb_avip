@@ -34,7 +34,7 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
     function void AhbMasterConfigConverter::fromClass(input AhbMasterAgentConfig inputConv,output ahbTransferConfigStruct outputConv);
   outputConv.haddr = inputConv.haddr;
-  `uvm_info("AhbMasterConfigConverter",$sformatf("after randomizing addr = \n %p",outputConv.haddr),UVM_HIGH);
+//  `uvm_info("AhbMasterConfigConverter",$sformatf("after randomizing addr = \n %p",outputConv.haddr),UVM_HIGH);
 
 endfunction : fromClass
 

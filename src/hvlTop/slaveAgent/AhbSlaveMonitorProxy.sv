@@ -37,7 +37,6 @@ endfunction : end_of_elaboration_phase
 task AhbSlaveMonitorProxy::run_phase(uvm_phase phase);
   AhbSlaveTransaction ahbSlavePacket;
 
-  `uvm_info(get_type_name(), $sformatf("Inside the slave monitor proxy"), UVM_LOW);
   ahbSlavePacket = AhbSlaveTransaction::type_id::create("slave Packet");
   
   ahbSlaveMonitorBFM.waitForResetn();
@@ -52,9 +51,7 @@ task AhbSlaveMonitorProxy::run_phase(uvm_phase phase);
     AhbSlaveSequenceItemConverter :: toClass (structDataPacket, ahbSlavePacket);
 
 
-    //Clone and publish the cloned item to the subscribers
     $cast(ahbSlaveClonePacket, ahbSlavePacket.clone());
-    `uvm_info(get_type_name(),$sformatf("Sending packet via analysis port: , \n %s", ahbSlaveClonePacket.sprint()),UVM_HIGH)
     ahbSlaveAnalysisPort.write(ahbSlaveClonePacket);
   end
 

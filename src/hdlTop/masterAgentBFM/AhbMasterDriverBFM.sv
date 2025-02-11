@@ -43,8 +43,8 @@ interface AhbMasterDriverBFM (input  bit  hclk,
   endtask: waitForResetn
 
   task driveToBFM(inout ahbTransferCharStruct dataPacket, input ahbTransferConfigStruct configPacket);
-    `uvm_info(name,$sformatf("dataPacket = \n%p",dataPacket), UVM_LOW);
-    `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_LOW);
+//    `uvm_info(name,$sformatf("dataPacket = \n%p",dataPacket), UVM_LOW);
+//    `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_LOW);
     `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
      if (dataPacket.hburst == SINGLE)
 	 begin
@@ -75,7 +75,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	hwrite      <= dataPacket.hwrite;
 	hselx       <= 1'b1;
 
-    `uvm_info(name,$sformatf("DRIVING IS DONE"),UVM_LOW)
+  //  `uvm_info(name,$sformatf("DRIVING IS DONE"),UVM_LOW)
     //countWaitStates(dataPacket);
     wait(hready);  
 
@@ -121,8 +121,8 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	hselx       <= dataPacket.hselx;
 
 	
-`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
-			  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);
+//`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
+//			  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);
     
     for (int i = 0; i < burst_length; i++) begin
       @(posedge hclk);

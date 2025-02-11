@@ -18,7 +18,7 @@ endfunction : new
     function void AhbSlaveConfigConverter::fromClass(input AhbSlaveAgentConfig inputConv, 
                                                   output ahbTransferConfigStruct outputConv);
   
-  `uvm_info("Ahb Sequence Item Converter fromClass",$sformatf("--\n----------------------------------------SLAVE_CFG_CONVERTER_FROM_CLASS--------------------------------------"),UVM_HIGH);
+//  `uvm_info("Ahb Sequence Item Converter fromClass",$sformatf("--\n----------------------------------------SLAVE_CFG_CONVERTER_FROM_CLASS--------------------------------------"),UVM_HIGH);
   
   outputConv.minimumAddress = inputConv.minimumAddress; 
 
@@ -27,7 +27,7 @@ endfunction : new
   //output_conv_h.slave_id = input_conv_h.slave_id;
   
   
-  `uvm_info("Ahb Slave Config Converter","--\n------------------------------------------------------------EOP---------------------------------------------------- ",UVM_HIGH);
+//  `uvm_info("Ahb Slave Config Converter","--\n------------------------------------------------------------EOP---------------------------------------------------- ",UVM_HIGH);
 
 endfunction : fromClass
 

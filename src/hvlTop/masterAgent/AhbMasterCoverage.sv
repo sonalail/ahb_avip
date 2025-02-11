@@ -12,8 +12,7 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
     
  HADDR_CP: coverpoint ahbMasterTransaction.haddr {
   option.comment = "AHB Address Coverage";
-
-  bins ahbAddrModeOf4[]   = { [0:'hFFFFFFFF] } with (item % 4 == 0);
+  bins ahbAddrModeOf4  = { [0:'hFFFFFFFF] } with (item % 4 == 0);
   bins ahbAddrModeOf8[]   = { [0:'hFFFFFFFF] } with (item % 8 == 0);
   bins ahbAddrModeOf16[]  = { [0:'hFFFFFFFF] } with (item % 16 == 0);
   bins ahbAddrModeOf32[]  = { [0:'hFFFFFFFF] } with (item % 32 == 0);

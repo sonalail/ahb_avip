@@ -48,7 +48,6 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
 `uvm_info(get_type_name(), $sformatf(" BEFORERESET \n "), UVM_NONE);
 
   ahbSlaveDriverBFM.waitForResetn();
-  `uvm_info(get_type_name(), $sformatf(" run phase inside slave driver proxy \n "), UVM_NONE);
   
   forever begin
     ahbTransferCharStruct structPacket;

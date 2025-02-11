@@ -26,12 +26,12 @@ module HdlTop;
 
   initial begin
     hresetn = 1'b1;
-    #15 hresetn= 1'b0;
+   #15 hresetn= 1'b0;
 
-    repeat(1) begin
+   // repeat(1) begin
       @(posedge hclk);
-    end
-    hresetn = 1'b1;
+   // end
+     hresetn = 1'b1;
   end
 
 

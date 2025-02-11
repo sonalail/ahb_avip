@@ -49,7 +49,8 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
 
  task slaveSampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
     @(posedge hclk);
-    while( hready !=1 && hresp==1) begin
+	$display("i am here");
+    while( hready !=1 && hresp==1 && htrans == IDLE) begin
 	    `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
       @(posedge hclk);
     end   

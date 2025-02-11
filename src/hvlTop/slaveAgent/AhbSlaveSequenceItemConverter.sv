@@ -17,58 +17,58 @@ endfunction: new
     function void AhbSlaveSequenceItemConverter::fromClass(input AhbSlaveTransaction inputConv, output ahbTransferCharStruct outputConv);
 
       outputConv.haddr = inputConv.haddr;
-      `uvm_info("AhbSlaveSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_HIGH);
+      `uvm_info("AhbSlaveSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_FULL);
 
        $cast(outputConv.hprot, inputConv.hprot);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hprot = %b", outputConv.hprot), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hprot = %b", outputConv.hprot), UVM_FULL);
 
       $cast(outputConv.hburst, inputConv.hburst);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hburst = %b", outputConv.hburst), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hburst = %b", outputConv.hburst), UVM_FULL);
 
       outputConv.hmastlock = inputConv.hmastlock;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hmastlock = %b", outputConv.hmastlock), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hmastlock = %b", outputConv.hmastlock), UVM_FULL);
 
       $cast(outputConv.hsize, inputConv.hsize);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hsize = %b", outputConv.hsize), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hsize = %b", outputConv.hsize), UVM_FULL);
 
       outputConv.hnonsec = inputConv.hnonsec;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hnonsec = %b", outputConv.hnonsec), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hnonsec = %b", outputConv.hnonsec), UVM_FULL);
 
       outputConv.hexcl = inputConv.hexcl;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hexcl = %b", outputConv.hexcl), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hexcl = %b", outputConv.hexcl), UVM_FULL);
 
       $cast(outputConv.hmaster, inputConv.hmaster);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hmaster = %b", outputConv.hmaster), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hmaster = %b", outputConv.hmaster), UVM_FULL);
 
       $cast(outputConv.htrans, inputConv.htrans);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing htrans = %b", outputConv.htrans), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing htrans = %b", outputConv.htrans), UVM_FULL);
 
       outputConv.hwdata = inputConv.hwdata;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwdata = %0h", outputConv.hwdata), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwdata = %0h", outputConv.hwdata), UVM_FULL);
 
       outputConv.hwstrb = inputConv.hwstrb;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwstrb = %b", outputConv.hwstrb), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwstrb = %b", outputConv.hwstrb), UVM_FULL);
 
       outputConv.hwrite = inputConv.hwrite;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwrite = %b", outputConv.hwrite), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwrite = %b", outputConv.hwrite), UVM_FULL);
 
       outputConv.hrdata = inputConv.hrdata;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hrdata = %0h", outputConv.hrdata), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hrdata = %0h", outputConv.hrdata), UVM_FULL);
 
       outputConv.hreadyout = inputConv.hreadyout;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hreadyout = %b", outputConv.hreadyout), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hreadyout = %b", outputConv.hreadyout), UVM_FULL);
 
       $cast(outputConv.hresp, inputConv.hresp);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hresp = %b", outputConv.hresp), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hresp = %b", outputConv.hresp), UVM_FULL);
       /*
       output_conv.hexokay = input_conv.hexokay;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformat("After randomizing hexokay = %b", output_conv.hexokay), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformat("After randomizing hexokay = %b", output_conv.hexokay), UVM_FULL);
       */
       outputConv.hready =  inputConv.hready;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hready = %b", outputConv.hready), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hready = %b", outputConv.hready), UVM_FULL);
       
       outputConv.hselx =  inputConv.hselx;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hselx = %b", outputConv.hselx), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hselx = %b", outputConv.hselx), UVM_FULL);
 
 
 
@@ -77,58 +77,58 @@ endfunction : fromClass
     function void AhbSlaveSequenceItemConverter::toClass(input ahbTransferCharStruct inputConv, ref AhbSlaveTransaction outputConv);
 
       outputConv.haddr = inputConv.haddr;
-      `uvm_info("AhbSlaveSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_HIGH);
+      `uvm_info("AhbSlaveSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_FULL);
 
     $cast(outputConv.hprot, inputConv.hprot);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hprot = %b", outputConv.hprot), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hprot = %b", outputConv.hprot), UVM_FULL);
 
       $cast(outputConv.hburst, inputConv.hburst);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hburst = %b", outputConv.hburst), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hburst = %b", outputConv.hburst), UVM_FULL);
 
       outputConv.hmastlock = inputConv.hmastlock;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hmastlock = %b", outputConv.hmastlock), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hmastlock = %b", outputConv.hmastlock), UVM_FULL);
 
       $cast(outputConv.hsize, inputConv.hsize);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hsize = %b", outputConv.hsize), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hsize = %b", outputConv.hsize), UVM_FULL);
 
       outputConv.hnonsec = inputConv.hnonsec;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hnonsec = %b", outputConv.hnonsec), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hnonsec = %b", outputConv.hnonsec), UVM_FULL);
 
       outputConv.hexcl = inputConv.hexcl;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hexcl = %b", outputConv.hexcl), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hexcl = %b", outputConv.hexcl), UVM_FULL);
 
       $cast(outputConv.hmaster, inputConv.hmaster);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hmaster = %b", outputConv.hmaster), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hmaster = %b", outputConv.hmaster), UVM_FULL);
 
       $cast(outputConv.htrans, inputConv.htrans);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing htrans = %b", outputConv.htrans), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing htrans = %b", outputConv.htrans), UVM_FULL);
 
       outputConv.hwdata = inputConv.hwdata;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwdata = %0h", outputConv.hwdata), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwdata = %0h", outputConv.hwdata), UVM_FULL);
 
       outputConv.hwstrb = inputConv.hwstrb;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwstrb = %b", outputConv.hwstrb), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwstrb = %b", outputConv.hwstrb), UVM_FULL);
 
       outputConv.hwrite = inputConv.hwrite;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwrite = %b", outputConv.hwrite), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwrite = %b", outputConv.hwrite), UVM_FULL);
 
       outputConv.hrdata = inputConv.hrdata;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hrdata = %0h", outputConv.hrdata), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hrdata = %0h", outputConv.hrdata), UVM_FULL);
 
       outputConv.hreadyout = inputConv.hreadyout;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hreadyout = %b", outputConv.hreadyout), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hreadyout = %b", outputConv.hreadyout), UVM_FULL);
 
       $cast(outputConv.hresp, inputConv.hresp);
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hresp = %b", outputConv.hresp), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hresp = %b", outputConv.hresp), UVM_FULL);
       /*
       output_conv.hexokay = input_conv.hexokay;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformat("After randomizing hexokay = %b", output_conv.hexokay), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformat("After randomizing hexokay = %b", output_conv.hexokay), UVM_FULL);
       */
       outputConv.hready =  inputConv.hready;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hready = %b", outputConv.hready), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hready = %b", outputConv.hready), UVM_FULL);
       
       outputConv.hselx =  inputConv.hselx;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hselx = %b", outputConv.hselx), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hselx = %b", outputConv.hselx), UVM_FULL);
 
 
 endfunction : toClass

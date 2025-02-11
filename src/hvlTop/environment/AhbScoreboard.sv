@@ -90,7 +90,7 @@ task AhbScoreboard::run_phase(uvm_phase phase);
 //  end
 //end
 //task AhbScoreboard::comparison(ahbMasterTransaction master,ahbSlaveTransaction slave);
-
+if(!ahbMasterTransaction.htrans == IDLE && !ahbMasterTransaction.hwdata == 0)begin
   `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------SCOREBOARD COMPARISIONS--------------------------------------------------"),UVM_HIGH) 
 
     if(ahbMasterTransaction.hwdata == ahbSlaveTransaction.hwdata) begin
@@ -111,7 +111,7 @@ task AhbScoreboard::run_phase(uvm_phase phase);
   if(ahbMasterTransaction.haddr == ahbSlaveTransaction.haddr) begin
     `uvm_info(get_type_name(),$sformatf("ahb HADDR from master and slave is equal"),UVM_HIGH);
     `uvm_info("SB HADDR MATCH", $sformatf("Master HADDR = 'h%0x and Slave HADDR = 'h%0x",
-                                ahbMasterTransaction.hwdata,ahbSlaveTransaction.hwdata), UVM_HIGH);             
+                                ahbMasterTransaction.haddr,ahbSlaveTransaction.haddr), UVM_HIGH);             
     VerifiedMasterHaddrCount++;
   end
 
@@ -164,6 +164,7 @@ task AhbScoreboard::run_phase(uvm_phase phase);
   end
   */
   `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------END OF SCOREBOARD COMPARISIONS---------------------------------------"),UVM_HIGH) 
+end
 end
 endtask : run_phase
 

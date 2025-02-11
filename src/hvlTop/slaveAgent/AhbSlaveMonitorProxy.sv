@@ -48,10 +48,13 @@ task AhbSlaveMonitorProxy::run_phase(uvm_phase phase);
     
     AhbSlaveConfigConverter :: fromClass (ahbSlaveAgentConfig, structConfigPacket);
     ahbSlaveMonitorBFM.slaveSampleData (structDataPacket, structConfigPacket);
-    AhbSlaveSequenceItemConverter :: toClass (structDataPacket, ahbSlavePacket);
+    
+	$display("&&&&values inside monitor proxy %p&&&",structDataPacket);
+	AhbSlaveSequenceItemConverter :: toClass (structDataPacket, ahbSlavePacket);
 
 
     $cast(ahbSlaveClonePacket, ahbSlavePacket.clone());
+	`uvm_info(get_type_name(),$sformatf("Sending packet via analysis_port: , \n %s", ahbSlaveClonePacket.sprint()),UVM_HIGH)
     ahbSlaveAnalysisPort.write(ahbSlaveClonePacket);
   end
 

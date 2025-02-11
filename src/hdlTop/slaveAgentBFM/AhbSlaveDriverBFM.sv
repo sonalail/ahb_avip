@@ -16,7 +16,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
                              input logic [1:0] htrans, 
    			     input logic [DATA_WIDTH-1:0] hwdata,
                              input logic [(DATA_WIDTH/8)-1:0]hwstrb,
-                             input logic hwrite,                             
+                             input bit hwrite,                             
                              output logic [DATA_WIDTH-1:0] hrdata,
 			     output logic hreadyout,
 			     output logic hresp,
@@ -41,7 +41,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
   task waitForResetn();
 	@(negedge hresetn);
    	 	`uvm_info(name,$sformatf("SYSTEM RESET DETECTED"),UVM_LOW)  
-   		 hreadyout=1;
+   		 hready=0;
         @(posedge hresetn);
     		`uvm_info(name,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_LOW)
   endtask: waitForResetn
@@ -77,20 +77,20 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     dataPacket.hburst      <= ahbBurstEnum'(hburst);
     dataPacket.hwrite      <= hwrite;  
     dataPacket.hmastlock   <= hmastlock; 
-    hresp       	   <= 0;
     dataPacket.hselx       <= hselx;
  
+    @(posedge hclk);
     if(hwrite) begin
       dataPacket.hwdata <= hwdata;
       dataPacket.hwstrb <= hwstrb;
+	  hresp <= 0;
     end
+
     else if(!hwrite) begin
 	@(posedge hclk);
       hrdata <= dataPacket.hrdata;
     end
-/*   else if(hresp == 1) begin
-     `uvm_error(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr));
-   end */
+
   endtask: slaveDriveSingleTransfer
  
   task slavedriveBurstTransfer(inout ahbTransferCharStruct dataPacket);

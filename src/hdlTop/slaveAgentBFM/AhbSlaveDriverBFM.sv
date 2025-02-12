@@ -5,8 +5,8 @@ import AhbGlobalPackage::*;
  
 interface AhbSlaveDriverBFM (input  bit   hclk,
                              input  bit  hresetn,
-			     input logic [2:0] hburst,
-			     input logic hmastlock,
+			                 input logic [2:0] hburst,
+			                 input logic hmastlock,
                              input logic [ADDR_WIDTH-1:0] haddr,                             
                              input logic [HPROT_WIDTH-1:0] hprot,
                              input logic [2:0] hsize,
@@ -14,12 +14,12 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
                              input logic hexcl,
                              input logic [HMASTER_WIDTH-1:0] hmaster,
                              input logic [1:0] htrans, 
-   			     input logic [DATA_WIDTH-1:0] hwdata,
+   			                 input logic [DATA_WIDTH-1:0] hwdata,
                              input logic [(DATA_WIDTH/8)-1:0]hwstrb,
-                             input bit hwrite,                             
+                             input logic hwrite,                             
                              output logic [DATA_WIDTH-1:0] hrdata,
-			     output logic hreadyout,
-			     output logic hresp,
+			                 output logic hreadyout,
+			                 output logic hresp,
                              output logic hexokay,
                              output logic hready,                                                           
                              input logic [NO_OF_SLAVES-1:0]hselx
@@ -75,7 +75,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     dataPacket.htrans      <= ahbTransferEnum'(htrans);
     dataPacket.hsize       <= ahbHsizeEnum'(hsize); 
     dataPacket.hburst      <= ahbBurstEnum'(hburst);
-    dataPacket.hwrite      <= hwrite;  
+    dataPacket.hwrite      <= ahbWriteEnum'(hwrite);  
     dataPacket.hmastlock   <= hmastlock; 
     dataPacket.hselx       <= hselx;
  
@@ -110,7 +110,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     dataPacket.haddr       = haddr;
     dataPacket.hburst      = ahbBurstEnum'(hburst);  
     dataPacket.hsize       = ahbHsizeEnum'(hsize);  
-    dataPacket.hwrite      = hwrite;
+    dataPacket.hwrite      = ahbWriteEnum'(hwrite);
     dataPacket.htrans      = ahbTransferEnum'(htrans); 
     dataPacket.hmastlock   = hmastlock; 
     dataPacket.hselx       = hselx;
@@ -143,7 +143,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     end
     dataPacket.htrans     = ahbTransferEnum'(htrans);  
     dataPacket.haddr      = haddr; 
-    dataPacket.hwrite     = hwrite; 
+    dataPacket.hwrite     = ahbWriteEnum'(hwrite); 
     hresp      <= dataPacket.hresp;
     if(hwrite  && dataPacket.hresp != 1 ) begin
       dataPacket.hwdata = hwdata;

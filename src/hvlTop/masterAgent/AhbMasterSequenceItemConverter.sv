@@ -55,7 +55,7 @@ function void AhbMasterSequenceItemConverter::fromClass(input AhbMasterTransacti
   outputConv.hwstrb = inputConv.hwstrb;
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwstrb = %b", outputConv.hwstrb), UVM_FULL);
 
-  outputConv.hwrite = inputConv.hwrite;
+ $cast(outputConv.hwrite, inputConv.hwrite);
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwrite = %b", outputConv.hwrite), UVM_FULL);
 
   outputConv.hrdata = inputConv.hrdata;
@@ -111,7 +111,6 @@ function void AhbMasterSequenceItemConverter::toClass(input ahbTransferCharStruc
   $cast(outputConv.htrans, inputConv.htrans);
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing htrans = %b", outputConv.htrans), UVM_FULL);
 
-
   outputConv.hselx = inputConv.hselx;
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hselx = %0h", outputConv.hselx), UVM_FULL);
 
@@ -121,7 +120,7 @@ function void AhbMasterSequenceItemConverter::toClass(input ahbTransferCharStruc
   outputConv.hwstrb = inputConv.hwstrb;
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwstrb = %b", outputConv.hwstrb), UVM_FULL);
 
-  outputConv.hwrite = inputConv.hwrite;
+  $cast(outputConv.hwrite, inputConv.hwrite);
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwrite = %b", outputConv.hwrite), UVM_FULL);
 
   outputConv.hrdata = inputConv.hrdata;

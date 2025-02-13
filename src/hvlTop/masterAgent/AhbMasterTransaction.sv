@@ -18,7 +18,7 @@
   rand ahbTransferEnum htrans;
   rand bit [DATA_WIDTH-1:0] hwdata;
   rand bit [(DATA_WIDTH/8)-1:0] hwstrb;
-  rand bit hwrite;
+  rand ahbWriteEnum hwrite;
   bit [DATA_WIDTH-1:0] hrdata;
   bit hreadyout;
   ahbRespEnum hresp;
@@ -178,22 +178,22 @@ function void AhbMasterTransaction::do_print(uvm_printer printer);
 printer.print_field  ("haddr", haddr, $bits(haddr), UVM_HEX);
 printer.print_field  ("hselx", hselx, $bits(hselx), UVM_BIN);
 printer.print_string ("hburst", hburst.name());
-printer.print_field ("hmastlock", hmastlock, $bits(hmastlock), UVM_HEX);
+printer.print_field  ("hmastlock", hmastlock, $bits(hmastlock), UVM_HEX);
 printer.print_string ("hprot", hprot.name());
 printer.print_string ("hsize", hsize.name());
-printer.print_field ("hnonsec", hnonsec, $bits(hnonsec), UVM_HEX);
-printer.print_field ("hexcl", hexcl, $bits(hexcl), UVM_HEX);
+printer.print_field  ("hnonsec", hnonsec, $bits(hnonsec), UVM_HEX);
+printer.print_field  ("hexcl", hexcl, $bits(hexcl), UVM_HEX);
 printer.print_field  ("hmaster", hmaster, $bits(hmaster), UVM_DEC);
 printer.print_string ("htrans", htrans.name());
 printer.print_field  ("hwdata", hwdata, $bits(hwdata), UVM_HEX);
 printer.print_field  ("hwstrb", hwstrb, $bits(hwstrb), UVM_BIN);
-printer.print_field ("hwrite", hwrite, $bits(hwrite), UVM_BIN);
+printer.print_string ("hwrite", hwrite.name());
 printer.print_field  ("hrdata", hrdata, $bits(hrdata), UVM_HEX);
-printer.print_field ("hreadyout", hreadyout, $bits(hreadyout), UVM_HEX);
+printer.print_field  ("hreadyout", hreadyout, $bits(hreadyout), UVM_HEX);
 printer.print_string ("hresp", hresp.name());
-printer.print_field ("hexokay", hexokay,$bits(hexokay),UVM_HEX);
-printer.print_field ("hready", hready, $bits(hready), UVM_HEX);
-printer.print_field ("noOfwaitStatesDetected", noOfWaitStatesDetected, $bits(noOfWaitStatesDetected), UVM_HEX);
+printer.print_field  ("hexokay", hexokay,$bits(hexokay),UVM_HEX);
+printer.print_field  ("hready", hready, $bits(hready), UVM_HEX);
+printer.print_field  ("noOfwaitStatesDetected", noOfWaitStatesDetected, $bits(noOfWaitStatesDetected), UVM_HEX);
 
 endfunction : do_print
 

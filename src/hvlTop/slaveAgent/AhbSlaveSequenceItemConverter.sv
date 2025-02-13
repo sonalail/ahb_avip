@@ -49,7 +49,7 @@ endfunction: new
       outputConv.hwstrb = inputConv.hwstrb;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwstrb = %b", outputConv.hwstrb), UVM_FULL);
 
-      outputConv.hwrite = inputConv.hwrite;
+      $cast(outputConv.hwrite, inputConv.hwrite);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwrite = %b", outputConv.hwrite), UVM_FULL);
 
       outputConv.hrdata = inputConv.hrdata;
@@ -109,7 +109,7 @@ endfunction : fromClass
       outputConv.hwstrb = inputConv.hwstrb;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwstrb = %b", outputConv.hwstrb), UVM_FULL);
 
-      outputConv.hwrite = inputConv.hwrite;
+      $cast(outputConv.hwrite, inputConv.hwrite);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwrite = %b", outputConv.hwrite), UVM_FULL);
 
       outputConv.hrdata = inputConv.hrdata;

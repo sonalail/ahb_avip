@@ -61,5 +61,22 @@ module AhbMasterAgentBFM(AhbInterface ahbInterface); // Change interface to AhbI
     uvm_config_db#(virtual AhbMasterMonitorBFM)::set(null,"*","AhbMasterMonitorBFM", ahbMasterMonitorBFM);
   end
 
+  bind AhbMasterMonitorBFM AhbMasterAssertion ahb_assert (.hclk(ahbInterface.hclk),
+                                                         .hresetn(ahbInterface.hresetn),
+                                                         .hready(ahbInterface.hready),
+                                                         .haddr(ahbInterface.haddr),
+                                                         .htrans(ahbInterface.htrans),
+                                                         .hwrite(ahbInterface.hwrite),
+                                                         .hsize(ahbInterface.hsize),
+                                                         .hburst(ahbInterface.hburst),
+                                                         .hprot(ahbInterface.hprot),
+                                                         .hmaster(ahbInterface.hmaster),
+                                                         .hmastlock(ahbInterface.hmastlock),
+                                                         .hwdata(ahbInterface.hwdata),
+                                                         .hresp(ahbInterface.hresp),
+                                                         .hexcl(ahbInterface.hexcl),
+                                                         .hselx(ahbInterface.hselx)
+                                                        );
+
 endmodule : AhbMasterAgentBFM
 `endif

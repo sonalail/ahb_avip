@@ -21,8 +21,11 @@
 ../../src/hdlTop/masterAgentBFM/AhbMasterDriverBFM.sv
 ../../src/hdlTop/masterAgentBFM/AhbMasterMonitorBFM.sv
 ../../src/hdlTop/masterAgentBFM/AhbMasterAgentBFM.sv
+../../src/hdlTop/masterAgentBFM/AhbMasterAssertion.sv
 ../../src/hdlTop/slaveAgentBFM/AhbSlaveDriverBFM.sv
 ../../src/hdlTop/slaveAgentBFM/AhbSlaveMonitorBFM.sv
 ../../src/hdlTop/slaveAgentBFM/AhbSlaveAgentBFM.sv
+../../src/hdlTop/slaveAgentBFM/AhbSlaveAssertion.sv
+../../src/hdlTop/AhbCoverProperty.sv
 ../../src/hdlTop/HdlTop.sv
 ../../src/hvlTop/HvlTop.sv 

@@ -17,8 +17,8 @@ class AhbSlaveDriverProxy extends uvm_driver#(AhbSlaveTransaction);
   extern function void end_of_elaboration_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
   //extern virtual task checkForHresp(inout ahbTransferCharStruct structPacket );
-  //extern virtual task taskWrite(inout ahbTransferCharStruct structPacket);
-  //extern virtual task taskRead(inout ahbTransferCharStruct structPacket);
+  extern virtual task taskWrite(inout ahbTransferCharStruct structPacket);
+  extern virtual task taskRead(inout ahbTransferCharStruct structPacket);
 
 endclass : AhbSlaveDriverProxy
 
@@ -60,8 +60,28 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
   //  `uvm_info(get_type_name(), "Transaction received!", UVM_LOW)
 
     //`uvm_info(get_type_name(), $sformatf("REQ-SLAVE_TX \n %s",req.sprint),UVM_LOW);
-    
+  if(req.choosePacketData) begin  
+
     AhbSlaveSequenceItemConverter::fromClass(req, structPacket); 
+   // `uvm_info(get_type_name(), $sformatf("Converted structPacket: %p", structPacket), UVM_HIGH)
+
+    AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
+  //  `uvm_info(get_type_name(), $sformatf("Converted structConfig: %p", structConfig), UVM_HIGH)
+
+if(structPacket.hwrite == WRITE)begin
+      taskWrite(structPacket);
+    end
+    else begin
+      taskRead(structPacket);
+    end
+
+     ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
+
+    AhbSlaveSequenceItemConverter::toClass(structPacket, req);  
+   end
+else
+ begin
+ AhbSlaveSequenceItemConverter::fromClass(req, structPacket); 
    // `uvm_info(get_type_name(), $sformatf("Converted structPacket: %p", structPacket), UVM_HIGH)
 
     AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
@@ -69,12 +89,12 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
 
      ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
 
-    AhbSlaveSequenceItemConverter::toClass(structPacket, req);  
-    
+    AhbSlaveSequenceItemConverter::toClass(structPacket, req); 
+end
     seq_item_port.item_done();
   end
 endtask : run_phase
-/*
+
 task AhbSlaveDriverProxy::taskWrite(inout ahbTransferCharStruct structPacket);
   `uvm_info("DEBUG_NA", $sformatf("taskWrite"), UVM_HIGH); 
   
@@ -106,7 +126,7 @@ task AhbSlaveDriverProxy::taskRead(inout ahbTransferCharStruct structPacket);
 
 endtask : taskRead
     
-
+/*
 task AhbSlaveDriverProxy:: checkForHresp(inout ahbTransferCharStruct structPacket);
   
   `uvm_info("DEBUG_NA", $sformatf("AFTER HRESP_CHECK_1 struct :: %p", structPacket), UVM_HIGH);

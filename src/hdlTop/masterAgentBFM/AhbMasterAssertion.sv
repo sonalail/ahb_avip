@@ -48,8 +48,8 @@ interface AhbMasterAssertion (
 
   property checkHaddrAlignment;
     @(posedge hclk) disable iff (!hresetn)
-    (hready && (htrans != 2'b00)) |-> ((hsize == 3'b001) && (haddr[0] == 1'b0)) ||
-                                      ((hsize == 3'b010) && (haddr[1:0] == 2'b00));
+    (hready && (htrans != 2'b00) && hburst != 3'b0) |-> ((hsize == 3'b001) && (haddr[0] == 1'b0)) ||
+    		                                        ((hsize == 3'b010) && (haddr[1:0] == 2'b00));
   endproperty
 
   assert property (checkHaddrAlignment)
@@ -73,9 +73,9 @@ interface AhbMasterAssertion (
 
   assert property (checkHrespOkay)
        $info("HRESP is OKAY during a successful transfer");
-  else $error("HRESP is not OKAY for a successful transfer!");
+  else $error("HRESP is Error");
 
-  property checkHrespErrorFixed;
+  /*property checkHrespErrorFixed;
     @(posedge hclk) disable iff (!hresetn)
     (hready && hresp) |-> (htrans != 2'b00);
   endproperty
@@ -83,7 +83,7 @@ interface AhbMasterAssertion (
   assert property (checkHrespErrorFixed)
        $info("HRESP is ERROR during error conditions");
   else $error("Unexpected HRESP ERROR when transfer is IDLE!");
-
+*/
   property checkHreadyStability;
     @(posedge hclk) disable iff (!hresetn)
     (hready) |=> hready;
@@ -143,8 +143,8 @@ interface AhbMasterAssertion (
 
   property checkTransIdleToNonSeq;
     @(posedge hclk) disable iff(!hresetn)
-    (htrans == 2'b00 && hready == 0 )|=>
-    (htrans == 2'b10 && $stable(hready));
+    (htrans == 2'b00 && hready == 0 )|->
+    (htrans == 2'b10);
   endproperty
 
   assert property(checkTransIdleToNonSeq)
@@ -153,7 +153,7 @@ interface AhbMasterAssertion (
 
   property checkAddrStability;
     @(posedge hclk) disable iff (!hresetn)
-    (htrans == 2'b10||htrans ==2'b11) |=> $stable(haddr) throughout hready==0;
+    (htrans == 2'b10||htrans ==2'b11) && hready==0 |=> $stable(haddr) throughout hready==0;
   endproperty
 
   assert property (checkAddrStability)

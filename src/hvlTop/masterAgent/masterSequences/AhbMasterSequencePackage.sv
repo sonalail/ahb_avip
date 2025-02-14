@@ -10,6 +10,7 @@ package AhbMasterSequencePackage;
 
   `include "AhbMasterBaseSequence.sv"
   `include "AhbMaster32bitSingleWriteSequence.sv"
+  `include "AhbMaster32bitSingleReadSequence.sv"
 
 endpackage : AhbMasterSequencePackage
 

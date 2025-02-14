@@ -90,7 +90,7 @@ task AhbScoreboard::run_phase(uvm_phase phase);
 //  end
 //end
 //task AhbScoreboard::comparison(ahbMasterTransaction master,ahbSlaveTransaction slave);
-if(!ahbMasterTransaction.htrans == IDLE && !ahbMasterTransaction.hwdata == 0)begin
+if(!ahbMasterTransaction.htrans == IDLE || !ahbMasterTransaction.hwdata == 0)begin
   `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------SCOREBOARD COMPARISIONS--------------------------------------------------"),UVM_HIGH) 
 
     if(ahbMasterTransaction.hwdata == ahbSlaveTransaction.hwdata) begin

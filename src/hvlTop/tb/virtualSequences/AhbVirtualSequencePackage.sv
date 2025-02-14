@@ -14,7 +14,8 @@ package AhbVirtualSequencePackage;
 
   `include "AhbVirtualBaseSequence.sv"
   `include "AhbVirtual32bitSingleWriteSequence.sv"
-  
+  `include "AhbVirtual32bitSingleReadSequence.sv"
+
 endpackage : AhbVirtualSequencePackage
 
 `endif

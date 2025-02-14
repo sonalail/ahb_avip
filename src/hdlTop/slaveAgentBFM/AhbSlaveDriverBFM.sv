@@ -87,8 +87,9 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     end
 
     else if(!hwrite) begin
-	@(posedge hclk);
+//	@(posedge hclk);
       hrdata <= dataPacket.hrdata;
+	  hresp  <= 0;
     end
 
   endtask: slaveDriveSingleTransfer

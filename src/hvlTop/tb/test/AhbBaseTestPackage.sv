@@ -16,7 +16,7 @@ package AhbBaseTestPackage;
 
   `include "AhbBaseTest.sv"
   `include "Ahb32bitSingleWriteTest.sv"
-
+  `include "Ahb32bitSingleReadTest.sv"
 
 endpackage : AhbBaseTestPackage
 

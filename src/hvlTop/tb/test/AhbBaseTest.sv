@@ -127,7 +127,7 @@ endfunction : setupAhbSlaveAgentConfig
 function void AhbBaseTest::end_of_elaboration_phase(uvm_phase phase);
   super.end_of_elaboration_phase(phase);
   uvm_top.print_topology();
-  uvm_test_done.set_drain_time(this,3000ns);
+  uvm_test_done.set_drain_time(this,30ns);
 endfunction  : end_of_elaboration_phase
 
 task AhbBaseTest::run_phase(uvm_phase phase);

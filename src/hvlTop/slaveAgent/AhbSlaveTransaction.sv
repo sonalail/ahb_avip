@@ -24,11 +24,14 @@ class AhbSlaveTransaction extends uvm_sequence_item;
     ahbRespEnum hresp;
     rand bit hexokay;
     bit hready;
- 
+    rand bit choosePacketData; 
   extern function new(string name = "AhbSlaveTransaction");
   extern function void do_copy(uvm_object rhs);
   extern function bit do_compare(uvm_object rhs, uvm_comparer comparer);
   extern function void do_print(uvm_printer printer);
+
+
+constraint chooseDataPacketC1 {soft choosePacketData==0;} 
 
 endclass : AhbSlaveTransaction
 
@@ -113,6 +116,7 @@ printer.print_field  ("hreadyout", hreadyout, $bits(hreadyout), UVM_HEX);
 printer.print_string ("hresp", hresp.name());
 printer.print_field  ("hexokay",  hexokay, $bits(hexokay), UVM_HEX);
 printer.print_field  ("hready", hready, $bits(hready), UVM_HEX);
+printer.print_field ("choosePacketData",choosePacketData,$bits(choosePacketData),UVM_DEC);
 endfunction : do_print
 
 `endif

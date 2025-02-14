@@ -60,10 +60,10 @@ endfunction: new
 
       $cast(outputConv.hresp, inputConv.hresp);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hresp = %b", outputConv.hresp), UVM_FULL);
-      /*
-      output_conv.hexokay = input_conv.hexokay;
+      
+/*      output_conv.hexokay = input_conv.hexokay;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformat("After randomizing hexokay = %b", output_conv.hexokay), UVM_FULL);
-      */
+  */    
       outputConv.hready =  inputConv.hready;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hready = %b", outputConv.hready), UVM_FULL);
       
@@ -120,8 +120,8 @@ endfunction : fromClass
 
       $cast(outputConv.hresp, inputConv.hresp);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hresp = %b", outputConv.hresp), UVM_FULL);
-      /*
-      output_conv.hexokay = input_conv.hexokay;
+      
+    /*  output_conv.hexokay = input_conv.hexokay;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformat("After randomizing hexokay = %b", output_conv.hexokay), UVM_FULL);
       */
       outputConv.hready =  inputConv.hready;
@@ -154,7 +154,6 @@ printer.print_field("hresp", ahbStruct.hresp, $bits(ahbStruct.hresp), UVM_BIN);
 printer.print_field("hexokay", ahbStruct.hexokay, $bits(ahbStruct.hexokay), UVM_BIN);
 printer.print_field("hready", ahbStruct.hready, $bits(ahbStruct.hready), UVM_BIN);
 printer.print_field("hselx", ahbStruct.hselx, $bits(ahbStruct.hselx), UVM_BIN);
-
 endfunction : do_print
 
 

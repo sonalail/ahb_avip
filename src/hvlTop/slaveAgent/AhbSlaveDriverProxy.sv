@@ -68,19 +68,24 @@ task AhbSlaveDriverProxy::run_phase(uvm_phase phase);
     AhbSlaveConfigConverter::fromClass(ahbSlaveAgentConfig, structConfig);
   //  `uvm_info(get_type_name(), $sformatf("Converted structConfig: %p", structConfig), UVM_HIGH)
 
-if(structPacket.hwrite == WRITE)begin
-      taskWrite(structPacket);
-    end
-    else begin
-      taskRead(structPacket);
-    end
 
      ahbSlaveDriverBFM.slaveDriveToBFM(structPacket, structConfig);
 
     AhbSlaveSequenceItemConverter::toClass(structPacket, req);  
-   end
+
+    `uvm_info("SONAL", $sformatf("STRUCTPACKET = %p",req), UVM_LOW)
+if(structPacket.hwrite == WRITE)begin
+    
+    `uvm_info("AIL", "ENTERED WRITE LOOP", UVM_LOW)
+      taskWrite(structPacket);
+    end
+else begin
+      taskRead(structPacket);
+end
+end
 else
  begin
+
  AhbSlaveSequenceItemConverter::fromClass(req, structPacket); 
    // `uvm_info(get_type_name(), $sformatf("Converted structPacket: %p", structPacket), UVM_HIGH)
 
@@ -111,18 +116,24 @@ task AhbSlaveDriverProxy::taskWrite(inout ahbTransferCharStruct structPacket);
 endtask : taskWrite
 
 task AhbSlaveDriverProxy::taskRead(inout ahbTransferCharStruct structPacket);
+bit memoryExist;
+
   `uvm_info("DEBUG_NA", $sformatf("task_read"), UVM_HIGH);
   
+
   for(int i=0; i<(DATA_WIDTH/8); i++) begin
     if(ahbSlaveAgentConfig.slaveMemory.exists(structPacket.haddr)) begin
       structPacket.hrdata[8*i+7 -: 8] = ahbSlaveAgentConfig.slaveMemory[structPacket.haddr + i];
+      memoryExist = 1;
     end
-    else begin
-      `uvm_error(get_type_name(), $sformatf("Selected address has no data"));
-      structPacket. hresp  = ERROR;
+    end
+
+    if(memoryExist == 0) begin
+             
+       `uvm_error(get_type_name(), $sformatf("Selected address has no data"));
+      structPacket.hresp  = ERROR;
       structPacket.hrdata  = 'h0;
     end
-  end 
 
 endtask : taskRead
     

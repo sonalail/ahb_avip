@@ -89,7 +89,7 @@ task AhbScoreboard::run_phase(uvm_phase phase);
     end
 //  end
 //end
-//task AhbScoreboard::comparison(ahbMasterTransaction master,ahbSlaveTransaction slave);
+if(ahbMasterTransaction.hwrite == WRITE)begin
 if(!ahbMasterTransaction.htrans == IDLE || !ahbMasterTransaction.hwdata == 0)begin
   `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------SCOREBOARD COMPARISIONS--------------------------------------------------"),UVM_HIGH) 
 
@@ -106,6 +106,84 @@ if(!ahbMasterTransaction.htrans == IDLE || !ahbMasterTransaction.hwdata == 0)beg
                                             ahbMasterTransaction.hwdata,ahbSlaveTransaction.hwdata));
    FailedMasterHwdataCount++;
   end
+  
+
+  if(ahbMasterTransaction.haddr == ahbSlaveTransaction.haddr) begin
+    `uvm_info(get_type_name(),$sformatf("ahb HADDR from master and slave is equal"),UVM_HIGH);
+    `uvm_info("SB HADDR MATCH", $sformatf("Master HADDR = 'h%0x and Slave HADDR = 'h%0x",
+                                ahbMasterTransaction.haddr,ahbSlaveTransaction.haddr), UVM_HIGH);             
+    VerifiedMasterHaddrCount++;
+  end
+
+  else begin
+    `uvm_info(get_type_name(),$sformatf("ahb HADDR from master and slave is not equal"),UVM_HIGH);
+    `uvm_error("ERROR SC HADDR MISMATCH", $sformatf("Master HADDR = 'h%0x and Slave HADDR = 'h%0x",
+                                          ahbMasterTransaction.haddr,ahbSlaveTransaction.haddr));
+    FailedMasterHaddrCount++;
+  end
+
+  if(ahbMasterTransaction.hwrite == ahbSlaveTransaction.hwrite) begin
+    `uvm_info(get_type_name(),$sformatf("ahb HWRITE from master and slave is equal"),UVM_HIGH);
+    `uvm_info("SB HWRITE MATCH", $sformatf("Master HWRITE = 'h%0x and Slave hwrite = 'h%0x",
+                                  ahbMasterTransaction.hwrite,ahbSlaveTransaction.hwrite), UVM_HIGH);
+    VerifiedMasterHwriteCount++;
+  end
+
+  else begin
+    `uvm_info(get_type_name(),$sformatf("ahb HWRITE from master and slave is not equal"),UVM_HIGH);
+    `uvm_error("ERROR SC HWRITE MISMATCH", $sformatf("Master HWRITE = 'h%0x and Slave HWRITE = 'h%0x",
+                                            ahbMasterTransaction.hwrite,ahbSlaveTransaction.hwrite));
+    FailedMasterHwriteCount++;
+  end
+
+
+  /*if(ahbSlaveTransaction.hrdata == ahbMasterTransaction.hrdata) begin
+    `uvm_info(get_type_name(),$sformatf("ahb HRDATA from master and slave is equal"),UVM_HIGH);
+    `uvm_info("SB HRDATA MATCHED", $sformatf("Master HRDATA = 'h%0x and Slave HRDATA = 'h%0x",
+                                    ahbMasterTransaction.hrdata,ahbSlaveTransaction.hrdata), UVM_HIGH);
+    VerifiedSlaveHrdataCount++;
+  end
+  else begin
+    `uvm_info(get_type_name(),$sformatf("ahb HRDATA from master and slave is not equal"),UVM_HIGH);
+    `uvm_error("ERROR SC HRDATA MISMATCH", $sformatf("Master HRDATA = 'h%0x and Slave HRDATA = 'h%0x",
+                                            ahbMasterTransaction.hrdata,ahbSlaveTransaction.hrdata));
+    FailedSlaveHrdataCount++;
+  end*/
+
+/*  if(ahbSlaveTransaction.hprot == ahbMasterTransaction.hprot) begin
+    `uvm_info(get_type_name(),$sformatf("ahb hrdata from master and slave is equal"),UVM_HIGH);
+    `uvm_info("SB HPROT MATCHED", $sformatf("Master HPROT = 'h%0x and Slave HPROT = 'h%0x",
+                                  ahbMasterTransaction.hprot,ahbSlaveTransaction.hprot), UVM_HIGH);
+   VerifiedMasterHprotCount++;
+  end
+  else begin
+    `uvm_info(get_type_name(),$sformatf("ahb HPROT from master and slave is not equal"),UVM_HIGH);
+    `uvm_error("ERROR SC HPROT MISMATCH", $sformatf("Master HPROT = %s and Slave HPROT = %s",
+                                            ahbMasterTransaction.hprot.name(),ahbSlaveTransaction.hprot.name()));
+   FailedMasterHprotCount++;
+  end
+  */
+  `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------END OF SCOREBOARD COMPARISIONS---------------------------------------"),UVM_HIGH) 
+end
+end
+
+else begin
+if(!ahbMasterTransaction.htrans == IDLE || !ahbSlaveTransaction.hrdata == 'h0)begin
+  `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------SCOREBOARD COMPARISIONS--------------------------------------------------"),UVM_HIGH) 
+
+    /*if(ahbMasterTransaction.hwdata == ahbSlaveTransaction.hwdata) begin
+    `uvm_info(get_type_name(),$sformatf("ahb HWDATA from master and slave is equal"),UVM_HIGH);
+    `uvm_info("SB  HWDAT MATCHED", $sformatf("Master HWDATA = 'h%0x and Slave HWDATA = 'h%0x",
+                                    ahbMasterTransaction.hwdata,ahbSlaveTransaction.hwdata), UVM_HIGH);             
+     VerifiedMasterHwdataCount++;
+    end
+
+  else begin
+    `uvm_info(get_type_name(),$sformatf("ahb HWDATA from master and slave is not equal"),UVM_HIGH);
+    `uvm_error("ERROR SC HWDATA MISMATCH", $sformatf("Master HWDATA = 'h%0x and Slave HWDATA = 'h%0x",
+                                            ahbMasterTransaction.hwdata,ahbSlaveTransaction.hwdata));
+   FailedMasterHwdataCount++;
+  end*/
   
 
   if(ahbMasterTransaction.haddr == ahbSlaveTransaction.haddr) begin
@@ -166,6 +244,7 @@ if(!ahbMasterTransaction.htrans == IDLE || !ahbMasterTransaction.hwdata == 0)beg
   `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------END OF SCOREBOARD COMPARISIONS---------------------------------------"),UVM_HIGH) 
 end
 end
+end
 endtask : run_phase
 
 function void AhbScoreboard::check_phase(uvm_phase phase);
@@ -174,7 +253,7 @@ function void AhbScoreboard::check_phase(uvm_phase phase);
   `uvm_info(get_type_name(),$sformatf("--\n----------------------------------------------SCOREBOARD CHECK PHASE---------------------------------------"),UVM_HIGH) 
   `uvm_info (get_type_name(),$sformatf(" Scoreboard Check Phase is starting"),UVM_HIGH); 
 
-
+if(ahbMasterTransaction.hwrite == WRITE)begin
   if (( VerifiedMasterHwdataCount != 0) && (FailedMasterHwdataCount == 0)) begin
 	  `uvm_info (get_type_name(), $sformatf ("all master_hwdata comparisions are succesful"),UVM_HIGH);
   end
@@ -185,6 +264,7 @@ function void AhbScoreboard::check_phase(uvm_phase phase);
                                            FailedMasterHwdataCount),UVM_HIGH);
     `uvm_error ("SC_CheckPhase", $sformatf ("comparisions of master_hwdata not happened"));
   end
+end
 
   if ((VerifiedMasterHaddrCount != 0) && (FailedMasterHaddrCount == 0)) begin
 	  `uvm_info (get_type_name(), $sformatf ("all master_paddr comparisions are succesful"),UVM_HIGH);
@@ -208,6 +288,7 @@ function void AhbScoreboard::check_phase(uvm_phase phase);
     `uvm_error ("SC_CheckPhase", $sformatf ("comparisions of master_hwrite not happened"));
   end
 
+if(ahbMasterTransaction.hwrite == READ)begin
   if ((VerifiedSlaveHrdataCount != 0) && (FailedSlaveHrdataCount == 0) ) begin
 	  `uvm_info (get_type_name(), $sformatf ("all slave_prdata comparisions are succesful"),UVM_HIGH);
   end
@@ -216,9 +297,8 @@ function void AhbScoreboard::check_phase(uvm_phase phase);
                                             VerifiedSlaveHrdataCount),UVM_HIGH);
 	  `uvm_info (get_type_name(), $sformatf ("FaileddSlaveHrdataCount : %0d", 
                                             FailedSlaveHrdataCount),UVM_HIGH);
-    `uvm_error ("SC_CheckPhase", $sformatf ("comparisions of master_prdata not happened"));
   end
-
+end
  
   if (ahbMasterTransactionCount == ahbSlaveTransactionCount) begin
     `uvm_info (get_type_name(), $sformatf ("master and slave have equal no. of transactions"),UVM_HIGH);

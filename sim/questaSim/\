@@ -1,7 +1,7 @@
 `ifndef AHBSLAVEBASESEQUENCE_INCLUDED_
 `define AHBSLAVEBASESEQUENCE_INCLUDED_
 
-class AhbSlaveBaseSequence extends uvm_sequence#(AhbSlaveTransaction);
+class AhbSlaveBaseSequence extends uvm_sequence#(uvm_sequence_item);
   `uvm_object_utils(AhbSlaveBaseSequence)
   `uvm_declare_p_sequencer(AhbSlaveSequencer)
   AhbSlaveSequencer ahbSlaveSequencer;

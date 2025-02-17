@@ -31,7 +31,7 @@ class AhbSlaveTransaction extends uvm_sequence_item;
   extern function void do_print(uvm_printer printer);
 
 
-constraint chooseDataPacketC1 {soft choosePacketData==0;} 
+constraint chooseDataPacketC1 {soft choosePacketData==0;}//0 indicating Random address to be taken.1 indicating Particular address need to be specified. 
 
 endclass : AhbSlaveTransaction
 

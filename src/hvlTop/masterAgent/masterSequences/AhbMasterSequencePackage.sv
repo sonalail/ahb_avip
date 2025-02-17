@@ -11,6 +11,8 @@ package AhbMasterSequencePackage;
   `include "AhbMasterBaseSequence.sv"
   `include "AhbMaster32bitSingleWriteSequence.sv"
   `include "AhbMaster32bitSingleReadSequence.sv"
+  `include "AhbMaster32bitSingleWriteReadSequence.sv"
+  `include "AhbMaster32bitSingleReadWriteSequence.sv"
 
 endpackage : AhbMasterSequencePackage
 

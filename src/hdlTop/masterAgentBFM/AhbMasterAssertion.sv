@@ -143,8 +143,8 @@ interface AhbMasterAssertion (
 
   property checkTransIdleToNonSeq;
     @(posedge hclk) disable iff(!hresetn)
-    (htrans == 2'b00 && hready == 0 )|->
-    (htrans == 2'b10);
+    ((htrans == 2'b00  && hready == 0 )|=>
+    ( htrans == 2'b10)); 
   endproperty
 
   assert property(checkTransIdleToNonSeq)

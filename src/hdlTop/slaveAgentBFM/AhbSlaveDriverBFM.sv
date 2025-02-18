@@ -70,6 +70,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
  
   task slaveDriveSingleTransfer(inout ahbTransferCharStruct dataPacket);
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
+	waitCycles(dataPacket);
     hready 		   <= 1;
     dataPacket.haddr       <= haddr;
     dataPacket.htrans      <= ahbTransferEnum'(htrans);
@@ -103,36 +104,35 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
       default: burst_length = 1;
     endcase
  
-    waitCycles(dataPacket);
+   // waitCycles(dataPacket);
     @(posedge hclk);
-    //if(dataPacket.hreadyout)begin
-      dataPacket.hready<=1;
-   // end
-    dataPacket.haddr       = haddr;
-    dataPacket.hburst      = ahbBurstEnum'(hburst);  
-    dataPacket.hsize       = ahbHsizeEnum'(hsize);  
-    dataPacket.hwrite      = ahbWriteEnum'(hwrite);
-    dataPacket.htrans      = ahbTransferEnum'(htrans); 
-    dataPacket.hmastlock   = hmastlock; 
-    dataPacket.hselx       = hselx;
+    dataPacket.hready<=1;
+    dataPacket.haddr       <= haddr;
+    dataPacket.hburst      <= ahbBurstEnum'(hburst);  
+    dataPacket.hsize       <= ahbHsizeEnum'(hsize);  
+    dataPacket.hwrite      <= ahbWriteEnum'(hwrite);
+    dataPacket.htrans      <= ahbTransferEnum'(htrans); 
+    dataPacket.hmastlock   <= hmastlock; 
+    dataPacket.hselx       <= hselx;
 	`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
 				  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);
-    for (int i = 0; i < burst_length; i++) begin
+    for (int i = 0; i < burst_length - 1; i++) begin
       @(posedge hclk);
-      if(hwrite && dataPacket.hresp != 1 ) begin
-        dataPacket.hwdata  = hwdata;
+      if(hwrite) begin
+        dataPacket.hwdata  = hwdata[i];
         dataPacket.hwstrb  = hwstrb;
-        hresp  <= dataPacket.hresp;
+        hresp  <= 0;
       end
-      else if(!hwrite && dataPacket.hresp != 1 )begin
+      else if(!hwrite)begin
        hrdata <=dataPacket.hrdata ;
-       hresp  <= dataPacket.hresp;
+       hresp  <= 0;
       end
-      else if(dataPacket.hresp == 1) begin
+      /*else if(dataPacket.hresp == 1) begin
         hresp  <= dataPacket.hresp;
         `uvm_error(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr));
       end
 	    `uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
+		*/
 	  end
   endtask: slavedriveBurstTransfer
  
@@ -168,8 +168,8 @@ task waitCycles(inout ahbTransferCharStruct dataPacket);
  
   repeat(dataPacket.noOfWaitStates) begin
 	  `uvm_info(name,$sformatf(" DRIVING WAIT STATE"),UVM_LOW);
-      @(posedge hclk);
-      dataPacket.hready<=0;
+      hready<=0;
+    @(posedge hclk); 
   end
    // hready<=1;
  

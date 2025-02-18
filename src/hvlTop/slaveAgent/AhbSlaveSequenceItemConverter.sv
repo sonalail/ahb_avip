@@ -70,7 +70,10 @@ endfunction: new
       outputConv.hselx =  inputConv.hselx;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hselx = %b", outputConv.hselx), UVM_FULL);
 
-
+      outputConv.noOfWaitStates = inputConv.noOfWaitStates;
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing noofwaitstate = %b", outputConv.noOfWaitStates), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
+ 
 
 endfunction : fromClass 
 
@@ -129,6 +132,10 @@ endfunction : fromClass
       
       outputConv.hselx =  inputConv.hselx;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hselx = %b", outputConv.hselx), UVM_FULL);
+       
+      outputConv.noOfWaitStates = inputConv.noOfWaitStates;
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing noofwaitstate = %b", outputConv.noOfWaitStates), UVM_HIGH);
+      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 
 
 endfunction : toClass

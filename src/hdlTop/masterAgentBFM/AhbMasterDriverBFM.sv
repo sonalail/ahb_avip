@@ -60,6 +60,8 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 
   task driveSingleTransfer(inout ahbTransferCharStruct dataPacket);
 	`uvm_info("INSIDESINGLETRANSFER","BFM",UVM_LOW);
+    
+	countWaitStates(dataPacket);
     @(posedge hclk);
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
     haddr       <= dataPacket.haddr;
@@ -105,8 +107,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	
     @(posedge hclk);
 
-	if(dataPacket.hselx == 1)begin
-        haddr       <= dataPacket.haddr;
+    haddr       <= dataPacket.haddr;
 	hburst      <= dataPacket.hburst;
 	hmastlock   <= dataPacket.hmastlock;
 	hprot       <= dataPacket.hprot;
@@ -115,46 +116,54 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	hexcl       <= dataPacket.hexcl;
 	hmaster     <= dataPacket.hmaster;
 	htrans      <= dataPacket.htrans; // Non-sequential transfer
-	hwdata      <= dataPacket.hwrite ? dataPacket.hwdata : '0;
+//	hwdata      <= dataPacket.hwrite ? dataPacket.hwdata : '0;
 	hwstrb      <= dataPacket.hwstrb;
 	hwrite      <= dataPacket.hwrite;
-	hselx       <= dataPacket.hselx;
+	hselx       <= 1;
 
 	
 //`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
 //			  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);
     
-    for (int i = 0; i < burst_length; i++) begin
-      @(posedge hclk);
-      countWaitStates(dataPacket);
+    for (int i = 0; i < burst_length-1; i++) begin
+    //  countWaitStates(dataPacket);
       wait(hready);
       if (hresp == 1) begin
         `uvm_error(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr));
         break;
       end
       if (i > 0) begin
-        htrans <= dataPacket.htrans; // Sequential transfer
+        htrans <= SEQ; // Sequential transfer
       end
      
+      @(posedge hclk);
       if (dataPacket.hwrite) begin
-        hwdata <= dataPacket.hwdata[i]; 
+
+        hwdata <= $urandom(); 
 	      `uvm_info(name, $sformatf("Burst Write: Data[%0d] = %0h to Address: %0h", i, dataPacket.hwdata[i], current_address), UVM_LOW);
+
       end else begin
-        dataPacket.hrdata[i] = hrdata; 
+
+        dataPacket.hrdata[i] <= hrdata; 
 	      `uvm_info(name, $sformatf("Burst Read: Data[%0d] = %0h from Address: %0h", i, hrdata, current_address), UVM_LOW);
       end
-      if (dataPacket.hburst == 3'b011 || dataPacket.hburst == 3'b100 || dataPacket.hburst == 3'b110) begin
+
+      if (dataPacket.hburst == 3'b010 || dataPacket.hburst == 3'b100 || dataPacket.hburst == 3'b110) begin
+
+	  `uvm_info("LOKI","LOKI1", UVM_LOW);
         current_address = (current_address & ~(burst_length - 1)) | ((current_address + (1 << dataPacket.hsize)) % burst_length);
       end else begin
+	  `uvm_info("THOR","THOR1", UVM_LOW);
         current_address += (1 << dataPacket.hsize); 
       end
       haddr <= current_address;
+	  
+   // @(posedge hclk);
     end
     
-    @(posedge hclk);
+    //@(posedge hclk);
 driveIdle();    
 		`uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
-end
   endtask
 
   task driveBusyTransfer(inout ahbTransferCharStruct dataPacket);
@@ -188,9 +197,10 @@ end
   endtask
 
 task countWaitStates(inout ahbTransferCharStruct dataPacket);
-    dataPacket.noOfWaitStates = 0;
-    while (hready !== 1) begin
+    //dataPacket.noOfWaitStates = 0;
+    while (hready == 0) begin
         dataPacket.noOfWaitStates++;
+		@(posedge hclk);
     end
     `uvm_info(name, $sformatf("Wait states counted: %0d", dataPacket.noOfWaitStates), UVM_LOW);
 endtask

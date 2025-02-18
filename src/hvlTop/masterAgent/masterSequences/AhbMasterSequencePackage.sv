@@ -13,6 +13,7 @@ package AhbMasterSequencePackage;
   `include "AhbMaster32bitSingleReadSequence.sv"
   `include "AhbMaster32bitSingleWriteReadSequence.sv"
   `include "AhbMaster32bitSingleReadWriteSequence.sv"
+  `include "AhbMaster32bitSingleWriteSequenceWithWaitState.sv"
 
 endpackage : AhbMasterSequencePackage
 

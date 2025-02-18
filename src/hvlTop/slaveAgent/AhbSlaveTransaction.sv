@@ -24,7 +24,9 @@ class AhbSlaveTransaction extends uvm_sequence_item;
     ahbRespEnum hresp;
     rand bit hexokay;
     bit hready;
-    rand bit choosePacketData; 
+    rand bit choosePacketData;
+	rand int noOfWaitStates;
+
   extern function new(string name = "AhbSlaveTransaction");
   extern function void do_copy(uvm_object rhs);
   extern function bit do_compare(uvm_object rhs, uvm_comparer comparer);

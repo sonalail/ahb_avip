@@ -41,7 +41,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
   task waitForResetn();
 	@(negedge hresetn);
    	 	`uvm_info(name,$sformatf("SYSTEM RESET DETECTED"),UVM_LOW)  
-   		 hready=0;
+   	//	 hready=0;
         @(posedge hresetn);
     		`uvm_info(name,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_LOW)
   endtask: waitForResetn
@@ -160,7 +160,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
   endtask: slaveDriveBusyTransfer
  
 task waitCycles(inout ahbTransferCharStruct dataPacket);
-  @(posedge hclk);
+ // @(posedge hclk);
 // while(hselx[0] !==1) begin
    //   `uvm_info(name, "Bus is now selecting salve", UVM_HIGH)
   //    @(posedge hclk);

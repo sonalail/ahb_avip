@@ -60,9 +60,8 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 
   task driveSingleTransfer(inout ahbTransferCharStruct dataPacket);
 	`uvm_info("INSIDESINGLETRANSFER","BFM",UVM_LOW);
-    
-	countWaitStates(dataPacket);
-    @(posedge hclk);
+  countWaitStates(dataPacket);
+   @(posedge hclk); 
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
     haddr       <= dataPacket.haddr;
 	hburst      <= dataPacket.hburst;
@@ -78,7 +77,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	hselx       <= 1'b1;
 
   //  `uvm_info(name,$sformatf("DRIVING IS DONE"),UVM_LOW)
-    //countWaitStates(dataPacket);
+   // countWaitStates(dataPacket);
     wait(hready);  
 
    @(posedge hclk);
@@ -197,7 +196,8 @@ driveIdle();
   endtask
 
 task countWaitStates(inout ahbTransferCharStruct dataPacket);
-    //dataPacket.noOfWaitStates = 0;
+//  @(posedge hclk); 
+  //dataPacket.noOfWaitStates = 0;
     while (hready == 0) begin
         dataPacket.noOfWaitStates++;
 		@(posedge hclk);

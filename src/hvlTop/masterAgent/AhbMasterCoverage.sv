@@ -83,7 +83,7 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
         bins ahbTransSequential    ={3};
     }
 
-      HWDATA_CP:coverpoint ahbMasterTransaction.hwdata{
+/*      HWDATA_CP:coverpoint ahbMasterTransaction.hwdata{
       option.comment = " ahb wdata";
         bins ahbWdata1      ={0};
         bins ahbWdata2      ={1};
@@ -95,7 +95,7 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
         bins ahbWdata128	={127};
         bins ahbWdata256	={255};
         bins ahbWdataDefault=default;
-    }
+    }*/
 
      HPROT_CP:coverpoint ahbMasterTransaction.hprot{
       option.comment = " ahb prot";
@@ -110,14 +110,14 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
       bins ahbMastlock1={1};
     }
 
-     HWSTRB_CP:coverpoint ahbMasterTransaction.hwstrb{
+   /*  HWSTRB_CP:coverpoint ahbMasterTransaction.hwstrb{
       option.comment = " ahb strb";
        bins ahbStrbSingleBit   = {4'b0001, 4'b0010, 4'b0100, 4'b1000};
        bins ahbStrbDoubleBits  = {4'b0011, 4'b0110, 4'b1100, 4'b1001, 4'b0101, 4'b1010};
        bins ahbStrbThreeBits   = {4'b0111, 4'b1110, 4'b1101, 4'b1011};
        bins ahbStrbAllZeroes   = {4'b0000};
        bins ahbStrbAllOnes     = {4'b1111};
-    }
+    }*/
     
      HNONSEC_CP:coverpoint ahbMasterTransaction.hnonsec{
       option.comment = " ahb nonsec";
@@ -133,10 +133,10 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
         bins ahbExcl3={3};
     }
     
-     HWDATA_CP_x_HADDR_CP:cross  HWDATA_CP ,HADDR_CP;
+     //HWDATA_CP_x_HADDR_CP:cross  HWDATA_CP ,HADDR_CP;
      HSIZE_CP_x_HBURST_CP:cross  HSIZE_CP ,HBURST_CP;
-     HWSTRB_CP_x_HWDATA_CP:cross  HWSTRB_CP ,HWDATA_CP; 
-     HTRANS_CP_x_HWDATA_CP:cross  HTRANS_CP ,HWDATA_CP;
+     //HWSTRB_CP_x_HWDATA_CP:cross  HWSTRB_CP ,HWDATA_CP; 
+     //HTRANS_CP_x_HWDATA_CP:cross  HTRANS_CP ,HWDATA_CP;
     
   endgroup: ahbMasterCovergroup
 

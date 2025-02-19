@@ -65,11 +65,11 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     ahbDataPacket.hresp = ahbRespEnum'(hresp);
     ahbDataPacket.hready = hready;  
     if(hwrite) begin
-      ahbDataPacket.hwdata = hwdata;
-      ahbDataPacket.hwstrb  = hwstrb;
+      ahbDataPacket.hwdata[0] = hwdata;
+      ahbDataPacket.hwstrb[0]  = hwstrb;
     end
     else
-      ahbDataPacket.hrdata = hrdata;
+      ahbDataPacket.hrdata[0] = hrdata;
   endtask : slaveSampleData
 
 endinterface : AhbSlaveMonitorBFM

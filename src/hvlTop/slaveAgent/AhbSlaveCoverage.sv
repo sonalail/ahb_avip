@@ -21,7 +21,7 @@ class AhbSlaveCoverage extends uvm_subscriber #(AhbSlaveTransaction);
       bins ahbResp1={1};
     }
 
-     HRDATA_CP:coverpoint ahbSlaveTransaction.hrdata{
+/*     HRDATA_CP:coverpoint ahbSlaveTransaction.hrdata{
       option.comment="ahb read data";
        bins ahbRdata1       ={0};
        bins ahbRdata2       ={1};
@@ -33,7 +33,7 @@ class AhbSlaveCoverage extends uvm_subscriber #(AhbSlaveTransaction);
        bins ahbRdata128	    ={127};
        bins ahbRdata256	    ={255};
        bins ahbRdataDefault =default;
-    }
+    }*/
 
     /* HEXOKAY_CP:coverpoint ahbSlaveTransaction.hexokay{
       option.comment="ahb exclusive okay";
@@ -41,7 +41,7 @@ class AhbSlaveCoverage extends uvm_subscriber #(AhbSlaveTransaction);
        bins ahbExokay1={1};
     }*/
     
-    HREADY_CP_x_HRDATA_CP_x_HRESP_CP:cross HREADY_CP,HRDATA_CP,HRESP_CP;
+   // HREADY_CP_x_HRDATA_CP_x_HRESP_CP:cross HREADY_CP,HRDATA_CP,HRESP_CP;
   
   endgroup: ahbSlaveCovergroup
 

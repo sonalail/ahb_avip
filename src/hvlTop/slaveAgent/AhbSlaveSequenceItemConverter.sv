@@ -43,17 +43,8 @@ endfunction: new
       $cast(outputConv.htrans, inputConv.htrans);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing htrans = %b", outputConv.htrans), UVM_FULL);
 
-      outputConv.hwdata = inputConv.hwdata;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwdata = %0h", outputConv.hwdata), UVM_FULL);
-
-      outputConv.hwstrb = inputConv.hwstrb;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwstrb = %b", outputConv.hwstrb), UVM_FULL);
-
       $cast(outputConv.hwrite, inputConv.hwrite);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwrite = %b", outputConv.hwrite), UVM_FULL);
-
-      outputConv.hrdata = inputConv.hrdata;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hrdata = %0h", outputConv.hrdata), UVM_FULL);
 
       outputConv.hreadyout = inputConv.hreadyout;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hreadyout = %b", outputConv.hreadyout), UVM_FULL);
@@ -72,12 +63,35 @@ endfunction: new
 
       outputConv.noOfWaitStates = inputConv.noOfWaitStates;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing noofwaitstate = %b", outputConv.noOfWaitStates), UVM_HIGH);
+	  
+	   foreach(inputConv.hwdata[i])begin
+	       if(inputConv.hwdata[i] != 0)begin
+		     outputConv.hwdata[i] = inputConv.hwdata[i];
+		       `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwdata = %0p", outputConv.hwdata), UVM_FULL);
+		      end
+       end
+			 
+	  foreach(inputConv.hwdata[i])begin
+		   if(inputConv.hwdata[i] != 0)begin
+			  outputConv.hwstrb[i] = inputConv.hwstrb[i];
+				 `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwstrb = %0p", outputConv.hwstrb), UVM_FULL);
+			 end
+	  end
+
+	  foreach(inputConv.hrdata[i])begin
+	      if(inputConv.hrdata[i] != 0)begin
+	        outputConv.hrdata[i] = inputConv.hrdata[i];
+	         `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hrdata = %0h", outputConv.hrdata), UVM_FULL);
+	      end
+	  end
+
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
  
 
 endfunction : fromClass 
 
     function void AhbSlaveSequenceItemConverter::toClass(input ahbTransferCharStruct inputConv, ref AhbSlaveTransaction outputConv);
+	 int i;
 
       outputConv.haddr = inputConv.haddr;
       `uvm_info("AhbSlaveSequenceItemConverterClass", $sformatf("After randomizing haddr= %b", outputConv.haddr), UVM_FULL);
@@ -106,17 +120,8 @@ endfunction : fromClass
       $cast(outputConv.htrans, inputConv.htrans);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing htrans = %b", outputConv.htrans), UVM_FULL);
 
-      outputConv.hwdata = inputConv.hwdata;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwdata = %0h", outputConv.hwdata), UVM_FULL);
-
-      outputConv.hwstrb = inputConv.hwstrb;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwstrb = %b", outputConv.hwstrb), UVM_FULL);
-
       $cast(outputConv.hwrite, inputConv.hwrite);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hwrite = %b", outputConv.hwrite), UVM_FULL);
-
-      outputConv.hrdata = inputConv.hrdata;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hrdata = %0h", outputConv.hrdata), UVM_FULL);
 
       outputConv.hreadyout = inputConv.hreadyout;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hreadyout = %b", outputConv.hreadyout), UVM_FULL);
@@ -135,6 +140,29 @@ endfunction : fromClass
        
       outputConv.noOfWaitStates = inputConv.noOfWaitStates;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing noofwaitstate = %b", outputConv.noOfWaitStates), UVM_HIGH);
+
+	   foreach(inputConv.hwdata[i])begin
+	      if(inputConv.hwdata[i] != 0)begin
+		     outputConv.hwdata[i] = inputConv.hwdata[i];
+			  `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwdata = %0p", outputConv.hwdata), UVM_FULL);
+		   end
+       end
+			 
+	  foreach(inputConv.hwdata[i])begin
+		   if(inputConv.hwdata[i] != 0)begin
+			  outputConv.hwstrb[i] = inputConv.hwstrb[i];
+				 `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hwstrb = %0p", outputConv.hwstrb), UVM_FULL);
+			 end
+	  end
+
+	  foreach(inputConv.hrdata[i])begin
+	      if(inputConv.hrdata[i] != 0)begin
+	        outputConv.hrdata[i] = inputConv.hrdata[i];
+	  		`uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hrdata = %0p", outputConv.hrdata), UVM_FULL);
+		 end
+	 end
+
+
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 
 
@@ -152,16 +180,24 @@ printer.print_field("hnonsec", ahbStruct.hnonsec, $bits(ahbStruct.hnonsec), UVM_
 printer.print_field("hexcl", ahbStruct.hexcl, $bits(ahbStruct.hexcl), UVM_BIN);
 printer.print_field("hmaster", ahbStruct.hmaster, $bits(ahbStruct.hmaster), UVM_BIN);
 printer.print_field("htrans", ahbStruct.htrans, $bits(ahbStruct.htrans), UVM_BIN);
-printer.print_field("hwdata", ahbStruct.hwdata, $bits(ahbStruct.hwdata), UVM_HEX);
-printer.print_field("hwstrb", ahbStruct.hwstrb, $bits(ahbStruct.hwstrb), UVM_BIN);
 printer.print_field("hwrite", ahbStruct.hwrite, $bits(ahbStruct.hwrite), UVM_BIN);
-printer.print_field("hrdata", ahbStruct.hrdata, $bits(ahbStruct.hrdata), UVM_HEX);
 printer.print_field("hreadyout", ahbStruct.hreadyout, $bits(ahbStruct.hreadyout), UVM_BIN);
 printer.print_field("hresp", ahbStruct.hresp, $bits(ahbStruct.hresp), UVM_BIN);
 printer.print_field("hexokay", ahbStruct.hexokay, $bits(ahbStruct.hexokay), UVM_BIN);
 printer.print_field("hready", ahbStruct.hready, $bits(ahbStruct.hready), UVM_BIN);
 printer.print_field("hselx", ahbStruct.hselx, $bits(ahbStruct.hselx), UVM_BIN);
+
+foreach(ahbStruct.hwdata[i])begin
+  printer.print_field  ($sformatf("hwdata[%0d]",i), ahbStruct.hwdata[i], $bits(ahbStruct.hwdata[i]), UVM_HEX);
+ end
+ 
+foreach(ahbStruct.hwstrb[i])begin
+  printer.print_field  ($sformatf("hwstrb[%0d]",i),ahbStruct.hwstrb[i], $bits(ahbStruct.hwstrb[i]), UVM_BIN);
+ end
+ 
+foreach(ahbStruct.hrdata[i])begin
+  printer.print_field  ($sformatf("hrdata[%0d]",i), ahbStruct.hrdata[i], $bits(ahbStruct.hrdata[i]), UVM_HEX);
+ end
+
 endfunction : do_print
-
-
 `endif 

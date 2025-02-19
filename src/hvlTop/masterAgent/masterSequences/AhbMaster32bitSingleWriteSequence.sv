@@ -26,7 +26,7 @@ task AhbMaster32bitSingleWriteSequence::body();
                               req.hwrite == 1;         // Write operation
                               req.htrans == NONSEQ;     // NONSEQ transaction
                               req.hsize  == WORD;    // 32-bit transfer
-                              req.hburst == INCR4;    // SINGLE transfer
+                              req.hburst == SINGLE;    // SINGLE transfer
                             }) begin
     `uvm_fatal("AHB", "Randomization failed for 32-bit Write")
   end

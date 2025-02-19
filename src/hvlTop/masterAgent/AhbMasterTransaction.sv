@@ -1,5 +1,3 @@
-
-
 `ifndef AHBMASTERTRANSACTION_INCLUDED_
 `define AHBMASTERTRANSACTION_INCLUDED_
 
@@ -16,10 +14,10 @@
   rand bit hexcl;
   rand bit [HMASTER_WIDTH-1:0] hmaster;
   rand ahbTransferEnum htrans;
-  rand bit [DATA_WIDTH-1:0] hwdata;
-  rand bit [(DATA_WIDTH/8)-1:0] hwstrb;
+  rand bit [DATA_WIDTH-1:0] hwdata[$:2**LENGTH];
+  rand bit [(DATA_WIDTH/8)-1:0] hwstrb[$:2**LENGTH];
   rand ahbWriteEnum hwrite;
-  bit [DATA_WIDTH-1:0] hrdata;
+  bit [DATA_WIDTH-1:0] hrdata[$:2**LENGTH];
   bit hreadyout;
   ahbRespEnum hresp;
   rand bit hexokay;
@@ -56,7 +54,7 @@ constraint incr_trans_type {
             soft htrans == SEQ;
     }
 }
-
+/*
 constraint hwstrb_logic {
     if (hsize == BYTE)
      soft   hwstrb == 8'h01 << haddr[1:0]; 
@@ -69,6 +67,7 @@ constraint hwstrb_logic {
     else if (hsize >= LINE4)
     soft    hwstrb == {DATA_WIDTH/8{1'b1}}; 
 }
+*/
 
 constraint hselx_logic {
     if (htrans == IDLE)
@@ -77,7 +76,7 @@ constraint hselx_logic {
         $onehot(hselx);
 }
 
-
+/*
 constraint addr_4beat_wrap {
     if (hburst == WRAP4) {
         if (hsize == BYTE)
@@ -106,6 +105,25 @@ constraint addr_8beat_wrap {
             soft haddr[ADDR_WIDTH-1:5] == haddr[ADDR_WIDTH-1:5];
 }    
 }
+*/
+constraint strobleValue{foreach(hwstrb[i]) { if(hsize == BYTE) $countones(hwstrb[i]) == 1;
+											 else if(hsize == HALFWORD) $countones(hwstrb[i]) == 2;
+											 else if(hsize == WORD) $countones(hwstrb[i]) == 4;
+											 else if(hsize == DOUBLEWORD) $countones(hwstrb[i]) == 8;
+											}
+					  }
+
+constraint burstsize{if(hburst == WRAP4 || hburst == INCR4) hwdata.size() == 4;
+                     else if(hburst == WRAP8 || hburst == INCR8) hwdata.size() == 8;
+					 else if(hburst == WRAP16 || hburst == INCR16) hwdata.size() == 16;
+					 else hwdata.size() == 1;
+					}
+
+constraint strobesize{if(hburst == WRAP4 || hburst == INCR4) hwstrb.size() == 4;
+                     else if(hburst == WRAP8 || hburst == INCR8) hwstrb.size() == 8;
+					 else if(hburst == WRAP16 || hburst == INCR16) hwstrb.size() == 16;
+					 else hwstrb.size() == 1;
+					}
 
 endclass : AhbMasterTransaction
 
@@ -185,15 +203,24 @@ printer.print_field  ("hnonsec", hnonsec, $bits(hnonsec), UVM_HEX);
 printer.print_field  ("hexcl", hexcl, $bits(hexcl), UVM_HEX);
 printer.print_field  ("hmaster", hmaster, $bits(hmaster), UVM_DEC);
 printer.print_string ("htrans", htrans.name());
-printer.print_field  ("hwdata", hwdata, $bits(hwdata), UVM_HEX);
-printer.print_field  ("hwstrb", hwstrb, $bits(hwstrb), UVM_BIN);
 printer.print_string ("hwrite", hwrite.name());
-printer.print_field  ("hrdata", hrdata, $bits(hrdata), UVM_HEX);
 printer.print_field  ("hreadyout", hreadyout, $bits(hreadyout), UVM_HEX);
 printer.print_string ("hresp", hresp.name());
 printer.print_field  ("hexokay", hexokay,$bits(hexokay),UVM_HEX);
 printer.print_field  ("hready", hready, $bits(hready), UVM_HEX);
 printer.print_field  ("noOfwaitStatesDetected", noOfWaitStatesDetected, $bits(noOfWaitStatesDetected), UVM_HEX);
+
+foreach(hwdata[i])begin
+printer.print_field  ($sformatf("hwdata[%0d]",i), hwdata[i], $bits(hwdata[i]), UVM_HEX);
+end
+
+foreach(hwstrb[i])begin
+printer.print_field  ($sformatf("hwstrb[%0d]",i), hwstrb[i], $bits(hwstrb[i]), UVM_BIN);
+end
+
+foreach(hrdata[i])begin
+printer.print_field  ($sformatf("hrdata[%0d]",i), hrdata[i], $bits(hrdata[i]), UVM_HEX);
+end
 
 endfunction : do_print
 

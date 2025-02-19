@@ -82,14 +82,14 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
  
     @(posedge hclk);
     if(hwrite) begin
-      dataPacket.hwdata <= hwdata;
-      dataPacket.hwstrb <= hwstrb;
+      dataPacket.hwdata[0] <= hwdata;
+      dataPacket.hwstrb[0] <= hwstrb;
 	  hresp <= 0;
     end
 
     else if(!hwrite) begin
 //	@(posedge hclk);
-      hrdata <= dataPacket.hrdata;
+      hrdata <= dataPacket.hrdata[0];
 	  hresp  <= 0;
     end
 

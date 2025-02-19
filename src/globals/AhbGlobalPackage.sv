@@ -25,6 +25,7 @@ package AhbGlobalPackage;
 
   parameter int MEMORY_WIDTH = 8;
 
+  parameter int LENGTH = 4;
   typedef enum logic [2:0] {
     SINGLE      = 3'b000,
     INCR        = 3'b001,
@@ -87,10 +88,10 @@ logic                   hnonsec;        // Secure or non-secure indicator
 logic                   hexcl;          // Exclusive access sequence
 logic [HMASTER_WIDTH-1:0] hmaster;     // Master ID
 ahbTransferEnum          htrans;        // Transfer type
-logic [DATA_WIDTH-1:0]   hwdata;         // Write data bus
-logic [(DATA_WIDTH/8)-1:0] hwstrb;     // Write strobes
+logic [2**LENGTH:0] [DATA_WIDTH-1:0]   hwdata;         // Write data bus
+logic [2**LENGTH:0] [(DATA_WIDTH/8)-1:0] hwstrb;     // Write strobes
 ahbWriteEnum            hwrite;         // Write or read indicator
-logic [DATA_WIDTH-1:0]  hrdata;         // Read data bus
+logic [2**LENGTH:0] [DATA_WIDTH-1:0]  hrdata;         // Read data bus
 logic                   hreadyout;      // Transfer completion for subordinate
 ahbRespEnum             hresp;          // Response status
 logic                   hexokay;        // Exclusive OKAY status
@@ -109,8 +110,4 @@ int                     noOfWaitStates;
 endpackage : AhbGlobalPackage
 
 `endif
-
-
-
-
 

@@ -74,10 +74,10 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
 	ahbDataPacket.hprot = ahbProtectionEnum'(hprot);
 
     if (hwrite == 1) begin
-      ahbDataPacket.hwdata = hwdata;
+      ahbDataPacket.hwdata[0] = hwdata;
     end
     else begin
-      ahbDataPacket.hrdata = hrdata;
+      ahbDataPacket.hrdata[0] = hrdata;
     end
 	 // `uvm_info(name, $sformatf("MASTER SAMPLE DATA=%p", ahbDataPacket), UVM_LOW)
   endtask : sampleData

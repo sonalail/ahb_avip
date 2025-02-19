@@ -72,7 +72,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	hexcl       <= dataPacket.hexcl;
 	hmaster     <= dataPacket.hmaster;
 	htrans      <= dataPacket.htrans; 
-	hwstrb      <= dataPacket.hwstrb;
+	hwstrb      <= dataPacket.hwstrb[0];
 	hwrite      <= dataPacket.hwrite;
 	hselx       <= 1'b1;
 
@@ -81,14 +81,14 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     wait(hready);  
 
    @(posedge hclk);
-	hwdata      <= dataPacket.hwrite ? dataPacket.hwdata : '0;
+	hwdata      <= dataPacket.hwrite ? dataPacket.hwdata[0] : '0;
 
     if (hresp == 1) begin  
       `uvm_error(name, $sformatf("Error Response Detected on Single Transfer at Address: %0h", haddr));
     end else if (!dataPacket.hwrite) begin  
-      `uvm_info(name, $sformatf("Read Data: %0h from Address: %0h", hrdata, haddr), UVM_LOW);
+      `uvm_info(name, $sformatf("Read Data: %0h from Address: %0h", hrdata[0], haddr), UVM_LOW);
     end else begin `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata, haddr), UVM_LOW);
-      `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata, haddr), UVM_LOW);
+      `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata[0], haddr), UVM_LOW);
     end
     driveIdle();
 	

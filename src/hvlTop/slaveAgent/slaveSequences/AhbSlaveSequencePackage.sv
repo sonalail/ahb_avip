@@ -14,6 +14,9 @@ package AhbSlaveSequencePackage;
   `include "AhbSlave32bitSingleWriteReadSequence.sv"
   `include "AhbSlave32bitSingleReadWriteSequence.sv"
   `include "AhbSlave32bitSingleWriteSequenceWithWaitState.sv"
+  `include "AhbSlave16bitSingleWriteSequence.sv"
+  `include "AhbSlave8bitSingleWriteSequence.sv"
+  `include "AhbSlave8bitSingleReadSequence.sv"
 
 endpackage : AhbSlaveSequencePackage
 

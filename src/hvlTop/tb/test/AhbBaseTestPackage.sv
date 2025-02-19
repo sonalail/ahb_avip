@@ -19,6 +19,9 @@ package AhbBaseTestPackage;
   `include "Ahb32bitSingleReadTest.sv"
   `include "Ahb32bitSingleWriteReadTest.sv"
   `include "Ahb32bitSingleWriteWithWaitStateTest.sv"
+  `include "Ahb16bitSingleWriteTest.sv"
+  `include "Ahb8bitSingleWriteTest.sv"
+  `include "Ahb8bitSingleReadTest.sv"
 
 endpackage : AhbBaseTestPackage
 

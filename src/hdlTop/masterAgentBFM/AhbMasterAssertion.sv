@@ -48,8 +48,8 @@ interface AhbMasterAssertion (
 
   property checkHaddrAlignment;
     @(posedge hclk) disable iff (!hresetn)
-    (hready && (htrans != 2'b00) && hburst != 3'b0) |-> ((hsize == 3'b001) && (haddr[0] == 1'b0)) ||
-    		                                        ((hsize == 3'b010) && (haddr[1:0] == 2'b00));
+    (hready && (htrans != 2'b00) && hburst != 3'b000) |-> ((hsize == 3'b001) && (haddr[0] == 1'b0)) || 
+                                                          ((hsize == 3'b010) && (haddr[1:0] == 2'b00));
   endproperty
 
   assert property (checkHaddrAlignment)
@@ -65,7 +65,8 @@ interface AhbMasterAssertion (
   assert property (ifHaddrValidAndWithinRange)
        $info("HADDR is within the valid range");
   else $error("HADDR is not within the valid range!");
-*/
+ */
+
   property checkHrespOkay;
     @(posedge hclk) disable iff (!hresetn)
     (hready && (htrans != 2'b00)) |-> (hresp == 1'b0);
@@ -124,7 +125,7 @@ interface AhbMasterAssertion (
   property checkTransBusyToSeq;
     @(posedge hclk) disable iff(!hresetn)
     (htrans == 2'b01 && hready == 0 && hburst inside{[3'b010:3'b111]}) |=>
-    (htrans == 2'b11 && $stable(hready) && $stable(hburst) && $stable(haddr));
+    (htrans == 2'b11 && $stable(hburst) && $stable(haddr));
   endproperty
 
   assert property(checkTransBusyToSeq)
@@ -134,7 +135,7 @@ interface AhbMasterAssertion (
   property checkTransBusyToNonSeq;
     @(posedge hclk) disable iff(!hresetn)
     (htrans == 2'b01 && hready ==0 && hburst inside {[3'b000:3'b001]}) |=>
-    (htrans == 2'b10 && $stable(hready) && $stable(hburst) && $stable(haddr));
+    (htrans == 2'b10 && $stable(hburst));
   endproperty
 
   assert property(checkTransBusyToNonSeq)

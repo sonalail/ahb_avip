@@ -15,9 +15,14 @@ package AhbMasterSequencePackage;
   `include "AhbMaster32bitSingleReadWriteSequence.sv"
   `include "AhbMaster32bitSingleWriteSequenceWithWaitState.sv"
   `include "AhbMaster16bitSingleWriteSequence.sv"
-  `include "AhbMaster16bitSingleReadSequence.sv"
+// `include "AhbMaster16bitSingleReadSequence.sv"
+ // `include "AhbMaster16bitSingleWriteSequenceWithWaitState.sv"
+ // `include "AhbMaster16bitSingleReadSequenceWithWaitState.sv"
+  `include "AhbMaster8bitSingleReadSequenceWithWaitState.sv"
   `include "AhbMaster8bitSingleWriteSequence.sv"
   `include "AhbMaster8bitSingleReadSequence.sv"
+  `include "AhbMaster8bitSingleWriteSequenceWithWaitState.sv"
+  `include "AhbMaster8bitSingleReadSequenceWithWaitState.sv"
 
 endpackage : AhbMasterSequencePackage
 

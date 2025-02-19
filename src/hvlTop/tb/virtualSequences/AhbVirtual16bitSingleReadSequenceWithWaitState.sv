@@ -19,8 +19,8 @@ endfunction : new
 
 task AhbVirtual16bitSingleReadSequenceWithWaitState::body();
   super.body();
-  ahbMaster16bitSingleReadSequenceWithWaitState = AhbMaster16bitSingleReadSequence::type_id::create("ahbMaster16bitSingleReadSequenceWithWaitState");
-  ahbSlave16bitSingleReadSequenceWithWaitState  = AhbSlave16bitSingleReadSequence::type_id::create("ahbSlave16bitSingleReadSequenceWithWaitState");
+  ahbMaster16bitSingleReadSequenceWithWaitState = AhbMaster16bitSingleReadSequenceWithWaitState::type_id::create("ahbMaster16bitSingleReadSequenceWithWaitState");
+  ahbSlave16bitSingleReadSequenceWithWaitState  = AhbSlave16bitSingleReadSequenceWithWaitState::type_id::create("ahbSlave16bitSingleReadSequenceWithWaitState");
  fork
     forever begin
       ahbSlave16bitSingleReadSequenceWithWaitState.start(p_sequencer.ahbSlaveSequencer);

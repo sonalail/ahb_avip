@@ -48,12 +48,23 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
   endtask : waitForResetn
 
  task slaveSampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
-    @(posedge hclk);
-	$display("i am here");
-    while( hready !=1 && hresp==1 && htrans == IDLE) begin
+    int burst_length;
+	  case (hburst)
+	    3'b010, 3'b011: burst_length = 4;
+	    3'b100, 3'b101: burst_length = 8;
+	    3'b110, 3'b111: burst_length = 16;
+	    default: burst_length = 1;
+	  endcase
+
+	@(posedge hclk);
+	//$display("i am here");
+	for(int i = 0;i < burst_length;i++)begin
+    
+	while( hready !=1 && hresp==1 && htrans == IDLE) begin
 	    `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
       @(posedge hclk);
     end   
+
     ahbDataPacket.hselx  = hselx;
     ahbDataPacket.haddr  = haddr;
     ahbDataPacket.hburst = ahbBurstEnum'(hburst);
@@ -64,12 +75,14 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     ahbDataPacket.hprot = ahbProtectionEnum'(hprot);	
     ahbDataPacket.hresp = ahbRespEnum'(hresp);
     ahbDataPacket.hready = hready;  
-    if(hwrite) begin
-      ahbDataPacket.hwdata[0] = hwdata;
-      ahbDataPacket.hwstrb[0]  = hwstrb;
+    
+	if(hwrite) begin
+      ahbDataPacket.hwdata[i] = hwdata;
+      ahbDataPacket.hwstrb[i]  = hwstrb;
     end
     else
-      ahbDataPacket.hrdata[0] = hrdata;
+      ahbDataPacket.hrdata[i] = hrdata;
+  end
   endtask : slaveSampleData
 
 endinterface : AhbSlaveMonitorBFM

@@ -106,6 +106,8 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
  
    // waitCycles(dataPacket);
     @(posedge hclk);
+	for(int i = 0;i < burst_length;i++)
+	begin
     dataPacket.hready<=1;
     dataPacket.haddr       <= haddr;
     dataPacket.hburst      <= ahbBurstEnum'(hburst);  
@@ -119,12 +121,12 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     for (int i = 0; i < burst_length - 1; i++) begin
       @(posedge hclk);
       if(hwrite) begin
-        dataPacket.hwdata  = hwdata[i];
-        dataPacket.hwstrb  = hwstrb;
+        dataPacket.hwdata[i]  = hwdata;
+        dataPacket.hwstrb[i]  = hwstrb;
         hresp  <= 0;
       end
       else if(!hwrite)begin
-       hrdata <=dataPacket.hrdata ;
+       hrdata <=dataPacket.hrdata[i] ;
        hresp  <= 0;
       end
       /*else if(dataPacket.hresp == 1) begin
@@ -134,6 +136,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
 	    `uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
 		*/
 	  end
+	 end
   endtask: slavedriveBurstTransfer
  
   task slaveDriveBusyTransfer(inout ahbTransferCharStruct dataPacket);

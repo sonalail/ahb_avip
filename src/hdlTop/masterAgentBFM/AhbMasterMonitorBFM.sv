@@ -48,8 +48,16 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
   endtask : waitForResetn
 
   task sampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
-    @(posedge hclk);
-    
+    int burst_length;
+	  case (dataPacket.hburst)
+	  	 3'b010, 3'b011 : burst_length = 4;  // INCR4, WRAP4
+	   	 3'b100, 3'b101 : burst_length = 8;  // INCR8, WRAP8
+	  	 3'b110, 3'b111 : burst_length = 16; // INCR16, WRAP16
+	   default: burst_length = 1;
+	  endcase
+
+	@(posedge hclk);
+  for(int i = 0;i < burst_length;i++)begin
 /*    while($countones(hselx) !== 1 || hresp == 1) begin
       `uvm_info(name, $sformatf("Inside while loop: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_HIGH)
       @(posedge hclk);
@@ -72,14 +80,16 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
 	ahbDataPacket.hresp = ahbRespEnum'(hresp);
 	ahbDataPacket.hselx = hselx;
 	ahbDataPacket.hprot = ahbProtectionEnum'(hprot);
+    ahbDataPacket.hwstrb[i] = hwstrb;
 
     if (hwrite == 1) begin
-      ahbDataPacket.hwdata[0] = hwdata;
+      ahbDataPacket.hwdata[i] = hwdata;
     end
     else begin
-      ahbDataPacket.hrdata[0] = hrdata;
+      ahbDataPacket.hrdata[i] = hrdata;
     end
 	 // `uvm_info(name, $sformatf("MASTER SAMPLE DATA=%p", ahbDataPacket), UVM_LOW)
+ end
   endtask : sampleData
 
 endinterface : AhbMasterMonitorBFM

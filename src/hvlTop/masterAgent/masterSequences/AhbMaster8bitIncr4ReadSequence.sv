@@ -23,7 +23,7 @@ task AhbMaster8bitIncr4ReadSequence::body();
   `uvm_info("AHB", $sformatf("req is of type: %s", req.get_type_name()), UVM_LOW)
 
   if (!req.randomize() with { 
-                              req.hwrite == 1;         // Read operation
+                              req.hwrite == 0;         // Read operation
                               req.htrans == NONSEQ;     // NONSEQ transaction
                               req.hsize  == BYTE;    // 8-bit transfer
                               req.hburst == INCR4;    // INCR4 transfer

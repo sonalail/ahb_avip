@@ -29,7 +29,7 @@ package AhbSlaveSequencePackage;
   //`include "AhbSlave16bitIncr4ReadSequence.sv"
   //`include "AhbSlave8bitIncr4WriteSequence.sv"
   //`include "AhbSlave8bitIncr4ReadSequence.sv"
-  //`include "AhbSlave32bitWrap4WriteSequence.sv"
+   `include "AhbSlave32bitWrap4WriteSequence.sv"
   //`include "AhbSlave32bitWrap4ReadSequence.sv"
 
 endpackage : AhbSlaveSequencePackage

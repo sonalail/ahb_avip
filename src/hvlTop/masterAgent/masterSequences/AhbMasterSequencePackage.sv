@@ -24,6 +24,8 @@ package AhbMasterSequencePackage;
   `include "AhbMaster8bitSingleReadSequence.sv"
   `include "AhbMaster8bitSingleWriteSequenceWithWaitState.sv"
   `include "AhbMaster8bitSingleReadSequenceWithWaitState.sv"
+  `include "AhbMaster32bitIncr4WriteSequence.sv"
+  //`include "AhbMaster32bitIncr4ReadSequence.sv"
 
 endpackage : AhbMasterSequencePackage
 

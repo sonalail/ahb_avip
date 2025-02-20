@@ -14,7 +14,7 @@ endfunction : new
 task AhbSlave32bitIncr4WriteSequence::body();
   req = AhbSlaveTransaction::type_id::create("req");
   start_item(req);
-  if(!req.randomize(){
+  if(!req.randomize() with {
 		      noOfWaitStates == 32'h0000;
    		     }) begin
     `uvm_fatal("APB","Rand failed");

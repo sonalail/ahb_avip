@@ -26,6 +26,8 @@ package AhbVirtualSequencePackage;
   `include "AhbVirtual8bitSingleReadSequence.sv"
   `include "AhbVirtual8bitSingleWriteSequenceWithWaitState.sv"
   `include "AhbVirtual8bitSingleReadSequenceWithWaitState.sv"
+  `include "AhbVirtual32bitIncr4WriteSequence.sv"
+  //`include "AhbVirtual32bitIncr4ReadSequence.sv"
 
 endpackage : AhbVirtualSequencePackage
 

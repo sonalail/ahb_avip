@@ -19,7 +19,7 @@ package AhbBaseTestPackage;
   `include "Ahb32bitSingleReadTest.sv"
   `include "Ahb32bitSingleWriteReadTest.sv"
   `include "Ahb32bitSingleWriteWithWaitStateTest.sv"
-  //`include "Ahb32bitSingleReadWithWaitStateTest.sv"
+  `include "Ahb32bitSingleReadWithWaitStateTest.sv"
   `include "Ahb16bitSingleWriteTest.sv"
   `include "Ahb16bitSingleReadTest.sv" 
   `include "Ahb16bitSingleWriteWithWaitStateTest.sv"

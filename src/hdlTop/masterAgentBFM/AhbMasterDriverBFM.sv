@@ -108,7 +108,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     for(int i = 0;i < burst_length; i++)
 	begin
 
-    haddr       <= dataPacket.haddr;
+    haddr       <= current_address;
 	hburst      <= dataPacket.hburst;
 	hmastlock   <= dataPacket.hmastlock;
 	hprot       <= dataPacket.hprot;
@@ -126,7 +126,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 //`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
 //			  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);
     
-    for (int i = 0; i < burst_length-1; i++) begin
+  //  for (int i = 0; i < burst_length-1; i++) begin
     //  countWaitStates(dataPacket);
       wait(hready);
       if (hresp == 1) begin
@@ -140,7 +140,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
       @(posedge hclk);
       if (dataPacket.hwrite) begin
 
-        hwdata <= hwdata[i]; 
+        hwdata <= dataPacket.hwdata[i]; 
 	      `uvm_info(name, $sformatf("Burst Write: Data[%0d] = %0h to Address: %0h", i, dataPacket.hwdata[i], current_address), UVM_LOW);
 
       end else begin
@@ -161,7 +161,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	  
    // @(posedge hclk);
     end
-    end
+    //end
     //@(posedge hclk);
 driveIdle();    
 		`uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);

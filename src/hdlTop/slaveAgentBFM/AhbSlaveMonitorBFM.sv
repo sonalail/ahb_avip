@@ -48,18 +48,12 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
   endtask : waitForResetn
 
  task slaveSampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
-    int burst_length;
-	  case (hburst)
-	    3'b010, 3'b011: burst_length = 4;
-	    3'b100, 3'b101: burst_length = 8;
-	    3'b110, 3'b111: burst_length = 16;
-	    default: burst_length = 1;
-	  endcase
 
 	@(posedge hclk);
 	//$display("i am here");
-	for(int i = 0;i < burst_length;i++)begin
+	//for(int i = 0;i < burst_length;i++)begin
     
+	//@(posedge hclk);
 	while( hready !=1 && hresp==1 && htrans == IDLE) begin
 	    `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
       @(posedge hclk);
@@ -77,12 +71,12 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     ahbDataPacket.hready = hready;  
     
 	if(hwrite) begin
-      ahbDataPacket.hwdata[i] = hwdata;
-      ahbDataPacket.hwstrb[i]  = hwstrb;
+      ahbDataPacket.hwdata = hwdata;
+      ahbDataPacket.hwstrb  = hwstrb;
     end
     else
-      ahbDataPacket.hrdata[i] = hrdata;
-  end
+      ahbDataPacket.hrdata = hrdata;
+//  end
   endtask : slaveSampleData
 
 endinterface : AhbSlaveMonitorBFM

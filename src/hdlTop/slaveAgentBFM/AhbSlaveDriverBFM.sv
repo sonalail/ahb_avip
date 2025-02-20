@@ -118,7 +118,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     dataPacket.hselx       <= hselx;
 	`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
 				  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);
-    for (int i = 0; i < burst_length - 1; i++) begin
+   // for (int i = 0; i < burst_length - 1; i++) begin
       @(posedge hclk);
       if(hwrite) begin
         dataPacket.hwdata[i]  = hwdata;
@@ -136,7 +136,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
 	    `uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
 		*/
 	  end
-	 end
+	//end
   endtask: slavedriveBurstTransfer
  
   task slaveDriveBusyTransfer(inout ahbTransferCharStruct dataPacket);

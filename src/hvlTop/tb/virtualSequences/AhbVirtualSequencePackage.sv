@@ -36,6 +36,11 @@ package AhbVirtualSequencePackage;
   `include "AhbVirtual32bitIncr8ReadSequence.sv"
   `include "AhbVirtual16bitIncr8WriteSequence.sv"
   `include "AhbVirtual16bitIncr8ReadSequence.sv"
+  `include "AhbVirtual32bitIncr16WriteSequence.sv"
+  `include "AhbVirtual32bitIncr16ReadSequence.sv"
+  `include "AhbVirtual16bitIncr16WriteSequence.sv"
+  `include "AhbVirtual16bitIncr16ReadSequence.sv"
+
    `include "AhbVirtual32bitWrap4WriteSequence.sv"
    `include "AhbVirtual32bitWrap4ReadSequence.sv"
 

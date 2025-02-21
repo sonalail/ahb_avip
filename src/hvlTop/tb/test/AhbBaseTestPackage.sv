@@ -38,8 +38,10 @@ package AhbBaseTestPackage;
   `include "Ahb32bitIncr8ReadTest.sv"
   `include "Ahb16bitIncr8WriteTest.sv"
   `include "Ahb16bitIncr8ReadTest.sv"
-  
-   
+  `include "Ahb16bitIncr16WriteTest.sv"
+  `include "Ahb16bitIncr16ReadTest.sv"
+  `include "Ahb32bitIncr16WriteTest.sv"
+  `include "Ahb32bitIncr16ReadTest.sv"
   `include "Ahb32bitWrap4WriteTest.sv"
   `include "Ahb32bitWrap4ReadTest.sv"
 

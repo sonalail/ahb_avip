@@ -15,7 +15,7 @@ task AhbSlave8bitIncr4ReadSequence::body();
   req = AhbSlaveTransaction::type_id::create("req");
   start_item(req);
   if(!req.randomize() with {
-		      noOfWaitStates == 8'h0000;
+		      noOfWaitStates == 32'h0000;
    		     }) begin
     `uvm_fatal("APB","Rand failed");
   end

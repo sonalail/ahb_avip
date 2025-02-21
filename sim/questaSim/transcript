@@ -12,6 +12,6 @@
 # //  is prohibited from disclosure under the Trade Secrets Act,
 # //  18 U.S.C. Section 1905.
 # //
-# Ahb16bitIncr4ReadTest/waveform.wlf opened as dataset "waveform"
+# Ahb32bitWrap4ReadTest/waveform.wlf opened as dataset "waveform"
 add wave -position insertpoint waveform:/HdlTop/ahbInterface/*
 quit

@@ -26,12 +26,12 @@ package AhbMasterSequencePackage;
   `include "AhbMaster8bitSingleReadSequenceWithWaitState.sv"
   `include "AhbMaster32bitIncr4WriteSequence.sv"
   `include "AhbMaster32bitIncr4ReadSequence.sv"
- // `include "AhbMaster16bitIncr4WriteSequence.sv"
- // `include "AhbMaster16bitIncr4ReadSequence.sv"
+  `include "AhbMaster16bitIncr4WriteSequence.sv"
+  `include "AhbMaster16bitIncr4ReadSequence.sv"
  // `include "AhbMaster8bitIncr4WriteSequence.sv"
- // `include "AhbMaster8bitIncr4ReadSequence.sv"
-  `include "AhbMaster32bitWrap4WriteSequence.sv"
- // `include "AhbMaster32bitWrap4ReadSequence.sv"
+  //`include "AhbMaster8bitIncr4ReadSequence.sv"
+  //`include "AhbMaster32bitWrap4WriteSequence.sv"
+  //`include "AhbMaster32bitWrap4ReadSequence.sv"
 
 endpackage : AhbMasterSequencePackage
 

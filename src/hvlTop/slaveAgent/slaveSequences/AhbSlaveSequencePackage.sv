@@ -33,7 +33,11 @@ package AhbSlaveSequencePackage;
   `include "AhbSlave32bitIncr8ReadSequence.sv"
   `include "AhbSlave16bitIncr8WriteSequence.sv"
   `include "AhbSlave16bitIncr8ReadSequence.sv"
-   
+  `include "AhbSlave32bitIncr16WriteSequence.sv"
+  `include "AhbSlave32bitIncr16ReadSequence.sv"
+  `include "AhbSlave16bitIncr16WriteSequence.sv"
+  `include "AhbSlave16bitIncr16ReadSequence.sv"
+ 
    `include "AhbSlave32bitWrap4WriteSequence.sv"
   `include "AhbSlave32bitWrap4ReadSequence.sv"
 

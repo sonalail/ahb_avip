@@ -40,6 +40,15 @@ package AhbSlaveSequencePackage;
  
   `include "AhbSlave32bitWrap4WriteSequence.sv"
   `include "AhbSlave32bitWrap4ReadSequence.sv"
+  //`include "AhbSlave32bitWrap8WriteSequence.sv"
+  //`include "AhbSlave32bitWrap8ReadSequence.sv"
+  `include "AhbSlave32bitWrap16WriteSequence.sv"
+  `include "AhbSlave32bitWrap16ReadSequence.sv"
+
+  `include "AhbSlave32bitWrap4WriteSequence.sv"
+  `include "AhbSlave32bitWrap4ReadSequence.sv"
+  `include "AhbSlave32bitWrap4WriteSequence.sv"
+  `include "AhbSlave32bitWrap4ReadSequence.sv"
   `include "AhbSlave16bitWrap4WriteSequence.sv"
   `include "AhbSlave16bitWrap4ReadSequence.sv"
 //  `include "AhbSlave16bitWrap8WriteSequence.sv"

@@ -1,0 +1,276 @@
+# vsim -vopt work.HvlTop work.HdlTop -voptargs="+acc=npr" -assertdebug "+UVM_TESTNAME=Ahb8bitSingleWriteTest" "+UVM_VERBOSITY=UVM_HIGH" "+define+" -l Ahb8bitSingleWriteTest/Ahb8bitSingleWriteTest.log -sva -coverage -c -do "log -r /*; add wave -r /*; coverage save -onexit -assert -directive -cvg -codeAll Ahb8bitSingleWriteTest/Ahb8bitSingleWriteTest_coverage.ucdb; run -all; exit" -wlf Ahb8bitSingleWriteTest/waveform.wlf 
+# Start time: 14:13:45 on Feb 20,2025
+# ** Note: (vsim-3812) Design is being optimized...
+# //  Questa Sim
+# //  Version 10.6c linux Jul 25 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.AhbSlaveDriverBFM(fast)
+# Loading work.AhbSlaveMonitorBFM(fast)
+# Loading work.AhbGlobalPackage(fast)
+# Loading mtiUvm.uvm_pkg
+# Loading work.AhbSlavePackage(fast)
+# Loading work.AhbMasterDriverBFM(fast)
+# Loading work.AhbMasterMonitorBFM(fast)
+# Loading work.AhbMasterPackage(fast)
+# Loading work.AhbEnvironmentPackage(fast)
+# Loading work.AhbSlaveSequencePackage(fast)
+# Loading work.AhbMasterSequencePackage(fast)
+# Loading work.AhbVirtualSequencePackage(fast)
+# Loading work.AhbBaseTestPackage(fast)
+# Loading work.HvlTop(fast)
+# Loading work.HdlTop(fast)
+# Loading work.AhbInterface_sv_unit(fast)
+# Loading work.AhbInterface(fast)
+# Loading work.AhbMasterAgentBFM(fast)
+# Loading work.AhbMasterDriverBFM_sv_unit(fast)
+# Loading work.AhbMasterDriverBFM(fast)
+# Loading work.AhbMasterMonitorBFM_sv_unit(fast)
+# Loading work.AhbMasterMonitorBFM(fast)
+# Loading work.AhbMasterAssertion_sv_unit(fast)
+# Loading work.AhbMasterAssertion(fast)
+# Loading work.AhbSlaveAgentBFM(fast)
+# Loading work.AhbSlaveDriverBFM_sv_unit(fast)
+# Loading work.AhbSlaveDriverBFM(fast)
+# Loading work.AhbSlaveMonitorBFM_sv_unit(fast)
+# Loading work.AhbSlaveMonitorBFM(fast)
+# Loading work.AhbSlaveAssertion_sv_unit(fast)
+# Loading work.AhbSlaveAssertion(fast)
+# Loading mtiUvm.questa_uvm_pkg(fast)
+# ** Warning: (vsim-3015) ../../src/hdlTop/slaveAgentBFM/AhbSlaveAgentBFM.sv(66): [PCDPC] - Port size (32) does not match connection size (8) for port 'hwdata'. The port definition is at: ../../src/hdlTop/slaveAgentBFM/AhbSlaveAssertion.sv(18).
+#    Time: 0 ns  Iteration: 0  Instance: /HdlTop/ahbSlaveAgentBFM/ahbSlaveMonitorBFM/ahb_assert File: ../../src/hdlTop/slaveAgentBFM/AhbSlaveAssertion.sv
+# ** Warning: (vsim-3015) ../../src/hdlTop/slaveAgentBFM/AhbSlaveAgentBFM.sv(66): [PCDPC] - Port size (4) does not match connection size (1) for port 'hwstrb'. The port definition is at: ../../src/hdlTop/slaveAgentBFM/AhbSlaveAssertion.sv(21).
+#    Time: 0 ns  Iteration: 0  Instance: /HdlTop/ahbSlaveAgentBFM/ahbSlaveMonitorBFM/ahb_assert File: ../../src/hdlTop/slaveAgentBFM/AhbSlaveAssertion.sv
+# Loading /tools/mentor/questasim_10.6c/questasim/uvm-1.1d/linux/uvm_dpi.so
+# log -r /*
+#  add wave -r /*
+#  coverage save -onexit -assert -directive -cvg -codeAll Ahb8bitSingleWriteTest/Ahb8bitSingleWriteTest_coverage.ucdb
+#  run -all
+# ----------------------------------------------------------------
+# UVM-1.1d
+# (C) 2007-2013 Mentor Graphics Corporation
+# (C) 2007-2013 Cadence Design Systems, Inc.
+# (C) 2006-2013 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(215) @ 0: reporter [Questa UVM] QUESTA_UVM-1.2.3
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(217) @ 0: reporter [Questa UVM]  questa_uvm::init(+struct)
+# UVM_INFO @ 0: reporter [RNTST] Running test Ahb8bitSingleWriteTest...
+# UVM_INFO ../../src/hdlTop/HdlTop.sv(14) @ 0: reporter [HDL_TOP] HDL_TOP
+# UVM_INFO ../../src/hdlTop/masterAgentBFM/AhbMasterAgentBFM.sv(10) @ 0: reporter [ahb master agent bfm] AHB MASTER AGENT BFM
+# UVM_INFO ../../src/hdlTop/masterAgentBFM/AhbMasterDriverBFM.sv(34) @ 0: reporter [AHB_MASTER_DRIVER_BFM] AHB_MASTER_DRIVER_BFM
+# UVM_INFO ../../src/hdlTop/masterAgentBFM/AhbMasterMonitorBFM.sv(39) @ 0: reporter [AHB_MASTER_MONITOR_BFM] AHB MASTER MONITOR BFM
+# UVM_INFO ../../src/hdlTop/masterAgentBFM/AhbMasterAssertion.sv(28) @ 0: reporter [MASTER_ASSERTIONS] MASTER_ASSERTIONS
+# UVM_INFO ../../src/hdlTop/slaveAgentBFM/AhbSlaveAgentBFM.sv(10) @ 0: reporter [ahb slave agent bfm] AHB SLAVE AGENT BFM
+# UVM_INFO ../../src/hdlTop/slaveAgentBFM/AhbSlaveDriverBFM.sv(38) @ 0: reporter [AHB_SLAVE_DRIVER_BFM] AHB_SLAVE_DRIVER_BFM
+# UVM_INFO ../../src/hdlTop/slaveAgentBFM/AhbSlaveMonitorBFM.sv(39) @ 0: reporter [AHB_SLAVE_MONITOR_BFM] AHB_SLAVE_MONITOR_BFM
+# UVM_INFO ../../src/hvlTop/tb/test/AhbBaseTest.sv(49) @ 0: uvm_test_top [Ahb8bitSingleWriteTest] 
+# AHB_MASTER_CONFIG[0]
+# ----------------------------------------------------------
+# Name                     Type                  Size  Value
+# ----------------------------------------------------------
+# AhbMasterAgentConfig[0]  AhbMasterAgentConfig  -     @497 
+#   is_active              integral              1     1    
+#   hasCoverage            integral              1     1    
+# ----------------------------------------------------------
+# 
+# ** Warning: (vsim-3829) ../../src/hvlTop/tb/test/AhbBaseTest.sv(114): Non-existent associative array entry. Returning default value.
+# ** Warning: (vsim-3829) ../../src/hvlTop/tb/test/AhbBaseTest.sv(115): Non-existent associative array entry. Returning default value.
+# UVM_INFO ../../src/hvlTop/tb/test/AhbBaseTest.sv(61) @ 0: uvm_test_top [Ahb8bitSingleWriteTest] 
+# AHB_SLAVE_CONFIG[0]
+# -------------------------------------------------------------
+# Name                    Type                 Size  Value     
+# -------------------------------------------------------------
+# AhbSlaveAgentConfig[0]  AhbSlaveAgentConfig  -     @502      
+#   is_active             string               10    UVM_ACTIVE
+#   hasCoverage           integral             1     1         
+#   maximumAddress        integral             32    'h0       
+#   minimumAddress        integral             32    'h0       
+# -------------------------------------------------------------
+# 
+# UVM_INFO ../../src/hvlTop/tb/test/AhbBaseTest.sv(65) @ 0: uvm_test_top [Ahb8bitSingleWriteTest] 
+# AHB_ENV_CONFIG
+# --------------------------------------------------------
+# Name                   Type                  Size  Value
+# --------------------------------------------------------
+# ahbEnvironmentConfig   AhbEnvironmentConfig  -     @496 
+#   hasScoreboard        integral              1     1    
+#   hasVirtualSequencer  integral              1     1    
+#   noOfMasters          integral              32    'd1  
+#   noOfSlaves           integral              32    'd1  
+# --------------------------------------------------------
+# 
+# ** Warning: (vsim-8858) After processing coverbin with/set expression, the values list associated with scalar bin 'ahbAddrModeOf4' in Coverpoint 'HADDR_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8858) After processing coverbin with/set expression, the values list associated with array bin 'ahbAddrModeOf8' in Coverpoint 'HADDR_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8858) After processing coverbin with/set expression, the values list associated with array bin 'ahbAddrModeOf16' in Coverpoint 'HADDR_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8858) After processing coverbin with/set expression, the values list associated with array bin 'ahbAddrModeOf32' in Coverpoint 'HADDR_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8858) After processing coverbin with/set expression, the values list associated with array bin 'ahbAddrModeOf64' in Coverpoint 'HADDR_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8858) After processing coverbin with/set expression, the values list associated with array bin 'ahbAddrModeOf128' in Coverpoint 'HADDR_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8858) After processing coverbin with/set expression, the values list associated with array bin 'ahbAddrModeOf256' in Coverpoint 'HADDR_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8858) After processing coverbin with/set expression, the values list associated with array bin 'ahbAddrSequential' in Coverpoint 'HADDR_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8858) After processing coverbin with/set expression, the values list associated with array bin 'ahbAddrBurst4' in Coverpoint 'HADDR_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8858) After processing coverbin with/set expression, the values list associated with array bin 'ahbAddrBurst8' in Coverpoint 'HADDR_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8858) After processing coverbin with/set expression, the values list associated with array bin 'ahbAddrBurst16' in Coverpoint 'HADDR_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8474) ../../src/hvlTop/masterAgent/AhbMasterCoverage.sv(132): A higher value '2' is found in bin 'ahbExcl2' of Coverpoint 'HEXCL_CP'. It is invalid and will be ignored.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8549) After dropping the illegal, ignore or invalid values, the values list associated with scalar bin 'ahbExcl2' in Coverpoint 'HEXCL_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8474) ../../src/hvlTop/masterAgent/AhbMasterCoverage.sv(133): A higher value '3' is found in bin 'ahbExcl3' of Coverpoint 'HEXCL_CP'. It is invalid and will be ignored.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# ** Warning: (vsim-8549) After dropping the illegal, ignore or invalid values, the values list associated with scalar bin 'ahbExcl3' in Coverpoint 'HEXCL_CP' of Covergroup instance '\/AhbMasterPackage::AhbMasterCoverage::ahbMasterCovergroup ' has converged to empty list. The bin will be taken out of coverage calculation.
+#    Time: 0 ns  Iteration: 7  Region: /uvm_pkg::uvm_phase::m_run_phases
+# UVM_INFO @ 0: reporter [UVMTOP] UVM testbench topology:
+# -----------------------------------------------------------------------
+# Name                            Type                        Size  Value
+# -----------------------------------------------------------------------
+# uvm_test_top                    Ahb8bitSingleWriteTest      -     @473 
+#   ahbEnvironment                AhbEnvironment              -     @511 
+#     ahbMasterAgent[0]           AhbMasterAgent              -     @520 
+#       ahbMasterCoverage         AhbMasterCoverage           -     @893 
+#         analysis_imp            uvm_analysis_imp            -     @900 
+#       ahbMasterDriverProxy      AhbMasterDriverProxy        -     @855 
+#         rsp_port                uvm_analysis_port           -     @870 
+#         seq_item_port           uvm_seq_item_pull_port      -     @862 
+#       ahbMasterMonitorProxy     AhbMasterMonitorProxy       -     @878 
+#         ahbMasterAnalysisPort   uvm_analysis_port           -     @885 
+#       ahbMasterSequencer        AhbMasterSequencer          -     @746 
+#         rsp_export              uvm_analysis_export         -     @753 
+#         seq_item_export         uvm_seq_item_pull_imp       -     @847 
+#         arbitration_queue       array                       0     -    
+#         lock_queue              array                       0     -    
+#         num_last_reqs           integral                    32    'd1  
+#         num_last_rsps           integral                    32    'd1  
+#     ahbScoreboard               AhbScoreboard               -     @644 
+#       ahbMasterAnalysisFifo[0]  uvm_tlm_analysis_fifo #(T)  -     @651 
+#         analysis_export         uvm_analysis_imp            -     @690 
+#         get_ap                  uvm_analysis_port           -     @682 
+#         get_peek_export         uvm_get_peek_imp            -     @666 
+#         put_ap                  uvm_analysis_port           -     @674 
+#         put_export              uvm_put_imp                 -     @658 
+#       ahbSlaveAnalysisFifo[0]   uvm_tlm_analysis_fifo #(T)  -     @698 
+#         analysis_export         uvm_analysis_imp            -     @737 
+#         get_ap                  uvm_analysis_port           -     @729 
+#         get_peek_export         uvm_get_peek_imp            -     @713 
+#         put_ap                  uvm_analysis_port           -     @721 
+#         put_export              uvm_put_imp                 -     @705 
+#     ahbSlaveAgent[0]            AhbSlaveAgent               -     @528 
+#       ahbSlaveCoverage          AhbSlaveCoverage            -     @1063
+#         analysis_imp            uvm_analysis_imp            -     @1070
+#       ahbSlaveDriverProxy       AhbSlaveDriverProxy         -     @1025
+#         rsp_port                uvm_analysis_port           -     @1040
+#         seq_item_port           uvm_seq_item_pull_port      -     @1032
+#       ahbSlaveMonitorProxy      AhbSlaveMonitorProxy        -     @1048
+#         ahbSlaveAnalysisPort    uvm_analysis_port           -     @1055
+#       ahbSlaveSequencer         AhbSlaveSequencer           -     @916 
+#         rsp_export              uvm_analysis_export         -     @923 
+#         seq_item_export         uvm_seq_item_pull_imp       -     @1017
+#         arbitration_queue       array                       0     -    
+#         lock_queue              array                       0     -    
+#         num_last_reqs           integral                    32    'd1  
+#         num_last_rsps           integral                    32    'd1  
+#     ahbVirtualSequencer         AhbVirtualSequencer         -     @535 
+#       rsp_export                uvm_analysis_export         -     @542 
+#       seq_item_export           uvm_seq_item_pull_imp       -     @636 
+#       arbitration_queue         array                       0     -    
+#       lock_queue                array                       0     -    
+#       num_last_reqs             integral                    32    'd1  
+#       num_last_rsps             integral                    32    'd1  
+# -----------------------------------------------------------------------
+# 
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(277) @ 0: reporter [Questa UVM] End Of Elaboration
+# UVM_INFO ../../src/hvlTop/tb/test/Ahb8bitSingleWriteTest.sv(23) @ 0: uvm_test_top [Ahb8bitSingleWriteTest] Ahb8bitSingleWriteTest
+# UVM_INFO ../../src/hvlTop/slaveAgent/AhbSlaveDriverProxy.sv(48) @ 0: uvm_test_top.ahbEnvironment.ahbSlaveAgent[0].ahbSlaveDriverProxy [AhbSlaveDriverProxy]  BEFORERESET 
+#  
+# UVM_INFO ../../src/hvlTop/masterAgent/AhbMasterMonitorProxy.sv(41) @ 0: uvm_test_top.ahbEnvironment.ahbMasterAgent[0].ahbMasterMonitorProxy [AhbMasterMonitorProxy] Inside the master_monitor_proxy
+# UVM_INFO ../../src/hdlTop/masterAgentBFM/AhbMasterDriverBFM.sv(39) @ 15: reporter [AHB_MASTER_DRIVER_BFM] SYSTEM RESET DETECTED
+# UVM_INFO ../../src/hdlTop/masterAgentBFM/AhbMasterMonitorBFM.sv(44) @ 15: reporter [AHB_MASTER_MONITOR_BFM] system reset detected
+# UVM_INFO ../../src/hdlTop/slaveAgentBFM/AhbSlaveDriverBFM.sv(43) @ 15: reporter [AHB_SLAVE_DRIVER_BFM] SYSTEM RESET DETECTED
+# UVM_INFO ../../src/hdlTop/slaveAgentBFM/AhbSlaveMonitorBFM.sv(44) @ 15: reporter [AHB_SLAVE_MONITOR_BFM] SYSTEM_RESET_DETECTED
+# UVM_INFO ../../src/hdlTop/masterAgentBFM/AhbMasterDriverBFM.sv(42) @ 30: reporter [AHB_MASTER_DRIVER_BFM] SYSTEM RESET DEACTIVATED
+# UVM_INFO ../../src/hdlTop/masterAgentBFM/AhbMasterMonitorBFM.sv(47) @ 30: reporter [AHB_MASTER_MONITOR_BFM] system reset deactivated
+# UVM_INFO ../../src/hdlTop/slaveAgentBFM/AhbSlaveDriverBFM.sv(46) @ 30: reporter [AHB_SLAVE_DRIVER_BFM] SYSTEM RESET DEACTIVATED
+# UVM_INFO ../../src/hdlTop/slaveAgentBFM/AhbSlaveMonitorBFM.sv(47) @ 30: reporter [AHB_SLAVE_MONITOR_BFM] SYSTEM_RESET_DEACTIVATED
+# ----------------------------------------------------
+# Name                Type                 Size  Value
+# ----------------------------------------------------
+# req                 AhbSlaveTransaction  -     @1124
+#   haddr             integral             32    'h0  
+#   hselx             integral             1     'b0  
+#   hburst            string               0     ""   
+#   hmastlock         integral             1     'h0  
+#   hprot             string               0     ""   
+#   hsize             string               0     ""   
+#   hnonsec           integral             1     'h0  
+#   hexcl             integral             1     'h0  
+#   hmaster           integral             1     'd0  
+#   htrans            string               0     ""   
+#   hwrite            string               4     READ 
+#   hreadyout         integral             1     'h1  
+#   hresp             string               0     ""   
+#   hexokay           integral             1     'h0  
+#   hready            integral             1     'h0  
+#   choosePacketData  integral             1     'd0  
+#   hrdata[0]         integral             8     'hc  
+#   hrdata[1]         integral             8     'h5d 
+#   hrdata[2]         integral             8     'hc2 
+#   hrdata[3]         integral             8     'hee 
+#   hrdata[4]         integral             8     'h21 
+#   hrdata[5]         integral             8     'h29 
+#   hrdata[6]         integral             8     'h9c 
+#   hrdata[7]         integral             8     'hb2 
+#   hrdata[8]         integral             8     'h55 
+#   hrdata[9]         integral             8     'h59 
+#   hrdata[10]        integral             8     'ha6 
+#   hrdata[11]        integral             8     'h89 
+#   hrdata[12]        integral             8     'h78 
+#   hrdata[13]        integral             8     'he5 
+#   hrdata[14]        integral             8     'hac 
+#   hrdata[15]        integral             8     'hc0 
+# ----------------------------------------------------
+# UVM_INFO ../../src/hvlTop/masterAgent/masterSequences/AhbMaster8bitSingleWriteSequence.sv(23) @ 30: uvm_test_top.ahbEnvironment.ahbMasterAgent[0].ahbMasterSequencer@@ahbMaster8bitSingleWriteSequence [AHB] req is of type: AhbMasterTransaction
+# ** Fatal: (SIGSEGV) Bad handle or reference.
+#    Time: 30 ns  Iteration: 4  Process: /uvm_pkg::uvm_sequence_base::start/#FORK#294_f6b39d1 File: ../../src/hvlTop/masterAgent/masterSequences/AhbMaster8bitSingleWriteSequence.sv
+# Fatal error in Task AhbMasterSequencePackage/AhbMaster8bitSingleWriteSequence::body at ../../src/hvlTop/masterAgent/masterSequences/AhbMaster8bitSingleWriteSequence.sv line 25
+# 
+# HDL call sequence:
+# Stopped at ../../src/hvlTop/masterAgent/masterSequences/AhbMaster8bitSingleWriteSequence.sv 25 Task AhbMasterSequencePackage/AhbMaster8bitSingleWriteSequence::body
+# called from  /tools/mentor/questasim_10.6c/questasim/linux/../verilog_src/uvm-1.1d/src/seq/uvm_sequence_base.svh 314 Task uvm_pkg/uvm_sequence_base::start
+# 
+#  exit
+# End time: 14:13:50 on Feb 20,2025, Elapsed time: 0:00:05
+# Errors: 2, Warnings: 19

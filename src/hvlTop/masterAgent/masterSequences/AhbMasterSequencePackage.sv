@@ -28,10 +28,15 @@ package AhbMasterSequencePackage;
   `include "AhbMaster32bitIncr4ReadSequence.sv"
   `include "AhbMaster16bitIncr4WriteSequence.sv"
   `include "AhbMaster16bitIncr4ReadSequence.sv"
- // `include "AhbMaster8bitIncr4WriteSequence.sv"
-  //`include "AhbMaster8bitIncr4ReadSequence.sv"
-  `include "AhbMaster32bitWrap4WriteSequence.sv"
-  //`include "AhbMaster32bitWrap4ReadSequence.sv"
+  `include "AhbMaster8bitIncr4WriteSequence.sv"
+  `include "AhbMaster8bitIncr4ReadSequence.sv"
+  `include "AhbMaster32bitIncr8WriteSequence.sv"
+  `include "AhbMaster32bitIncr8ReadSequence.sv"
+  `include "AhbMaster16bitIncr8WriteSequence.sv"
+  `include "AhbMaster16bitIncr8ReadSequence.sv"
+
+   `include "AhbMaster32bitWrap4WriteSequence.sv"
+  `include "AhbMaster32bitWrap4ReadSequence.sv"
 
 endpackage : AhbMasterSequencePackage
 

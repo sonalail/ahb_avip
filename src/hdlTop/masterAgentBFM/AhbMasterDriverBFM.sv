@@ -143,7 +143,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
       if (dataPacket.hburst == 3'b010 || dataPacket.hburst == 3'b100 || dataPacket.hburst == 3'b110) begin
 
 	  `uvm_info("LOKI","LOKI1", UVM_LOW);
-        current_address = (current_address & ~(burst_length - 1)) | ((current_address + (1 << dataPacket.hsize)) % burst_length);
+        current_address = (current_address & ~(burst_length * (1 << dataPacket.hsize) - 1)) | ((current_address + (1 << dataPacket.hsize)) & (burst_length * (1 << dataPacket.hsize) - 1));
       end else begin
 	  `uvm_info("THOR","THOR1", UVM_LOW);
         current_address += (1 << dataPacket.hsize); 

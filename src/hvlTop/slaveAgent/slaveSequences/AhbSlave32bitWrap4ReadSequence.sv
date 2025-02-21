@@ -17,7 +17,7 @@ task AhbSlave32bitWrap4ReadSequence::body();
   if(!req.randomize() with {
 		      noOfWaitStates == 32'h0000;
    		     }) begin
-    `uvm_fatal("APB","Rand failed");
+    `uvm_fatal("AHB","Rand failed");
   end
   req.print();
   finish_item(req);

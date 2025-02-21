@@ -39,8 +39,16 @@ package AhbMasterSequencePackage;
   `include "AhbMaster16bitIncr16WriteSequence.sv"
   `include "AhbMaster16bitIncr16ReadSequence.sv"
 
-   `include "AhbMaster32bitWrap4WriteSequence.sv"
+  `include "AhbMaster32bitWrap4WriteSequence.sv"
   `include "AhbMaster32bitWrap4ReadSequence.sv"
+  `include "AhbMaster16bitWrap4WriteSequence.sv"
+  `include "AhbMaster16bitWrap4ReadSequence.sv"
+ // `include "AhbMaster16bitWrap8WriteSequence.sv"
+ // `include "AhbMaster16bitWrap8ReadSequence.sv"
+ // `include "AhbMaster16bitWrap16WriteSequence.sv"
+ // `include "AhbMaster16bitWrap16ReadSequence.sv"
+
+  
 
 endpackage : AhbMasterSequencePackage
 

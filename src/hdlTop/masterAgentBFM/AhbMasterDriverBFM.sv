@@ -138,16 +138,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
       end
      
       @(posedge hclk);
-      if (dataPacket.hwrite) begin
-
-        hwdata <= dataPacket.hwdata[i]; 
-	      `uvm_info(name, $sformatf("Burst Write: Data[%0d] = %0h to Address: %0h", i, dataPacket.hwdata[i], current_address), UVM_LOW);
-
-      end else begin
-
-        dataPacket.hrdata[i] <= hrdata; 
-	      `uvm_info(name, $sformatf("Burst Read: Data[%0d] = %0h from Address: %0h", i, hrdata, current_address), UVM_LOW);
-      end
+      hwdata      <= dataPacket.hwrite ? dataPacket.hwdata[i] : '0;
 
       if (dataPacket.hburst == 3'b010 || dataPacket.hburst == 3'b100 || dataPacket.hburst == 3'b110) begin
 
@@ -157,7 +148,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	  `uvm_info("THOR","THOR1", UVM_LOW);
         current_address += (1 << dataPacket.hsize); 
       end
-      haddr <= current_address;
+      haddr <= 0;
 	  
    // @(posedge hclk);
     end

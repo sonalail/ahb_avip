@@ -51,19 +51,21 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
 //	  `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_LOW);
 	  `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
 	
-	do begin
+	/*do begin
 		@(posedge hclk);
-	end while(hselx === 1'b0);
+	end while(hselx === 1'b0);*/
 
-    	`uvm_info(name,$sformatf("AFTERHSELASSERTED"), UVM_LOW);
-    if(htrans==SINGLE) 
+	wait(hselx)
+
+    	`uvm_info(name,$sformatf("AFTERHSELASSERTED HTRANSFER = %0d",htrans), UVM_LOW);
+    if(hburst===SINGLE) 
 	begin
       slaveDriveSingleTransfer(dataPacket);
 	end
-    else if(htrans==BUSY) begin
+    else if(htrans===BUSY) begin
       slaveDriveBusyTransfer(dataPacket);
 	  end
-   else if(htrans!=SINGLE) begin
+   else if(hburst!==SINGLE) begin
      slavedriveBurstTransfer(dataPacket);
 	 end
   endtask: slaveDriveToBFM
@@ -97,6 +99,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
  
   task slavedriveBurstTransfer(inout ahbTransferCharStruct dataPacket);
     int burst_length;
+	`uvm_info(name,$sformatf("STARTEDBURSTTRANSFERTASK"),UVM_LOW)
     case (hburst)
       3'b010, 3'b011: burst_length = 4;  
       3'b100, 3'b101: burst_length = 8;  
@@ -105,10 +108,11 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     endcase
  
    // waitCycles(dataPacket);
-    @(posedge hclk);
+    //@(posedge hclk);
 	for(int i = 0;i < burst_length;i++)
 	begin
-    dataPacket.hready<=1;
+//@(posedge hclk);
+    hready<=1;
     dataPacket.haddr       <= haddr;
     dataPacket.hburst      <= ahbBurstEnum'(hburst);  
     dataPacket.hsize       <= ahbHsizeEnum'(hsize);  
@@ -119,14 +123,19 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
 	`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
 				  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);
    // for (int i = 0; i < burst_length - 1; i++) begin
-      @(posedge hclk);
+      
       if(hwrite) begin
-        dataPacket.hwdata[i]  = hwdata;
-        dataPacket.hwstrb[i]  = hwstrb;
+	@(posedge hclk);
+        dataPacket.hwdata[i]  <= hwdata;
+        dataPacket.hwstrb[i]  <= hwstrb;
         hresp  <= 0;
       end
       else if(!hwrite)begin
-       hrdata <=dataPacket.hrdata[i] ;
+	@(posedge hclk);
+	`uvm_info(name, $sformatf("DEBUG Address=%0h, Burst=%0b, Size=%0b, Write=%0b,hrdata[%0d] = %0d",
+				  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite,i,dataPacket.hrdata[i]), UVM_LOW);
+       hrdata <=dataPacket.hrdata[i];
+       //$display("*************** hrdata=%0d *****************
        hresp  <= 0;
       end
       /*else if(dataPacket.hresp == 1) begin
@@ -135,7 +144,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
       end
 	    `uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
 		*/
-	  end
+    end
 	//end
   endtask: slavedriveBurstTransfer
  

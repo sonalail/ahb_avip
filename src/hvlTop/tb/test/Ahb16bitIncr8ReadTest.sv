@@ -2,7 +2,7 @@
 `define AHB16BITINCR8READTEST_INCLUDED_
 
 class Ahb16bitIncr8ReadTest extends AhbBaseTest;
-  `uvm_component_utils(Ahb8bitIncr8ReadTest)
+  `uvm_component_utils(Ahb16bitIncr8ReadTest)
  
   AhbVirtual16bitIncr8ReadSequence ahbVirtual16bitIncr8ReadSequence;
  

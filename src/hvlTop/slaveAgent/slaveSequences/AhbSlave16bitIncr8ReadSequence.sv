@@ -7,7 +7,7 @@ class AhbSlave16bitIncr8ReadSequence extends AhbSlaveBaseSequence;
   extern task body();
 endclass : AhbSlave16bitIncr8ReadSequence
  
-function AhbSlave16bitIncr8ReadSequence::new(string name="AhbSlave32bitIncr8ReadSequence");
+function AhbSlave16bitIncr8ReadSequence::new(string name="AhbSlave16bitIncr8ReadSequence");
   super.new(name);
 endfunction : new
  

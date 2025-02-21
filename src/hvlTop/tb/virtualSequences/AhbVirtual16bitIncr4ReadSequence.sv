@@ -21,16 +21,11 @@ task AhbVirtual16bitIncr4ReadSequence::body();
   super.body();
   ahbMaster16bitIncr4ReadSequence = AhbMaster16bitIncr4ReadSequence::type_id::create("ahbMaster16bitIncr4ReadSequence");
   ahbSlave16bitIncr4ReadSequence  = AhbSlave16bitIncr4ReadSequence::type_id::create("ahbSlave16bitIncr4ReadSequence");
- fork
-    forever begin
-      ahbSlave16bitIncr4ReadSequence.start(p_sequencer.ahbSlaveSequencer);
-    end
-  join_none
-
-  repeat(1) begin
+ 
+  fork
     ahbMaster16bitIncr4ReadSequence.start(p_sequencer.ahbMasterSequencer);
-	`uvm_info("virtual sequence","out of virtual sequence",UVM_LOW)
-  end
+    ahbSlave16bitIncr4ReadSequence.start(p_sequencer.ahbSlaveSequencer);
+  join
 
  endtask : body
 

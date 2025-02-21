@@ -22,17 +22,17 @@ task AhbVirtual32bitWrap4WriteSequence::body();
   ahbMaster32bitWrap4WriteSequence = AhbMaster32bitWrap4WriteSequence::type_id::create("ahbMaster32bitWrap4WriteSequence");
   ahbSlave32bitWrap4WriteSequence  = AhbSlave32bitWrap4WriteSequence::type_id::create("ahbSlave32bitWrap4WriteSequence");
  fork
-    forever begin
-      ahbSlave32bitWrap4WriteSequence.start(p_sequencer.ahbSlaveSequencer);
-    end
-  join_none
+    ahbSlave32bitWrap4WriteSequence.start(p_sequencer.ahbSlaveSequencer);
+    ahbMaster32bitWrap4WriteSequence.start(p_sequencer.ahbMasterSequencer);
+   
+  join
 
-  repeat(1) begin
+  /*repeat(1) begin
     ahbMaster32bitWrap4WriteSequence.start(p_sequencer.ahbMasterSequencer);
 	`uvm_info("virtual sequence","out of virtual sequence",UVM_LOW)
   end
 
-   /* repeat(1)begin
+    repeat(1)begin
   	ahbSlave32bitWrap4WriteSequence.start(p_sequencer.ahbSlaveSequencer);
   	`uvm_info("virtual sequence","out of virtual sequence",UVM_LOW)
 	end*/

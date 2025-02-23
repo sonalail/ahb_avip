@@ -25,7 +25,7 @@ task AhbMaster16bitWrap4WriteSequence::body();
   if (!req.randomize() with { 
                               req.hwrite == 1;         // Write operation
                               req.htrans == NONSEQ;     // NONSEQ transaction
-                              req.hsize  == WORD;    // 16-bit transfer
+                              req.hsize  == HALFWORD;    // 16-bit transfer
                               req.hburst == WRAP4;    // WRAP4 transfer
                             }) begin
     `uvm_fatal("AHB", "Randomization failed for 16-bit Write")

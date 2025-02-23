@@ -51,10 +51,10 @@ package AhbBaseTestPackage;
 
   `include "Ahb16bitWrap4WriteTest.sv"
   `include "Ahb16bitWrap4ReadTest.sv"
-//  `include "Ahb16bitWrap8WriteTest.sv"
-//  `include "Ahb16bitWrap8ReadTest.sv"
- // `include "Ahb16bitWrap16WriteTest.sv"
-  //`include "Ahb16bitWrap16ReadTest.sv"
+  `include "Ahb16bitWrap8WriteTest.sv"
+  `include "Ahb16bitWrap8ReadTest.sv"
+  `include "Ahb16bitWrap16WriteTest.sv"
+  `include "Ahb16bitWrap16ReadTest.sv"
 
 endpackage : AhbBaseTestPackage
 

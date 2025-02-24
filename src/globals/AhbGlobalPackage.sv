@@ -14,7 +14,7 @@ package AhbGlobalPackage;
 
   parameter int ADDR_WIDTH = 32;
 
-  parameter int DATA_WIDTH = 16;
+  parameter int DATA_WIDTH = 32;
 
   parameter int HMASTER_WIDTH = (NO_OF_MASTERS == 1) ? 1 : $clog2(NO_OF_MASTERS);
   parameter int HPROT_WIDTH = 4;

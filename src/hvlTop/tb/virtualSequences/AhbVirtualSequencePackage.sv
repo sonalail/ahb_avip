@@ -43,8 +43,8 @@ package AhbVirtualSequencePackage;
 
    `include "AhbVirtual32bitWrap4WriteSequence.sv"
    `include "AhbVirtual32bitWrap4ReadSequence.sv"
-   //`include "AhbVirtual32bitWrap8WriteSequence.sv"
-   //`include "AhbVirtual32bitWrap8ReadSequence.sv"
+   `include "AhbVirtual32bitWrap8WriteSequence.sv"
+   `include "AhbVirtual32bitWrap8ReadSequence.sv"
    `include "AhbVirtual32bitWrap16WriteSequence.sv"
    `include "AhbVirtual32bitWrap16ReadSequence.sv"
    `include "AhbVirtual16bitWrap4WriteSequence.sv"

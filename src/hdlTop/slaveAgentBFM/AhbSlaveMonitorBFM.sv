@@ -54,7 +54,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
 	//for(int i = 0;i < burst_length;i++)begin
     
 	//@(posedge hclk);
-	while( hready !=1 && hresp==1 && htrans == IDLE) begin
+	while( hreadyout !=1 && hresp==1 && htrans == IDLE) begin
 	    `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
       @(posedge hclk);
     end   
@@ -68,7 +68,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
     ahbDataPacket.hnonsec = hnonsec;
     ahbDataPacket.hprot = ahbProtectionEnum'(hprot);	
     ahbDataPacket.hresp = ahbRespEnum'(hresp);
-    ahbDataPacket.hready = hready;  
+    ahbDataPacket.hreadyout = hreadyout;  
     
 	if(hwrite) begin
       ahbDataPacket.hwdata = hwdata;

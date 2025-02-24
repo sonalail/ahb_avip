@@ -50,6 +50,7 @@ task AhbMasterMonitorProxy::run_phase(uvm_phase phase);
     
     AhbMasterConfigConverter :: fromClass(ahbMasterAgentConfig,  structConfigPacket);
     ahbMasterMonitorBFM.sampleData (structDataPacket,  structConfigPacket);
+    $display("&&&&values inside master monitor proxy %p&&&",structDataPacket);
     AhbMasterSequenceItemConverter :: toClass(structDataPacket, ahbMasterPacket);
 
 

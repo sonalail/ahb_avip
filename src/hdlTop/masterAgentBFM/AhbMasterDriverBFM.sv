@@ -104,6 +104,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
       default: burst_length = 1;
     endcase
 	
+`uvm_info(name, $sformatf("Burst Transfer Initiated: busy = %0p", dataPacket.busyControl), UVM_LOW);
     @(posedge hclk);
     for(int i = 0;i < burst_length; i++)
 	begin

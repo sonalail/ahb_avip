@@ -155,6 +155,8 @@ constraint busyControlValue{foreach(busyControl[i]) if(i == 0 || i == busyContro
 
 constraint busyControldistribution{foreach(busyControl[i]) busyControl[i] dist {0 := 70,1 := 30};}
 
+//constraint busyControlvalues{foreach(busyControl[i]) busyControl[i] inside {[0:1]};}
+
 endclass : AhbMasterTransaction
 
 function AhbMasterTransaction::new(string name = "AhbMasterTransaction");

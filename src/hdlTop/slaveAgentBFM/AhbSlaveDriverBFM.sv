@@ -73,7 +73,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
   task slaveDriveSingleTransfer(inout ahbTransferCharStruct dataPacket);
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
 	waitCycles(dataPacket);
-    hready 		   <= 1;
+    hreadyout 		   <= 1;
     dataPacket.haddr       <= haddr;
     dataPacket.htrans      <= ahbTransferEnum'(htrans);
     dataPacket.hsize       <= ahbHsizeEnum'(hsize); 
@@ -112,7 +112,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
 	for(int i = 0;i < burst_length;i++)
 	begin
 //@(posedge hclk);
-    hready<=1;
+    hreadyout <= 1;
     dataPacket.haddr       <= haddr;
     dataPacket.hburst      <= ahbBurstEnum'(hburst);  
     dataPacket.hsize       <= ahbHsizeEnum'(hsize);  
@@ -151,9 +151,9 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
   task slaveDriveBusyTransfer(inout ahbTransferCharStruct dataPacket);
     waitCycles(dataPacket);   
     @(posedge hclk);
-    if(dataPacket.hreadyout)begin
+    /*if(dataPacket.hreadyout)begin
       dataPacket.hready<=1;
-    end
+    end*/
     dataPacket.htrans     = ahbTransferEnum'(htrans);  
     dataPacket.haddr      = haddr; 
     dataPacket.hwrite     = ahbWriteEnum'(hwrite); 
@@ -180,7 +180,7 @@ task waitCycles(inout ahbTransferCharStruct dataPacket);
  
   repeat(dataPacket.noOfWaitStates) begin
 	  `uvm_info(name,$sformatf(" DRIVING WAIT STATE"),UVM_LOW);
-      hready<=0;
+      hreadyout <= 0;
     @(posedge hclk); 
   end
    // hready<=1;

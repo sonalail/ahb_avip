@@ -89,7 +89,7 @@ task AhbScoreboard::run_phase(uvm_phase phase);
     end
 //  end
 //end
-if(ahbMasterTransaction.hwrite == WRITE && ahbSlaveTransaction.hready == 1)begin
+if(ahbMasterTransaction.hwrite == WRITE && ahbSlaveTransaction.hreadyout == 1)begin
 if(!ahbMasterTransaction.htrans == IDLE )begin
   `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------SCOREBOARD COMPARISIONS--------------------------------------------------"),UVM_HIGH) 
 
@@ -167,7 +167,7 @@ if(!ahbMasterTransaction.htrans == IDLE )begin
 end
 end
 
-else if(ahbMasterTransaction.hwrite == READ && ahbSlaveTransaction.hready == 1)begin
+else if(ahbMasterTransaction.hwrite == READ && ahbSlaveTransaction.hreadyout == 1)begin
 if(!ahbMasterTransaction.htrans == IDLE)begin
   `uvm_info(get_type_name(),$sformatf("--\n-----------------------------------------------SCOREBOARD COMPARISIONS--------------------------------------------------"),UVM_HIGH) 
 

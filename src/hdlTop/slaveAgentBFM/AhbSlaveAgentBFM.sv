@@ -55,6 +55,8 @@ module AhbSlaveAgentBFM #(parameter int SLAVE_ID=0) (AhbInterface ahbInterface);
                                            .hselx(ahbInterface.hselx)
                                           );
  
+   assign ahbInterface.hready = ahbInterface.hreadyout;
+
   initial begin
     uvm_config_db#(virtual AhbSlaveDriverBFM)::set(null,"*", "AhbSlaveDriverBFM", ahbSlaveDriverBFM); 
     uvm_config_db #(virtual AhbSlaveMonitorBFM)::set(null,"*", "AhbSlaveMonitorBFM", ahbSlaveMonitorBFM); 

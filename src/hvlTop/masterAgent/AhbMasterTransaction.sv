@@ -37,15 +37,7 @@ constraint addr_size {
     if (hburst == INCR8 || hburst == WRAP8) soft haddr== 8;
     if (hburst == INCR16 || hburst == WRAP16) soft haddr== 16;
 }
-/*constraint addr_size {
-    soft haddr > 0;
-  //  if (hburst == SINGLE) soft haddr == 1;
-    if (hburst == INCR) soft haddr < (1024 / (2 ** hsize));
-    if (hburst == INCR4 || hburst == WRAP4) soft haddr == 4;
-    if (hburst == INCR8 || hburst == WRAP8) soft haddr== 8;
-    if (hburst == INCR16 || hburst == WRAP16) soft haddr== 16;
-}*/
-constraint haddr_alignment_c {
+/*constraint haddr_alignment_c {
   // Ensure address alignment based on transfer size
    if (hsize == HALFWORD) {
     haddr[0] == 1'b0; // Aligned to 2-byte boundary
@@ -63,7 +55,7 @@ constraint haddr_alignment_c {
     haddr[6:0] == 7'b0000000; // Aligned to 128-byte boundary
   }
 }
-
+*/
 
 constraint first_trans_type {
     if (hburst == SINGLE) {

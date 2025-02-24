@@ -1,21 +1,21 @@
-`ifndef AHBMASTER16BITWRAP4WRITESEQUENCE_INCLUDED_
-`define AHBMASTER16BITWRAP4WRITESEQUENCE_INCLUDED_
+`ifndef AHBMASTER16BITWRAP8WRITESEQUENCE_INCLUDED_
+`define AHBMASTER16BITWRAP8WRITESEQUENCE_INCLUDED_
 
-class AhbMaster16bitWrap4WriteSequence extends AhbMasterBaseSequence;
-  `uvm_object_utils(AhbMaster16bitWrap4WriteSequence)
+class AhbMaster16bitWrap8WriteSequence extends AhbMasterBaseSequence;
+  `uvm_object_utils(AhbMaster16bitWrap8WriteSequence)
  
   AhbMasterTransaction req;
 
-  extern function new(string name ="AhbMaster16bitWrap4WriteSequence");
+  extern function new(string name ="AhbMaster16bitWrap8WriteSequence");
   extern task body();
   
-endclass :AhbMaster16bitWrap4WriteSequence
+endclass :AhbMaster16bitWrap8WriteSequence
     
- function AhbMaster16bitWrap4WriteSequence::new(string name="AhbMaster16bitWrap4WriteSequence");
+ function AhbMaster16bitWrap8WriteSequence::new(string name="AhbMaster16bitWrap8WriteSequence");
   super.new(name);
 endfunction : new
 
-task AhbMaster16bitWrap4WriteSequence::body();
+task AhbMaster16bitWrap8WriteSequence::body();
   super.body();
   req = AhbMasterTransaction::type_id::create("req");
 
@@ -26,7 +26,7 @@ task AhbMaster16bitWrap4WriteSequence::body();
                               req.hwrite == 1;         // Write operation
                               req.htrans == NONSEQ;     // NONSEQ transaction
                               req.hsize  == HALFWORD;    // 16-bit transfer
-                              req.hburst == WRAP4;    // WRAP4 transfer
+                              req.hburst == WRAP8;    // WRAP8 transfer
                             }) begin
     `uvm_fatal("AHB", "Randomization failed for 16-bit Write")
   end

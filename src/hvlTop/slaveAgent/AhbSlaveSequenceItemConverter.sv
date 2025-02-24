@@ -81,8 +81,15 @@ endfunction: new
 	  foreach(inputConv.hrdata[i])begin
 	      if(inputConv.hrdata[i] != 0)begin
 	        outputConv.hrdata[i] = inputConv.hrdata[i];
-	         `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hrdata = %0h", outputConv.hrdata), UVM_FULL);
+	         `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing hrdata = %0p", outputConv.hrdata), UVM_FULL);
 	      end
+	  end
+
+	  foreach(inputConv.busyControl[i])begin
+	      
+	        outputConv.busyControl[i] = inputConv.busyControl[i];
+	         `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing busyControl = %0p", outputConv.busyControl), UVM_FULL);
+	      
 	  end
 
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
@@ -162,6 +169,10 @@ endfunction : fromClass
 		 end
 	 end
 
+	foreach(inputConv.busyControl[i])begin
+	        outputConv.busyControl[i] = inputConv.busyControl[i];
+	         `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf("After randomizing busyControl = %0p", outputConv.busyControl), UVM_FULL);
+	  end
 
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("-------------------------------------------------------------"), UVM_HIGH);
 

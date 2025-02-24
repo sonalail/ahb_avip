@@ -1,4 +1,3 @@
- 
 `ifndef AHBGLOBALPACKAGE_INCLUDED_
 `define AHBGLOBALPACKAGE_INCLUDED_
 
@@ -17,6 +16,7 @@ package AhbGlobalPackage;
   parameter int DATA_WIDTH = 32;
 
   parameter int HMASTER_WIDTH = (NO_OF_MASTERS == 1) ? 1 : $clog2(NO_OF_MASTERS);
+
   parameter int HPROT_WIDTH = 4;
 
   parameter int SLAVE_MEMORY_SIZE = 12;
@@ -26,6 +26,7 @@ package AhbGlobalPackage;
   parameter int MEMORY_WIDTH = 8;
 
   parameter int LENGTH = 4;
+
   typedef enum logic [2:0] {
     SINGLE      = 3'b000,
     INCR        = 3'b001,
@@ -97,6 +98,7 @@ ahbRespEnum             hresp;          // Response status
 logic                   hexokay;        // Exclusive OKAY status
 logic                   hready;         // Combined transfer completion
 int                     noOfWaitStates;
+bit [2**LENGTH:0] busyControl;          //indicating When Busy Transfer must be introduced
   } ahbTransferCharStruct;
 
  

@@ -23,6 +23,7 @@
   rand bit hexokay;
   bit hready;
   int noOfWaitStatesDetected;
+  rand bit busyControl[];
 
   extern function new  (string name = "AhbMasterTransaction");
   extern function void do_copy(uvm_object rhs);
@@ -144,6 +145,16 @@ constraint strobesize{if(hburst == WRAP4 || hburst == INCR4) hwstrb.size() == 4;
 					 else hwstrb.size() == 1;
 					}
 
+constraint busyState{if(hburst == WRAP4 || hburst == INCR4) busyControl.size() == 4;
+                     else if(hburst == WRAP8 || hburst == INCR8) busyControl.size() == 8;
+					 else if(hburst == WRAP16 || hburst == INCR16) busyControl.size() == 16;
+					 
+					}
+
+constraint busyControlValue{foreach(busyControl[i]) if(i == 0 || i == busyControl.size - 1) busyControl[i] == 0;}
+
+constraint busyControldistribution{foreach(busyControl[i]) busyControl[i] dist {0 := 70,1 := 30};}
+
 endclass : AhbMasterTransaction
 
 function AhbMasterTransaction::new(string name = "AhbMasterTransaction");
@@ -239,6 +250,10 @@ end
 
 foreach(hrdata[i])begin
 printer.print_field  ($sformatf("hrdata[%0d]",i), hrdata[i], $bits(hrdata[i]), UVM_HEX);
+end
+
+foreach(busyControl[i])begin
+printer.print_field  ($sformatf("busyControl[%0d]",i), busyControl[i], $bits(busyControl[i]), UVM_HEX);
 end
 
 endfunction : do_print

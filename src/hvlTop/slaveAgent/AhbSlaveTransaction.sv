@@ -26,6 +26,7 @@ class AhbSlaveTransaction extends uvm_sequence_item;
     bit hready;
     rand bit choosePacketData;
 	rand int noOfWaitStates;
+    bit busyControl[];
 
   extern function new(string name = "AhbSlaveTransaction");
   extern function void do_copy(uvm_object rhs);
@@ -35,7 +36,8 @@ class AhbSlaveTransaction extends uvm_sequence_item;
 
 constraint chooseDataPacketC1 {soft choosePacketData==0;}//0 indicating Random address to be taken.1 indicating Particular address need to be specified. 
 
-constraint try{hrdata.size() == 16;}
+constraint readDataSize{hrdata.size() == 16;}
+
 /*constraint burstsize{if(hburst == WRAP4 || hburst == INCR4) hrdata.size() == 4;
                       else if(hburst == WRAP8 || hburst == INCR8) hrdata.size() == 8;
                       else if(hburst == WRAP16 || hburst == INCR16) hrdata.size() == 16;
@@ -138,6 +140,9 @@ end
  	printer.print_field  ($sformatf("hrdata[%0d]",i), hrdata[i], $bits(hrdata[i]), UVM_HEX);
  end
 
+foreach(busyControl[i])begin
+ 	printer.print_field  ($sformatf("busyControl[%0d]",i), busyControl[i], $bits(busyControl[i]), UVM_HEX);
+ end
 
 endfunction : do_print
 

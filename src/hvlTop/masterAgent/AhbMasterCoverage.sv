@@ -12,14 +12,13 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
     
  HADDR_CP: coverpoint ahbMasterTransaction.haddr {
   option.comment = "AHB Address Coverage";
-  bins ahbAddrModeOf4  = { [0:'hFFFFFFFF] } with (item % 4 == 0);
-  bins ahbAddrModeOf8[]   = { [0:'hFFFFFFFF] } with (item % 8 == 0);
-  bins ahbAddrModeOf16[]  = { [0:'hFFFFFFFF] } with (item % 16 == 0);
-  bins ahbAddrModeOf32[]  = { [0:'hFFFFFFFF] } with (item % 32 == 0);
-  bins ahbAddrModeOf64[]  = { [0:'hFFFFFFFF] } with (item % 64 == 0);
-  bins ahbAddrModeOf128[] = { [0:'hFFFFFFFF] } with (item % 128 == 0);
-  bins ahbAddrModeOf256[] = { [0:'hFFFFFFFF] } with (item % 256 == 0);
-
+bins ahbAddrModeOf4  = { [0:'hFFFFFFFF] } with (item % 4 == 0);
+  bins ahbAddrModeOf8   = { [0:'hFFFFFFFF] } with (item % 8 == 0);
+  bins ahbAddrModeOf16  = { [0:'hFFFFFFFF] } with (item % 16 == 0);
+  bins ahbAddrModeOf32  = { [0:'hFFFFFFFF] } with (item % 32 == 0);
+  bins ahbAddrModeOf64  = { [0:'hFFFFFFFF] } with (item % 64 == 0);
+  bins ahbAddrModeOf128 = { [0:'hFFFFFFFF] } with (item % 128 == 0);
+  bins ahbAddrModeOf256 = { [0:'hFFFFFFFF] } with (item % 256 == 0);
   
   bins ahbAddrAllZeroes      = {32'h00000000};         
   bins ahbAddrAllOnes        = {32'hFFFFFFFF};      
@@ -129,8 +128,6 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
       option.comment = " ahb excl";
         bins ahbExcl0={0};
         bins ahbExcl1={1};
-        bins ahbExcl2={2};
-        bins ahbExcl3={3};
     }
     
      //HWDATA_CP_x_HADDR_CP:cross  HWDATA_CP ,HADDR_CP;

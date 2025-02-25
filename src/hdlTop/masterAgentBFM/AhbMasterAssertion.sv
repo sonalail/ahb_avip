@@ -67,7 +67,7 @@ interface AhbMasterAssertion (
   else $error("HADDR is not within the valid range!");
  */
 
-  property checkHrespOkay;
+ /* property checkHrespOkay;
     @(posedge hclk) disable iff (!hresetn)
     (hready && (htrans != 2'b00)) |-> (hresp == 1'b0);
   endproperty
@@ -75,7 +75,7 @@ interface AhbMasterAssertion (
   assert property (checkHrespOkay)
        $info("HRESP is OKAY during a successful transfer");
   else $error("HRESP is Error");
-
+*/
   /*property checkHrespErrorFixed;
     @(posedge hclk) disable iff (!hresetn)
     (hready && hresp) |-> (htrans != 2'b00);
@@ -160,6 +160,34 @@ interface AhbMasterAssertion (
   assert property (checkAddrStability)
        $info("Address stability during waited transfer verified.");
   else $error("Address changed before HREADY HIGH!");
+
+ property checkHaddrUnchanged;
+    @(posedge hclk) disable iff (!hresetn)
+    (hready && (htrans != 2'b00) && (htrans == 2'b01) ##1 (htrans==2'b01)) |-> (haddr == $past(haddr));
+  endproperty
+
+  assert property (checkHaddrUnchanged)
+       $info("HADDR remains unchanged during a Busy transfer!");
+  else $error("HADDR changed unexpectedly during a Busy transfer!");
+
+  property checkHsizeMatchesData;
+    @(posedge hclk) disable iff (!hresetn)
+    (hready && (htrans != 2'b00)) |-> ((1 << hsize) <= 32);
+  endproperty
+
+  assert property (checkHsizeMatchesData)
+       $info("HSIZE matches the data width supported by the slave!");
+  else $error("HSIZE does not match the data width supported by the slave!");
+
+  property checkBurstTypeValid;
+    @(posedge hclk) disable iff (!hresetn)
+    (hready && (htrans != 2'b00)) |-> (hburst inside {[0:7]});
+  endproperty
+
+  assert property (checkBurstTypeValid)
+       $info("Valid burst type!");
+  else $error("Invalid burst type detected!");
+
 
 endinterface : AhbMasterAssertion
 

@@ -22,15 +22,15 @@ interface AhbSlaveAssertion (
 );
 
 
-  /*property checkHreadyoutValid;
+  property checkHreadyoutValid;
     @(posedge hclk) disable iff (!hresetn)
-    hreadyout;
+    ((htrans != 2'b00) ##1 !$isunknown(hwdata)) |-> hreadyout;
   endproperty
 
   assert property (checkHreadyoutValid)
        $info("HREADYOUT is high during valid transactions!");
   else $error("HREADYOUT is not high during valid transactions!");
-*/
+
   property checkHrespErrorOnInvalid;
     @(posedge hclk) disable iff (!hresetn)
     (!hreadyout) |=> (hresp == 1'b1);
@@ -59,7 +59,7 @@ interface AhbSlaveAssertion (
        $info("HRDATA is valid during read transfer!");
   else $error("HRDATA is invalid during read transfer!");
 
-  property checkHaddrUnchanged;
+ /* property checkHaddrUnchanged;
     @(posedge hclk) disable iff (!hresetn)
     (hreadyout && (htrans != 2'b00) && (htrans == 2'b01) ##1 (htrans==2'b01)) |-> (haddr == $past(haddr));
   endproperty
@@ -67,8 +67,8 @@ interface AhbSlaveAssertion (
   assert property (checkHaddrUnchanged)
        $info("HADDR remains unchanged during a Busy transfer!");
   else $error("HADDR changed unexpectedly during a Busy transfer!");
-
-  property checkHsizeMatchesData;
+*/
+/*  property checkHsizeMatchesData;
     @(posedge hclk) disable iff (!hresetn)
     (hreadyout && (htrans != 2'b00)) |-> ((1 << hsize) <= 32);
   endproperty
@@ -76,8 +76,8 @@ interface AhbSlaveAssertion (
   assert property (checkHsizeMatchesData)
        $info("HSIZE matches the data width supported by the slave!");
   else $error("HSIZE does not match the data width supported by the slave!");
-
-  property checkBurstTypeValid;
+*/
+ /* property checkBurstTypeValid;
     @(posedge hclk) disable iff (!hresetn)
     (hreadyout && (htrans != 2'b00)) |-> (hburst inside {[0:7]});
   endproperty
@@ -85,6 +85,7 @@ interface AhbSlaveAssertion (
   assert property (checkBurstTypeValid)
        $info("Valid burst type!");
   else $error("Invalid burst type detected!");
+*/
 
 endinterface : AhbSlaveAssertion
 

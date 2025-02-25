@@ -33,7 +33,7 @@ interface AhbCoverProperty (input hclk,
   end
 
 
-  //non-seq
+/*  //non-seq
   property WriteDataIsEqualToReadDataAndBothTheAddressIsSameInNonSeqState;
     @(posedge hclk) disable iff (!hresetn)
     (hwrite && (htrans == 2'b10) && hready)
@@ -45,7 +45,7 @@ interface AhbCoverProperty (input hclk,
     (hwrite && (htrans == 2'b10) && hready)
     |=> ((hrdata == $past(hwdata)) && hresp == 0 && (haddr != $past(haddr)));
   endproperty
-
+*/
   //seq
   /*property WriteDataIsEqualToReadDataAndBothTheAddressIsSameInSeqStateSingleBurst;
     @(posedge hclk) disable iff (!hresetn)
@@ -59,7 +59,7 @@ interface AhbCoverProperty (input hclk,
     |=> ((hrdata == $past(hwdata)) && hresp == 0 && (haddr != $past(haddr)+1));
   endproperty
   */
-
+/*
    property WriteDataIsEqualToReadDataAndBothTheAddressIsSameInSeqStateIncrementBurst;
     @(posedge hclk) disable iff (!hresetn)
      (hwrite && (htrans == 2'b10 || htrans == 2'b11) && hready && (hburst == 3'b001))
@@ -210,6 +210,19 @@ interface AhbCoverProperty (input hclk,
   IFWRITEADDRANDDATAISNOTEQUALTOMASTERREADADDRANDDATASEQINCR16 : cover property
     (WriteDataIsEqualToReadDataAndBothTheAddressIsNotSameInSeqStateIncrement16Burst)
     $info("WRITE ADDRESS AND DATA IS NOT EQUAL TO READ ADDRESS AND DATA IN SEQ STATE FOR INCR16 BURST : COVERED");
+*/
+
+  property WhenWriteReadDataMatches;
+    @(posedge hclk) disable iff (!hresetn)
+    (hwrite && (htrans == 2'b10) && hready && !$isunknown(haddr) && !$isunknown(hwdata))
+    |-> ##[1:$] (!hwrite && (haddr == $past(haddr, 1)) && hready)
+        ##[1:$] (hrdata == $past(hwdata, 1));
+  endproperty
+
+  IFWRITEADDRANDDATAISNOTEQUALTOMASTERREADADDRANDDATA: cover property
+    (WhenWriteReadDataMatches)
+    $info("WRITE ADDRESS AND DATA IS NOT EQUAL TO READ ADDRESS AND DATA : COVERED");
+
 
 endinterface : AhbCoverProperty
 

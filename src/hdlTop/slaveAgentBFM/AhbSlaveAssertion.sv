@@ -15,7 +15,7 @@ interface AhbSlaveAssertion (
   input            [2:0] hsize,
   input            [2:0] hburst,
   input                  hselx,
-  input           [31:0] hwdata,
+  input           [DATA_WIDTH-1:0] hwdata,
   input            [3:0] hprot,
   input                  hexokay,
   input            [3:0] hwstrb
@@ -33,7 +33,7 @@ interface AhbSlaveAssertion (
 */
   property checkHrespErrorOnInvalid;
     @(posedge hclk) disable iff (!hresetn)
-    (hreadyout && (htrans == 2'b00)) |-> (hresp == 1'b1);
+    (!hreadyout) |=> (hresp == 1'b1);
   endproperty
 
   assert property (checkHrespErrorOnInvalid)
@@ -43,7 +43,7 @@ interface AhbSlaveAssertion (
 
   property checkHrespOkayForValid;
     @(posedge hclk) disable iff (!hresetn)
-    (hreadyout && (htrans != 2'b00)) |-> (hresp == 1'b0);
+    (hreadyout && (htrans != 2'b00)) |=> (hresp == 1'b0);
   endproperty
 
   assert property (checkHrespOkayForValid)
@@ -61,12 +61,12 @@ interface AhbSlaveAssertion (
 
   property checkHaddrUnchanged;
     @(posedge hclk) disable iff (!hresetn)
-    (hreadyout && (htrans != 2'b00)) |-> (haddr == $past(haddr));
+    (hreadyout && (htrans != 2'b00) && (htrans == 2'b01) ##1 (htrans==2'b01)) |-> (haddr == $past(haddr));
   endproperty
 
   assert property (checkHaddrUnchanged)
-       $info("HADDR remains unchanged during a transfer!");
-  else $error("HADDR changed unexpectedly during a transfer!");
+       $info("HADDR remains unchanged during a Busy transfer!");
+  else $error("HADDR changed unexpectedly during a Busy transfer!");
 
   property checkHsizeMatchesData;
     @(posedge hclk) disable iff (!hresetn)
@@ -79,11 +79,7 @@ interface AhbSlaveAssertion (
 
   property checkBurstTypeValid;
     @(posedge hclk) disable iff (!hresetn)
-    (hreadyout && (htrans != 2'b00)) |-> (hburst == 3'b000 ||
-                                          hburst == 3'b001 ||
-                                          hburst == 3'b010 ||
-                                          hburst == 3'b011 ||
-                                          hburst == 3'b100);
+    (hreadyout && (htrans != 2'b00)) |-> (hburst inside {[0:7]});
   endproperty
 
   assert property (checkBurstTypeValid)

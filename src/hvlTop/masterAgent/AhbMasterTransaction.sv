@@ -153,8 +153,9 @@ constraint busyState{if(hburst == WRAP4 || hburst == INCR4) busyControl.size() =
 
 constraint busyControlValue{foreach(busyControl[i]) if(i == 0 || i == busyControl.size - 1) busyControl[i] == 0;}
 
-constraint busyControldistribution{foreach(busyControl[i]) busyControl[i] dist {0 := 70,1 := 30};}
+constraint busyControldistribution{foreach(busyControl[i]) busyControl[i] dist {0 := 50,1 := 50};}
 
+constraint busyControlNextCycle{foreach(busyControl[i]) if(i < busyControl.size()) if(busyControl[i]) busyControl[i + 1] != 1;}
 //constraint busyControlvalues{foreach(busyControl[i]) busyControl[i] inside {[0:1]};}
 
 endclass : AhbMasterTransaction

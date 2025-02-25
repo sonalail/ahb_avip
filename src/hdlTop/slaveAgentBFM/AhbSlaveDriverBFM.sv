@@ -62,9 +62,6 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
 	begin
       slaveDriveSingleTransfer(dataPacket);
 	end
-    else if(htrans===BUSY) begin
-      slaveDriveBusyTransfer(dataPacket);
-	  end
    else if(hburst!==SINGLE) begin
      slavedriveBurstTransfer(dataPacket);
 	 end
@@ -120,8 +117,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     dataPacket.htrans      <= ahbTransferEnum'(htrans); 
     dataPacket.hmastlock   <= hmastlock; 
     dataPacket.hselx       <= hselx;
-	`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
-				  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);
+	`uvm_info(name, $sformatf("Busy = %0b",dataPacket.busyControl), UVM_LOW);
    // for (int i = 0; i < burst_length - 1; i++) begin
       
       if(hwrite) begin
@@ -132,44 +128,20 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
       end
       else if(!hwrite)begin
 	@(posedge hclk);
+	if(htrans == 2'b01)begin
+           @(posedge hclk);
+    	end
 	`uvm_info(name, $sformatf("DEBUG Address=%0h, Burst=%0b, Size=%0b, Write=%0b,hrdata[%0d] = %0d",
 				  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite,i,dataPacket.hrdata[i]), UVM_LOW);
        hrdata <=dataPacket.hrdata[i];
-       //$display("*************** hrdata=%0d *****************
+       
        hresp  <= 0;
       end
-      /*else if(dataPacket.hresp == 1) begin
-        hresp  <= dataPacket.hresp;
-        `uvm_error(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr));
-      end
-	    `uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
-		*/
+  
     end
-	//end
+	
   endtask: slavedriveBurstTransfer
  
-  task slaveDriveBusyTransfer(inout ahbTransferCharStruct dataPacket);
-    waitCycles(dataPacket);   
-    @(posedge hclk);
-    /*if(dataPacket.hreadyout)begin
-      dataPacket.hready<=1;
-    end*/
-    dataPacket.htrans     = ahbTransferEnum'(htrans);  
-    dataPacket.haddr      = haddr; 
-    dataPacket.hwrite     = ahbWriteEnum'(hwrite); 
-    hresp      <= dataPacket.hresp;
-    if(hwrite  && dataPacket.hresp != 1 ) begin
-      dataPacket.hwdata = hwdata;
-      dataPacket.hwstrb  = hwstrb;
-    end
-    else if(!hwrite  && dataPacket.hresp != 1 ) begin
-      hrdata <= dataPacket.hrdata;
-    end
-   else if(dataPacket.hresp == 1) begin
-   `uvm_error(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr));
-   end
-   `uvm_info(name, $sformatf("Driving BUSY Transfer at Address: %0h", haddr), UVM_LOW);
-  endtask: slaveDriveBusyTransfer
  
 task waitCycles(inout ahbTransferCharStruct dataPacket);
  // @(posedge hclk);

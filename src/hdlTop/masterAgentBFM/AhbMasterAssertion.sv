@@ -18,7 +18,8 @@ interface AhbMasterAssertion (
   input    [HPROT_WIDTH-1:0] hprot,
   input [HMASTER_WIDTH -1:0] hmaster,
   input                      hmastlock,
-  input                      hselx
+  input                      hselx,
+  input                [3:0] hwstrb
 );
 
   import uvm_pkg::*;
@@ -187,7 +188,16 @@ interface AhbMasterAssertion (
   assert property (checkBurstTypeValid)
        $info("Valid burst type!");
   else $error("Invalid burst type detected!");
-
+ 
+ property checkStrobe;
+   @(posedge hclk) disable iff (!hresetn)
+   (htrans != 2'b00) |->((hsize == 3'b000 -> $countones(hwstrb)== 1 )) || ((hsize ==3'b001 -> $countones(hwstrb)==2)) || ((hsize==3'b010 -> $countones(hwstrb)==4));
+ endproperty
+ 
+ assert property (checkStrobe)
+   $info("Hwstrb valid ");
+ else 
+   $error("Hwstrb is not valid for hsize");
 
 endinterface : AhbMasterAssertion
 

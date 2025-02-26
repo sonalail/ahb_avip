@@ -12,13 +12,13 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
     
  HADDR_CP: coverpoint ahbMasterTransaction.haddr {
   option.comment = "AHB Address Coverage";
-bins ahbAddrModeOf4  = { [0:'hFFFFFFFF] } with (item % 4 == 0);
-  bins ahbAddrModeOf8   = { [0:'hFFFFFFFF] } with (item % 8 == 0);
-  bins ahbAddrModeOf16  = { [0:'hFFFFFFFF] } with (item % 16 == 0);
-  bins ahbAddrModeOf32  = { [0:'hFFFFFFFF] } with (item % 32 == 0);
-  bins ahbAddrModeOf64  = { [0:'hFFFFFFFF] } with (item % 64 == 0);
-  bins ahbAddrModeOf128 = { [0:'hFFFFFFFF] } with (item % 128 == 0);
-  bins ahbAddrModeOf256 = { [0:'hFFFFFFFF] } with (item % 256 == 0);
+  bins ahbAddrByteAligned  = { [0:'hFFFFFFFF] } ;
+  bins ahbAddrHalfWordAligned   = { [0:'hFFFFFFFF] } iff(ahbMasterTransaction.haddr[0]==0);
+  bins ahbAddrWordAligned   = { [0:'hFFFFFFFF] } iff(ahbMasterTransaction.haddr[1:0]==2'b00);
+  //bins ahbAddrModeOf32  = { [0:'hFFFFFFFF] } with (item % 32 == 0);
+  //bins ahbAddrModeOf64  = { [0:'hFFFFFFFF] } with (item % 64 == 0);
+  //bins ahbAddrModeOf128 = { [0:'hFFFFFFFF] } with (item % 128 == 0);
+  //bins ahbAddrModeOf256 = { [0:'hFFFFFFFF] } with (item % 256 == 0);
   
   bins ahbAddrAllZeroes      = {32'h00000000};         
   bins ahbAddrAllOnes        = {32'hFFFFFFFF};      
@@ -31,12 +31,7 @@ bins ahbAddrModeOf4  = { [0:'hFFFFFFFF] } with (item % 4 == 0);
   bins ahbAddrMinimum    = {32'h00000000};         
   bins ahbAddrMaximum    = {32'hFFFFFFFF};         
   
-  bins ahbAddrSequential[] = { [0:'hFFFFFFF0] } with (item%1==0);  
-  
-
-  bins ahbAddrBurst4[]         = {[0:'hFFFFFFFF]} with (item%16==0); 
-  bins ahbAddrBurst8[]         = {[0:'hFFFFFFFF]} with (item%32==0); 
-  bins ahbAddrBurst16[]        = {[0:'hFFFFFFFF]} with (item%64==0); 
+  //bins ahbAddrSequential[] = { [0:'hFFFFFFF0] } with (item%1==0;
 
   
   bins ahbAddrDefault        = default;
@@ -45,32 +40,32 @@ bins ahbAddrModeOf4  = { [0:'hFFFFFFFF] } with (item % 4 == 0);
 
     HWRITE_CP:coverpoint ahbMasterTransaction.hwrite{
       option.comment = " ahb write";
-      bins ahbWrite0 ={0};
-      bins ahbWrite1 ={1};
+      bins ahbRead ={0};
+      bins ahbWrite ={1};
     }
 
      HSIZE_CP:coverpoint ahbMasterTransaction.hsize{
       option.comment = " ahb size";
-       bins ahbSize1Byte   ={0};
-       bins ahbSize2Bytes  ={1};
-       bins ahbSize4Bytes  ={2};
-       bins ahbSize8Bytes  ={3};
-       bins ahbSize16Bytes ={4};
-       bins ahbSize32Bytes ={5};
+       bins ahbByte   ={0};
+       bins ahbHalfWord  ={1};
+       bins ahbWord  ={2};
+       bins ahbDoubleWord  ={3};
+       bins ahbLine4 ={4};
+       bins ahbLine8 ={5};
        illegal_bins illegalBinsOfAhbsize64Bytes =  {6};  
        illegal_bins illegalBinsOfAhbsize128Bytes = {7}; 
     }
 
       HBURST_CP:coverpoint ahbMasterTransaction.hburst{
       option.comment = " ahb burst";
-        bins ahbBurst0={0};
-        bins ahbBurst1={1};
-        bins ahbBurst2={2};
-        bins ahbBurst3={3};
-        bins ahbBurst4={4};
-        bins ahbBurst5={5};
-        bins ahbBurst6={6};
-        bins ahbBurst7={7};
+        bins ahbSingle={0};
+        bins ahbIncr={1};
+        bins ahbWrap4={2};
+        bins ahbIncr4={3};
+        bins ahbWrap8={4};
+        bins ahbIncr8={5};
+        bins ahbWrap16={6};
+        bins ahbIncr16={7};
                        
     }
 
@@ -109,16 +104,49 @@ bins ahbAddrModeOf4  = { [0:'hFFFFFFFF] } with (item % 4 == 0);
       bins ahbMastlock1={1};
     }
 
-   /*  HWSTRB_CP:coverpoint ahbMasterTransaction.hwstrb{
+     HWSTRB_CP_0:coverpoint ahbMasterTransaction.hwstrb[0]{
       option.comment = " ahb strb";
        bins ahbStrbSingleBit   = {4'b0001, 4'b0010, 4'b0100, 4'b1000};
-       bins ahbStrbDoubleBits  = {4'b0011, 4'b0110, 4'b1100, 4'b1001, 4'b0101, 4'b1010};
-       bins ahbStrbThreeBits   = {4'b0111, 4'b1110, 4'b1101, 4'b1011};
-       bins ahbStrbAllZeroes   = {4'b0000};
+       bins ahbStrbDoubleBits  = {4'b0011, 4'b0101, 4'b1001, 4'b0110, 4'b1010, 4'b1100};
        bins ahbStrbAllOnes     = {4'b1111};
-    }*/
+       ignore_bins ahbStrbThreeBits   = {4'b0111, 4'b1110, 4'b1101, 4'b1011};
+       ignore_bins ahbStrbAllZeroes   = {4'b0000};
+    }   
+       
     
-     HNONSEC_CP:coverpoint ahbMasterTransaction.hnonsec{
+    HWSTRB_CP_1:coverpoint ahbMasterTransaction.hwstrb[1]{
+      option.comment = " ahb strb";
+       bins ahbStrbSingleBit   = {4'b0001, 4'b0010, 4'b0100, 4'b1000};
+       bins ahbStrbDoubleBits  = {4'b0011, 4'b0101, 4'b1001, 4'b0110, 4'b1010, 4'b1100};
+       bins ahbStrbAllOnes     = {4'b1111};
+       ignore_bins ahbStrbThreeBits   = {4'b0111, 4'b1110, 4'b1101, 4'b1011};
+       ignore_bins ahbStrbAllZeroes   = {4'b0000};
+       
+       
+    }
+   
+   HWSTRB_CP_2:coverpoint ahbMasterTransaction.hwstrb[2]{
+      option.comment = " ahb strb";
+       bins ahbStrbSingleBit   = {4'b0001, 4'b0010, 4'b0100, 4'b1000};
+       bins ahbStrbDoubleBits  = {4'b0011, 4'b0101, 4'b1001, 4'b0110, 4'b1010, 4'b1100};
+       bins ahbStrbAllOnes     = {4'b1111};
+       ignore_bins ahbStrbThreeBits   = {4'b0111, 4'b1110, 4'b1101, 4'b1011};
+       ignore_bins ahbStrbAllZeroes   = {4'b0000};
+       
+       
+    }
+   
+  HWSTRB_CP_3:coverpoint ahbMasterTransaction.hwstrb[3]{
+      option.comment = " ahb strb";
+       bins ahbStrbSingleBit   = {4'b0001, 4'b0010, 4'b0100, 4'b1000};
+       bins ahbStrbDoubleBits  = {4'b0011, 4'b0101, 4'b1001, 4'b0110, 4'b1010, 4'b1100};
+       bins ahbStrbAllOnes     = {4'b1111};
+       ignore_bins ahbStrbThreeBits   = {4'b0111, 4'b1110, 4'b1101, 4'b1011};
+       ignore_bins ahbStrbAllZeroes   = {4'b0000};
+       
+       
+    }
+    HNONSEC_CP:coverpoint ahbMasterTransaction.hnonsec{
       option.comment = " ahb nonsec";
        bins ahbNonsec0={0};
        bins ahbNonsec1={1};

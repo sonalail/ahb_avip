@@ -39,7 +39,7 @@ interface AhbMasterAssertion (
 
   property checkHtransValidity;
     @(posedge hclk) disable iff (!hresetn)
-    (htrans == 2'b10 || htrans == 2'b11) |-> hready;
+    (htrans == 2'b10 || htrans == 2'b11) |=> hready;
   endproperty
 
   assert property (checkHtransValidity)
@@ -48,7 +48,7 @@ interface AhbMasterAssertion (
 
   property checkHaddrAlignment;
     @(posedge hclk) disable iff (!hresetn)
-    (hready && (htrans != 2'b00) && hburst != 3'b000) |-> ((hsize == 3'b001) && (haddr[0] == 1'b0)) || 
+    (hready && (htrans != 2'b00) && hburst != 3'b000 && hsize != 3'b000) |-> ((hsize == 3'b001) && (haddr[0] == 1'b0)) || 
                                                           ((hsize == 3'b010) && (haddr[1:0] == 2'b00));
   endproperty
 

@@ -58,10 +58,10 @@ usage:
 	echo "make simulate test=base_test uvm_verbosity=UVM_HIGH";
 	echo "";
 	echo "To run regression:"
-	echo "make regression testlist_name=<regression_testlist_name.list>";
+	echo "make regression testlist_name=AhbRegression.list";
 	echo "";
 	echo "Example:":
-	echo "make regression testlist_name=apb_regression.list";
+	echo "make regression testlist_name=AhbRegression.list";
 	echo "";
 	echo "-----------------------------------------------------------------";
 	echo "-----------------------------------------------------------------";

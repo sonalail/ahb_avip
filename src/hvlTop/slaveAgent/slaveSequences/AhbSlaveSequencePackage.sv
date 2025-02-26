@@ -37,7 +37,11 @@ package AhbSlaveSequencePackage;
   `include "AhbSlave32bitIncr16ReadSequence.sv"
   `include "AhbSlave16bitIncr16WriteSequence.sv"
   `include "AhbSlave16bitIncr16ReadSequence.sv"
- 
+  `include "AhbSlave8bitIncr8WriteSequence.sv"
+  `include "AhbSlave8bitIncr8ReadSequence.sv"
+  `include "AhbSlave8bitIncr16WriteSequence.sv"
+  `include "AhbSlave8bitIncr16ReadSequence.sv"
+
   `include "AhbSlave32bitWrap4WriteSequence.sv"
   `include "AhbSlave32bitWrap4ReadSequence.sv"
   `include "AhbSlave32bitWrap8WriteSequence.sv"
@@ -55,6 +59,13 @@ package AhbSlaveSequencePackage;
   `include "AhbSlave16bitWrap8ReadSequence.sv"
   `include "AhbSlave16bitWrap16WriteSequence.sv"
   `include "AhbSlave16bitWrap16ReadSequence.sv"
+
+  `include "AhbSlave8bitWrap4WriteSequence.sv"
+  `include "AhbSlave8bitWrap4ReadSequence.sv"
+  `include "AhbSlave8bitWrap8WriteSequence.sv"
+  `include "AhbSlave8bitWrap8ReadSequence.sv"
+  `include "AhbSlave8bitWrap16WriteSequence.sv"
+  `include "AhbSlave8bitWrap16ReadSequence.sv"
 
 
 endpackage : AhbSlaveSequencePackage

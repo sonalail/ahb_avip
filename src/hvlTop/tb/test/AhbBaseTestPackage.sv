@@ -49,12 +49,22 @@ package AhbBaseTestPackage;
   `include "Ahb32bitWrap16WriteTest.sv"
   `include "Ahb32bitWrap16ReadTest.sv"
 
+  `include "Ahb8bitIncr8WriteTest.sv"
+  `include "Ahb8bitIncr8ReadTest.sv"
+  `include "Ahb8bitIncr16WriteTest.sv"
+  `include "Ahb8bitIncr16ReadTest.sv"
   `include "Ahb16bitWrap4WriteTest.sv"
   `include "Ahb16bitWrap4ReadTest.sv"
   `include "Ahb16bitWrap8WriteTest.sv"
   `include "Ahb16bitWrap8ReadTest.sv"
   `include "Ahb16bitWrap16WriteTest.sv"
   `include "Ahb16bitWrap16ReadTest.sv"
+  `include "Ahb8bitWrap4WriteTest.sv"
+  `include "Ahb8bitWrap4ReadTest.sv"
+  `include "Ahb8bitWrap8WriteTest.sv"
+  `include "Ahb8bitWrap8ReadTest.sv"
+  `include "Ahb8bitWrap16WriteTest.sv"
+  `include "Ahb8bitWrap16ReadTest.sv"
 
 endpackage : AhbBaseTestPackage
 

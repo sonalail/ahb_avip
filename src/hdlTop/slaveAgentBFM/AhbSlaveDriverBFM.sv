@@ -21,7 +21,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
 			                 output logic hreadyout,
 			                 output logic hresp,
                              output logic hexokay,
-                             output logic hready,                                                           
+                             input logic hready,                                                           
                              input logic [NO_OF_SLAVES-1:0]hselx
                             );
  
@@ -70,6 +70,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
   task slaveDriveSingleTransfer(inout ahbTransferCharStruct dataPacket);
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
 	waitCycles(dataPacket);
+   //@(posedge hclk);
     hreadyout 		   <= 1;
     dataPacket.haddr       <= haddr;
     dataPacket.htrans      <= ahbTransferEnum'(htrans);
@@ -144,7 +145,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
  
  
 task waitCycles(inout ahbTransferCharStruct dataPacket);
- // @(posedge hclk);
+  @(posedge hclk);
 // while(hselx[0] !==1) begin
    //   `uvm_info(name, "Bus is now selecting salve", UVM_HIGH)
   //    @(posedge hclk);
@@ -155,7 +156,7 @@ task waitCycles(inout ahbTransferCharStruct dataPacket);
       hreadyout <= 0;
     @(posedge hclk); 
   end
-   // hready<=1;
+    hreadyout<=1;
  
   `uvm_info(name, "Bus is now out of wait cycles", UVM_LOW);
 endtask:waitCycles

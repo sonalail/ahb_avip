@@ -111,8 +111,8 @@ function void AhbBaseTest::setupAhbSlaveAgentConfig();
   //   ahbEnvironmentConfig.ahbSlaveAgentConfig[i].slave_selected = 0;
 
    foreach(ahbEnvironmentConfig.ahbSlaveAgentConfig[i]) begin
-     ahbEnvironmentConfig.ahbSlaveAgentConfig[i].minimumAddress    = ahbEnvironmentConfig.ahbMasterAgentConfig[i].masterMinimumAddressRangeArray[i];
-     ahbEnvironmentConfig.ahbSlaveAgentConfig[i].maximumAddress    = ahbEnvironmentConfig.ahbMasterAgentConfig[i].masterMaximumAddressRangeArray[i];
+     //ahbEnvironmentConfig.ahbSlaveAgentConfig[i].minimumAddress    = ahbEnvironmentConfig.ahbMasterAgentConfig[i].masterMinimumAddressRangeArray[i];
+     //ahbEnvironmentConfig.ahbSlaveAgentConfig[i].maximumAddress    = ahbEnvironmentConfig.ahbMasterAgentConfig[i].masterMaximumAddressRangeArray[i];
     if(SLAVE_AGENT_ACTIVE === 1) begin
       ahbEnvironmentConfig.ahbSlaveAgentConfig[i].is_active = uvm_active_passive_enum'(UVM_ACTIVE);
     end

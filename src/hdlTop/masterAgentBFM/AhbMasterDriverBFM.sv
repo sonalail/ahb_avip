@@ -56,7 +56,7 @@ interface AhbMasterDriverBFM (input  bit  hclk,
  
   task driveSingleTransfer(inout ahbTransferCharStruct dataPacket);
 	`uvm_info("INSIDESINGLETRANSFER","BFM",UVM_LOW);
-  countWaitStates(dataPacket);
+  //countWaitStates(dataPacket);
    @(posedge hclk); 
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
     haddr       <= dataPacket.haddr;
@@ -77,7 +77,8 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     wait(hready);  
  
    @(posedge hclk);
-	hwdata      <= dataPacket.hwrite ? dataPacket.hwdata[0] : '0;
+        hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.hwstrb[0]) : '0;
+	//hwdata      <= dataPacket.hwrite ? dataPacket.hwdata[0] : '0;
  
     if (hresp == 1) begin  
       `uvm_error(name, $sformatf("Error Response Detected on Single Transfer at Address: %0h", haddr));
@@ -147,17 +148,22 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     end
 
      @(posedge hclk);
-      hwdata      <= dataPacket.hwrite ? dataPacket.hwdata[i] : '0;
- 
-      
-     // haddr <= 0;
-   // @(posedge hclk);
+      hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[i], dataPacket.hwstrb[i]) : '0;
+      //hwdata      <= dataPacket.hwrite ? dataPacket.hwdata[i] : '0;
+
     end
-    //end
-    //@(posedge hclk);
+
 driveIdle();    
 		`uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
   endtask
+
+function logic [DATA_WIDTH-1:0] maskingStrobe(logic [DATA_WIDTH-1:0] data, logic [(DATA_WIDTH/8)-1:0] strobe);
+    logic [DATA_WIDTH-1:0] masked_data;
+    for (int j = 0; j < (DATA_WIDTH/8); j++) begin
+        masked_data[j*8 +: 8] = strobe[j] ? data[j*8 +: 8] : 8'h00;
+    end
+    return masked_data;
+endfunction
  
   task driveBusyTransfer(inout ahbTransferCharStruct dataPacket, inout logic [ADDR_WIDTH-1:0] current_address);
     //@(posedge hclk);

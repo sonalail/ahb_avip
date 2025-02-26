@@ -2,8 +2,8 @@
    Ahb32bitSingleWriteTest 
    Ahb32bitSingleReadTest 
 
-   #Ahb32bitSingleWriteWithWaitStateTest 
-   #Ahb32bitSingleReadWithWaitStateTest 
+   Ahb32bitSingleWriteWithWaitStateTest 
+   Ahb32bitSingleReadWithWaitStateTest 
 
    Ahb32bitIncr4WriteTest 
    Ahb32bitIncr4ReadTest

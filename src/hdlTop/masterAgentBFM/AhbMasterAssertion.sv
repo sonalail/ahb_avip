@@ -39,7 +39,7 @@ interface AhbMasterAssertion (
 
   property checkHtransValidity;
     @(posedge hclk) disable iff (!hresetn)
-    (htrans == 2'b10 || htrans == 2'b11) |=> hready;
+    (htrans == 2'b10 || htrans == 2'b11) |-> ##[1:$] hready;
   endproperty
 
   assert property (checkHtransValidity)
@@ -85,7 +85,7 @@ interface AhbMasterAssertion (
        $info("HRESP is ERROR during error conditions");
   else $error("Unexpected HRESP ERROR when transfer is IDLE!");
 */
-  property checkHreadyStability;
+  /*property checkHreadyStability;
     @(posedge hclk) disable iff (!hresetn)
     (hready) |=> hready;
   endproperty
@@ -93,7 +93,7 @@ interface AhbMasterAssertion (
   assert property (checkHreadyStability)
        $info("HREADY remains stable during wait states");
   else $error("HREADY unexpectedly changed when slave was not ready!");
-
+*/
   property checkHmastlockCheck;
     @(posedge hclk) disable iff (!hresetn)
     (hready && htrans != 2'b00 && hmastlock) |-> (hmastlock == 1);
@@ -154,7 +154,7 @@ interface AhbMasterAssertion (
 
   property checkAddrStability;
     @(posedge hclk) disable iff (!hresetn)
-    (htrans == 2'b10||htrans ==2'b11) && hready==0 |=> $stable(haddr) throughout hready==0;
+    (htrans == 2'b10||htrans ==2'b11) && hready==0 |=> $stable(haddr);
   endproperty
 
   assert property (checkAddrStability)

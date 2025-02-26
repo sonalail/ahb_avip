@@ -24,7 +24,7 @@ interface AhbSlaveAssertion (
 
   property checkHreadyoutValid;
     @(posedge hclk) disable iff (!hresetn)
-    ((htrans != 2'b00) ##1 !$isunknown(hwdata)) |-> hreadyout;
+    ((htrans != 2'b00)  &&  hreadyout) |=> !$isunknown(hwdata);
   endproperty
 
   assert property (checkHreadyoutValid)
@@ -33,7 +33,7 @@ interface AhbSlaveAssertion (
 
   property checkHrespErrorOnInvalid;
     @(posedge hclk) disable iff (!hresetn)
-    (!hreadyout) |=> (hresp == 1'b1);
+    (hreadyout==0) |=> (hresp == 1'b1);
   endproperty
 
   assert property (checkHrespErrorOnInvalid)

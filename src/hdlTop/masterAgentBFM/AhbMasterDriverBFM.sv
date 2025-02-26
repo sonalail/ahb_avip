@@ -168,7 +168,7 @@ driveIdle();
     //hwdata     <= dataPacket.hwdata; // Use write data from dataPacket (if applicable)
     `uvm_info(name, $sformatf("Driving BUSY Transfer at Address: %0h", haddr), UVM_LOW);
     @(posedge hclk);
-    //htrans <= dataPacket.htrans == 2'b11 ? 2'b10 : dataPacket.htrans;  
+    htrans <= 2'b11 ;  
     //`uvm_info(name, $sformatf("Continuing Sequential Transfer after BUSY at Address: %0h", haddr), UVM_LOW);
   //end
   endtask

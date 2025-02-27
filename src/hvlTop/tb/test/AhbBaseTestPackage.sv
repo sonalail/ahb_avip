@@ -65,6 +65,14 @@ package AhbBaseTestPackage;
   `include "Ahb8bitWrap8ReadTest.sv"
   `include "Ahb8bitWrap16WriteTest.sv"
   `include "Ahb8bitWrap16ReadTest.sv"
+ 
+  `include "Ahb32bitIncr4WriteWithWaitStateTest.sv"
+  `include "Ahb32bitIncr4ReadWithWaitStateTest.sv" 
+  `include "Ahb32bitIncr8WriteWithWaitStateTest.sv"
+  `include "Ahb32bitIncr8ReadWithWaitStateTest.sv"
+  `include "Ahb32bitIncr16WriteWithWaitStateTest.sv"
+  `include "Ahb32bitIncr16ReadWithWaitStateTest.sv"
+
 
 endpackage : AhbBaseTestPackage
 

@@ -67,6 +67,12 @@ package AhbSlaveSequencePackage;
   `include "AhbSlave8bitWrap16WriteSequence.sv"
   `include "AhbSlave8bitWrap16ReadSequence.sv"
 
+  `include "AhbSlave32bitIncr4WriteSequenceWithWaitState.sv"
+  `include "AhbSlave32bitIncr4ReadSequenceWithWaitState.sv"
+  `include "AhbSlave32bitIncr8WriteSequenceWithWaitState.sv"
+  `include "AhbSlave32bitIncr8ReadSequenceWithWaitState.sv"
+  `include "AhbSlave32bitIncr16WriteSequenceWithWaitState.sv"
+  `include "AhbSlave32bitIncr16ReadSequenceWithWaitState.sv"
 
 endpackage : AhbSlaveSequencePackage
 

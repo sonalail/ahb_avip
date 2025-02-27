@@ -22,15 +22,10 @@ task AhbVirtual8bitSingleWriteSequenceWithWaitState::body();
   ahbMaster8bitSingleWriteSequenceWithWaitState = AhbMaster8bitSingleWriteSequenceWithWaitState::type_id::create("ahbMaster8bitSingleWriteSequenceWithWaitState");
   ahbSlave8bitSingleWriteSequenceWithWaitState = AhbSlave8bitSingleWriteSequenceWithWaitState::type_id::create("ahbSlave8bitSingleWriteSequenceWithWaitState");
  fork
-    forever begin
+      ahbMaster8bitSingleWriteSequenceWithWaitState.start(p_sequencer.ahbMasterSequencer);
       ahbSlave8bitSingleWriteSequenceWithWaitState.start(p_sequencer.ahbSlaveSequencer);
-    end
-  join_none
+ join
 
-  repeat(1) begin
-    ahbMaster8bitSingleWriteSequenceWithWaitState.start(p_sequencer.ahbMasterSequencer);
-	`uvm_info("virtual sequence","out of virtual sequence",UVM_LOW)
-  end
 
  endtask : body
 

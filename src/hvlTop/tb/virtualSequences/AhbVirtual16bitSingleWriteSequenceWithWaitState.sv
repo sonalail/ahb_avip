@@ -21,16 +21,11 @@ task AhbVirtual16bitSingleWriteSequenceWithWaitState::body();
   super.body();
   ahbMaster16bitSingleWriteSequenceWithWaitState = AhbMaster16bitSingleWriteSequenceWithWaitState::type_id::create("ahbMaster16bitSingleWriteSequenceWithWaitState");
   ahbSlave16bitSingleWriteSequenceWithWaitState = AhbSlave16bitSingleWriteSequenceWithWaitState::type_id::create("ahbSlave16bitSingleWriteSequenceWithWaitState");
- fork
-    forever begin
-      ahbSlave16bitSingleWriteSequenceWithWaitState.start(p_sequencer.ahbSlaveSequencer);
-    end
-  join_none
 
-  repeat(1) begin
-    ahbMaster16bitSingleWriteSequenceWithWaitState.start(p_sequencer.ahbMasterSequencer);
-	`uvm_info("virtual sequence","out of virtual sequence",UVM_LOW)
-  end
+ fork
+     ahbMaster16bitSingleWriteSequenceWithWaitState.start(p_sequencer.ahbMasterSequencer);
+     ahbSlave16bitSingleWriteSequenceWithWaitState.start(p_sequencer.ahbSlaveSequencer);
+ join
 
  endtask : body
 

@@ -75,7 +75,8 @@ module AhbMasterAgentBFM(AhbInterface ahbInterface); // Change interface to AhbI
                                                          .hwdata(ahbInterface.hwdata),
                                                          .hresp(ahbInterface.hresp),
                                                          .hexcl(ahbInterface.hexcl),
-                                                         .hselx(ahbInterface.hselx)
+                                                         .hselx(ahbInterface.hselx),
+							 .hwstrb(ahbInterface.hwstrb)
                                                         );
 
 endmodule : AhbMasterAgentBFM

@@ -9,7 +9,7 @@ class AhbSlaveCoverage extends uvm_subscriber #(AhbSlaveTransaction);
     covergroup ahbSlaveCovergroup with function sample (AhbSlaveAgentConfig AhbSlaveAgentConfig , AhbSlaveTransaction ahbSlaveTransaction);
     option.per_instance=1;
     
-    HREADY_CP:coverpoint ahbSlaveTransaction.hready{
+    HREADY_CP:coverpoint ahbSlaveTransaction.hreadyout{
       option.comment="ahb ready";
       bins ahbReady0={0};
       bins ahbReady1={1};

@@ -105,7 +105,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
       default: burst_length = 1;
     endcase
  
-   // waitCycles(dataPacket);
+    waitCycles(dataPacket);
     //@(posedge hclk);
 	for(int i = 0;i < burst_length;i++)
 	begin

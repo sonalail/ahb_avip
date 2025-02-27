@@ -26,6 +26,7 @@
 ../../src/hdlTop/slaveAgentBFM/AhbSlaveMonitorBFM.sv
 ../../src/hdlTop/slaveAgentBFM/AhbSlaveAgentBFM.sv
 ../../src/hdlTop/slaveAgentBFM/AhbSlaveAssertion.sv
-../../src/hdlTop/AhbCoverProperty.sv
+../../src/hdlTop/masterAgentBFM/AhbMasterCoverProperty.sv
+../../src/hdlTop/slaveAgentBFM/AhbSlaveCoverProperty.sv
 ../../src/hdlTop/HdlTop.sv
 ../../src/hvlTop/HvlTop.sv 

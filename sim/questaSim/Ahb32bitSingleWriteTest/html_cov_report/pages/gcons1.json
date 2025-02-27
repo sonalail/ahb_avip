@@ -1,0 +1,7 @@
+var g_db_data = [
+{dummy:0},
+{name:'ahbSlaveCovergroup',f:1,type:6,id:2425,tb:'4',h:'2',m:'2',hp:'50.00%',cov:['50.00%','Y'],g:'100.00%',gp:['50.00%','Y'],opts:[[],['merge_instance','auto(true)']],hdlPath:'/AhbSlavePackage/AhbSlaveCoverage',parent:'2420'},
+{name:'ahbMasterCovergroup',f:1,type:6,id:2585,tb:'98',h:'17',m:'81',hp:'17.34%',cov:['32.39%','R'],g:'100.00%',gp:['32.39%','R'],opts:[[],['merge_instance','auto(true)']],hdlPath:'/AhbMasterPackage/AhbMasterCoverage',parent:'2580'},
+{name:'ahbSlaveCovergroup',f:1,type:6,id:5885,tb:'4',h:'2',m:'2',hp:'50.00%',cov:['50.00%','Y'],g:'100.00%',gp:['50.00%','Y'],opts:[[],['merge_instance','true']],hdlPath:'work.AhbSlavePackage::AhbSlaveCoverage',parent:'5880'},
+{name:'ahbMasterCovergroup',f:1,type:6,id:6361,tb:'98',h:'17',m:'81',hp:'17.34%',cov:['32.39%','R'],g:'100.00%',gp:['32.39%','R'],opts:[[],['merge_instance','true']],hdlPath:'work.AhbMasterPackage::AhbMasterCoverage',parent:'6356'}];
+processConsCovergroupsData(g_db_data);

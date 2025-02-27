@@ -70,6 +70,12 @@ package AhbVirtualSequencePackage;
    `include "AhbVirtual32bitIncr8ReadSequenceWithWaitState.sv"
    `include "AhbVirtual32bitIncr16WriteSequenceWithWaitState.sv"
    `include "AhbVirtual32bitIncr16ReadSequenceWithWaitState.sv"
+   `include "AhbVirtual32bitWrap4WriteSequenceWithWaitState.sv"
+   `include "AhbVirtual32bitWrap4ReadSequenceWithWaitState.sv"
+   `include "AhbVirtual32bitWrap8WriteSequenceWithWaitState.sv"
+   `include "AhbVirtual32bitWrap8ReadSequenceWithWaitState.sv"
+   `include "AhbVirtual32bitWrap16WriteSequenceWithWaitState.sv"
+   `include "AhbVirtual32bitWrap16ReadSequenceWithWaitState.sv"
 
 
 endpackage : AhbVirtualSequencePackage

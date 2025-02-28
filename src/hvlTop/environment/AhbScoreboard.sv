@@ -95,7 +95,7 @@ if(!ahbMasterTransaction.htrans == IDLE )begin
 
     if(ahbMasterTransaction.hwdata == ahbSlaveTransaction.hwdata) begin
     `uvm_info(get_type_name(),$sformatf("ahb HWDATA from master and slave is equal"),UVM_HIGH);
-    `uvm_info("SB  HWDAT MATCHED", $sformatf("Master HWDATA = %0p and Slave HWDATA = %0p",
+    `uvm_info("SB  HWDATA MATCHED", $sformatf("Master HWDATA = %0p and Slave HWDATA = %0p",
                                     ahbMasterTransaction.hwdata,ahbSlaveTransaction.hwdata), UVM_HIGH);             
      VerifiedMasterHwdataCount++;
     end
@@ -260,7 +260,7 @@ if(ahbMasterTransaction.hwrite == WRITE)begin
   else begin
     `uvm_info (get_type_name(), $sformatf (" VerifiedMasterHwdataCount :%0d",
                                           VerifiedMasterHwdataCount),UVM_HIGH);
-	  `uvm_info (get_type_name(), $sformatf ("FailedMasterHwdataCount : %0d", 
+
                                            FailedMasterHwdataCount),UVM_HIGH);
     `uvm_error ("SC_CheckPhase", $sformatf ("comparisions of master_hwdata not happened"));
   end
@@ -311,7 +311,7 @@ end
   end 
 
   if( ahbMasterAnalysisFifo[indexMaster].size() == 0)begin
-    `uvm_info ("SC_CheckPhase", $sformatf ("APB Master analysis FIFO is empty"),UVM_HIGH);
+    `uvm_info ("SC_CheckPhase", $sformatf ("AHB Master analysis FIFO is empty"),UVM_HIGH);
   end
 
   else begin
@@ -320,12 +320,12 @@ end
   end
 
   if( ahbSlaveAnalysisFifo[indexSlave].size()== 0)begin
-    `uvm_info ("SC_CheckPhase", $sformatf ("APB Slave analysis FIFO is empty"),UVM_HIGH);
+    `uvm_info ("SC_CheckPhase", $sformatf ("AHB Slave analysis FIFO is empty"),UVM_HIGH);
   end
   else begin
     `uvm_info (get_type_name(), $sformatf (" ahbSlaveAnalysisFifo:%0d", ahbSlaveAnalysisFifo.size()),UVM_HIGH);
 
-    `uvm_error ("SC_CheckPhase",$sformatf ("APB Slave analysis FIFO is not empty"));
+    `uvm_error ("SC_CheckPhase",$sformatf ("AHB Slave analysis FIFO is not empty"));
   end
 
   `uvm_info(get_type_name(),$sformatf("--\n----------------------------------------------END OF SCOREBOARD CHECK PHASE---------------------------------------"),UVM_HIGH)

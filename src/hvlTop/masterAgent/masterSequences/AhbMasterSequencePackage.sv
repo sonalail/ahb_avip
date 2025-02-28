@@ -70,6 +70,13 @@ package AhbMasterSequencePackage;
   `include "AhbMaster32bitIncr8ReadSequenceWithWaitState.sv"
   `include "AhbMaster32bitIncr16WriteSequenceWithWaitState.sv"
   `include "AhbMaster32bitIncr16ReadSequenceWithWaitState.sv"
+  `include "AhbMaster32bitWrap4WriteSequenceWithWaitState.sv"
+  `include "AhbMaster32bitWrap4ReadSequenceWithWaitState.sv"
+  `include "AhbMaster32bitWrap8WriteSequenceWithWaitState.sv"
+  `include "AhbMaster32bitWrap8ReadSequenceWithWaitState.sv"
+  `include "AhbMaster32bitWrap16WriteSequenceWithWaitState.sv"
+  `include "AhbMaster32bitWrap16ReadSequenceWithWaitState.sv"
+
 
 endpackage : AhbMasterSequencePackage
 

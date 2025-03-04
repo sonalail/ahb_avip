@@ -261,6 +261,7 @@ if(ahbMasterTransaction.hwrite == WRITE)begin
     `uvm_info (get_type_name(), $sformatf (" VerifiedMasterHwdataCount :%0d",
                                           VerifiedMasterHwdataCount),UVM_HIGH);
 
+	  `uvm_info (get_type_name(), $sformatf ("FailedMasterHwdataCount : %0d", 
                                            FailedMasterHwdataCount),UVM_HIGH);
     `uvm_error ("SC_CheckPhase", $sformatf ("comparisions of master_hwdata not happened"));
   end

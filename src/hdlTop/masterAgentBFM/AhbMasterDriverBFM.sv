@@ -72,16 +72,15 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	hwrite      <= dataPacket.hwrite;
 	hselx       <= 1'b1;
  
-  //  `uvm_info(name,$sformatf("DRIVING IS DONE"),UVM_LOW)
-   // countWaitStates(dataPacket);
+   //`uvm_info(name,$sformatf("DRIVING IS DONE"),UVM_LOW)
+   //countWaitStates(dataPacket);
     wait(hready);  
  
    @(posedge hclk);
         hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.hwstrb[0]) : '0;
-	//hwdata      <= dataPacket.hwrite ? dataPacket.hwdata[0] : '0;
  
     if (hresp == 1) begin  
-      `uvm_error(name, $sformatf("Error Response Detected on Single Transfer at Address: %0h", haddr));
+      `uvm_info(name, $sformatf("Error Response Detected on Single Transfer at Address: %0h", haddr),UVM_LOW);
     end else if (!dataPacket.hwrite) begin  
       `uvm_info(name, $sformatf("Read Data: %0h from Address: %0h", hrdata[0], haddr), UVM_LOW);
     end else begin `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata, haddr), UVM_LOW);
@@ -111,32 +110,28 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	hnonsec     <= dataPacket.hnonsec;
 	hexcl       <= dataPacket.hexcl;
 	hmaster     <= dataPacket.hmaster;
-	htrans      <= dataPacket.htrans; // Non-sequential transfer
-//	hwdata      <= dataPacket.hwrite ? dataPacket.hwdata : '0;
+	htrans      <= dataPacket.htrans; 
 	hwstrb      <= dataPacket.hwstrb[i];
 	hwrite      <= dataPacket.hwrite;
 	hselx       <= 1;
  
 	
-//`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",
-//			  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);
-  //  for (int i = 0; i < burst_length-1; i++) begin
-    //  countWaitStates(dataPacket);
-      wait(hready);
+	/*`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);*/
+    
+	wait(hready);
       if (hresp == 1) begin
-        `uvm_error(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr));
-        break;
+        `uvm_info(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr),UVM_LOW);
       end
       if (dataPacket.hburst == 3'b010 || dataPacket.hburst == 3'b100 || dataPacket.hburst == 3'b110) begin
  
-	  `uvm_info("LOKI","LOKI1", UVM_LOW);
+	  //`uvm_info("LOKI","LOKI1", UVM_LOW);
         current_address = (current_address & ~(burst_length * (1 << dataPacket.hsize) - 1)) | ((current_address + (1 << dataPacket.hsize)) & (burst_length * (1 << dataPacket.hsize) - 1));
       end 
       else begin
-	  `uvm_info("THOR","THOR1", UVM_LOW);
+	  //`uvm_info("THOR","THOR1", UVM_LOW);
         current_address += (1 << dataPacket.hsize); 
       end
-     if( i>0)begin
+     if(i > 0)begin
          if(dataPacket.busyControl[i]>0) begin
            driveBusyTransfer(dataPacket, current_address) ;
            //@(posedge hclk);

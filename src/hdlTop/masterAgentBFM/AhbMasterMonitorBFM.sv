@@ -6,25 +6,25 @@ import AhbGlobalPackage::*;
 
 interface AhbMasterMonitorBFM(input  bit   hclk,
                               input  bit  hresetn,
-    input logic [ADDR_WIDTH-1:0] haddr,
-    input logic [NO_OF_SLAVES-1:0] hselx,
-    input logic [2:0] hburst,
-    input logic hmastlock,
-    input logic [HPROT_WIDTH-1:0] hprot,
-    input logic [2:0] hsize,
-    input logic hnonsec,
-    input logic hexcl,
-    input logic [HMASTER_WIDTH-1:0] hmaster,
-    input logic [1:0] htrans,
-    input logic [DATA_WIDTH-1:0] hwdata,
-    input logic [(DATA_WIDTH/8)-1:0] hwstrb,
-    input logic hwrite,
-    input logic [DATA_WIDTH-1:0] hrdata,
-    input logic hreadyout,
-    input logic hresp,
-    input logic hexokay,
-    input logic hready
-);
+   							  input logic [ADDR_WIDTH-1:0] haddr,
+    						  input logic [NO_OF_SLAVES-1:0] hselx,
+    						  input logic [2:0] hburst,
+    						  input logic hmastlock,
+   							  input logic [HPROT_WIDTH-1:0] hprot,
+    						  input logic [2:0] hsize,
+    						  input logic hnonsec,
+    						  input logic hexcl,
+    						  input logic [HMASTER_WIDTH-1:0] hmaster,
+    						  input logic [1:0] htrans,
+    						  input logic [DATA_WIDTH-1:0] hwdata,
+    						  input logic [(DATA_WIDTH/8)-1:0] hwstrb,
+    						  input logic hwrite,
+    						  input logic [DATA_WIDTH-1:0] hrdata,
+    						  input logic hreadyout,
+    					      input logic hresp,
+    						  input logic hexokay,
+    						  input logic hready
+							);
 
   import uvm_pkg::*;
   `include "uvm_macros.svh"
@@ -41,22 +41,16 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
 
   task waitForResetn();
       @(negedge hresetn);
-    `uvm_info(name, $sformatf("system reset detected"), UVM_HIGH)
+    	`uvm_info(name, $sformatf("system reset detected"), UVM_HIGH)
     
-    @(posedge hresetn);
-    `uvm_info(name, $sformatf("system reset deactivated"), UVM_HIGH)
+      @(posedge hresetn);
+    	`uvm_info(name, $sformatf("system reset deactivated"), UVM_HIGH)
   endtask : waitForResetn
 
   task sampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
 
   @(posedge hclk);
-  //for(int i = 0;i < burst_length;i++)begin
-/*    while($countones(hselx) !== 1 || hresp == 1) begin
-      `uvm_info(name, $sformatf("Inside while loop: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_HIGH)
-      @(posedge hclk);
-    end*/
-    
-   //@(posedge hclk);
+
     while(hready !== 1 && hresp == 1 && htrans == IDLE) begin
 	    `uvm_info(name, $sformatf("Inside while loop: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_LOW)
       @(posedge hclk);
@@ -65,8 +59,8 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     end
 
    	ahbDataPacket.haddr = haddr;
-        ahbDataPacket.hwrite  = ahbWriteEnum'(hwrite);
-        ahbDataPacket.hsize   = ahbHsizeEnum'(hsize);
+    ahbDataPacket.hwrite  = ahbWriteEnum'(hwrite);
+    ahbDataPacket.hsize   = ahbHsizeEnum'(hsize);
 	ahbDataPacket.hburst  = ahbBurstEnum'(hburst);
 	ahbDataPacket.htrans  = ahbTransferEnum'(htrans);
 	ahbDataPacket.hmastlock = hmastlock;
@@ -74,7 +68,7 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
 	ahbDataPacket.hresp = ahbRespEnum'(hresp);
 	ahbDataPacket.hselx = hselx;
 	ahbDataPacket.hprot = ahbProtectionEnum'(hprot);
-        ahbDataPacket.hwstrb = hwstrb;
+    ahbDataPacket.hwstrb = hwstrb;
 
     if (hwrite == 1) begin
       ahbDataPacket.hwdata = hwdata;

@@ -153,8 +153,9 @@ task waitCycles(inout ahbTransferCharStruct dataPacket);
  
   repeat(dataPacket.noOfWaitStates) begin
 	  `uvm_info(name,$sformatf(" DRIVING WAIT STATE"),UVM_LOW);
-      hreadyout <= 0;
-    @(posedge hclk); 
+    	  hreadyout <= 0;
+             hresp <= #1 ~hreadyout;
+    	  @(posedge hclk);
   end
     hreadyout<=1;
  

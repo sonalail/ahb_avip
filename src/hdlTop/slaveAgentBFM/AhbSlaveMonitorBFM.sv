@@ -23,7 +23,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
                               input logic hexokay,
                               input logic hready,                             
                               input logic [NO_OF_SLAVES-1:0]hselx
-                               );
+                             );
 
 
   import uvm_pkg::*;
@@ -50,11 +50,8 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
  task slaveSampleData (output ahbTransferCharStruct ahbDataPacket, input ahbTransferConfigStruct ahbConfigPacket);
 
 	@(posedge hclk);
-	//$display("i am here");
-	//for(int i = 0;i < burst_length;i++)begin
-    
-	//@(posedge hclk);
-	while( hreadyout !=1 && hresp==1 && htrans == IDLE) begin
+	
+	while(hreadyout !=1 && hresp==1 && htrans == IDLE) begin
 	    `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
       @(posedge hclk);
     end   

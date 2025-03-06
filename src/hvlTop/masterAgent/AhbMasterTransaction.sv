@@ -38,7 +38,7 @@
     if (hburst == INCR8 || hburst == WRAP8) soft haddr== 8;
     if (hburst == INCR16 || hburst == WRAP16) soft haddr== 16;
 }
-*/
+
 constraint haddr_alignment_c {
   // Ensure address alignment based on transfer size
    if (hsize == HALFWORD) {
@@ -74,7 +74,7 @@ constraint incr_trans_type {
             soft htrans == SEQ;
     }
 }
-/*
+
 constraint hwstrb_logic {
     if (hsize == BYTE)
      soft   hwstrb == 8'h01 << haddr[1:0]; 
@@ -87,7 +87,6 @@ constraint hwstrb_logic {
     else if (hsize >= LINE4)
     soft    hwstrb == {DATA_WIDTH/8{1'b1}}; 
 }
-*/
 
 constraint hselx_logic {
     if (htrans == IDLE)
@@ -96,7 +95,6 @@ constraint hselx_logic {
         $onehot(hselx);
 }
 
-/*
 constraint addr_4beat_wrap {
     if (hburst == WRAP4) {
         if (hsize == BYTE)
@@ -125,14 +123,13 @@ constraint addr_8beat_wrap {
             soft haddr[ADDR_WIDTH-1:5] == haddr[ADDR_WIDTH-1:5];
 }    
 }
-*/
+
 constraint strobleValue{foreach(hwstrb[i]) { if(hsize == BYTE) $countones(hwstrb[i]) == 1;
 											 else if(hsize == HALFWORD) $countones(hwstrb[i]) == 2;
 											 else if(hsize == WORD) $countones(hwstrb[i]) == 4;
 											 else if(hsize == DOUBLEWORD) $countones(hwstrb[i]) == 8;
 											}
 					  }
-
 constraint burstsize{if(hburst == WRAP4 || hburst == INCR4) hwdata.size() == 4;
                      else if(hburst == WRAP8 || hburst == INCR8) hwdata.size() == 8;
 					 else if(hburst == WRAP16 || hburst == INCR16) hwdata.size() == 16;
@@ -158,6 +155,7 @@ constraint busyControldistribution{foreach(busyControl[i]) busyControl[i] dist {
 constraint busyControlNextCycle{foreach(busyControl[i]) if(i < busyControl.size()) if(busyControl[i]) busyControl[i + 1] != 1;}
 //constraint busyControlvalues{foreach(busyControl[i]) busyControl[i] inside {[0:1]};}
 
+*/
 endclass : AhbMasterTransaction
 
 function AhbMasterTransaction::new(string name = "AhbMasterTransaction");

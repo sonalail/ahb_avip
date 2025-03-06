@@ -9,7 +9,9 @@ package AhbSlaveSequencePackage;
   import AhbSlavePackage::*;
 
   `include "AhbSlaveBaseSequence.sv"
-  `include "AhbSlave32bitSingleWriteSequence.sv"
+  `include "AhbSlaveSequence.sv"
+
+/*`include "AhbSlave32bitSingleWriteSequence.sv"
   `include "AhbSlave32bitSingleReadSequence.sv"
   `include "AhbSlave32bitSingleWriteReadSequence.sv"
   `include "AhbSlave32bitSingleReadWriteSequence.sv"
@@ -79,7 +81,7 @@ package AhbSlaveSequencePackage;
   `include "AhbSlave32bitWrap8ReadSequenceWithWaitState.sv"
   `include "AhbSlave32bitWrap16WriteSequenceWithWaitState.sv"
   `include "AhbSlave32bitWrap16ReadSequenceWithWaitState.sv"
-
+*/
 
 endpackage : AhbSlaveSequencePackage
 

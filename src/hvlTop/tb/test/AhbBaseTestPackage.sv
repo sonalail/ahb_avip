@@ -15,7 +15,9 @@ package AhbBaseTestPackage;
   import AhbVirtualSequencePackage::*;
 
   `include "AhbBaseTest.sv"
-  `include "Ahb32bitSingleWriteTest.sv"
+  `include "Ahb32bitWriteTest.sv"
+
+/*`include "Ahb32bitSingleWriteTest.sv"
   `include "Ahb32bitSingleReadTest.sv"
   `include "Ahb32bitSingleWriteReadTest.sv"
   `include "Ahb32bitSingleWriteWithWaitStateTest.sv"
@@ -79,7 +81,7 @@ package AhbBaseTestPackage;
   `include "Ahb32bitWrap16WriteWithWaitStateTest.sv"
   `include "Ahb32bitWrap16ReadWithWaitStateTest.sv"
 
-
+*/
 endpackage : AhbBaseTestPackage
 
 `endif

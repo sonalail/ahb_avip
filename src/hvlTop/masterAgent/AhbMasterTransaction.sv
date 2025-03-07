@@ -56,9 +56,9 @@ constraint haddr_alignment_c {
   } else if (hsize == LINE32) {
     haddr[6:0] == 7'b0000000; // Aligned to 128-byte boundary
   }
-}
+}*/
 
-constraint first_trans_type {
+/*constraint first_trans_type {
     if (hburst == SINGLE) {
         soft htrans inside {IDLE, NONSEQ};
     } else {
@@ -74,8 +74,8 @@ constraint incr_trans_type {
             soft htrans == SEQ;
     }
 }
-
-constraint hwstrb_logic {
+*/
+/*constraint hwstrb_logic {
     if (hsize == BYTE)
      soft   hwstrb == 8'h01 << haddr[1:0]; 
     else if (hsize == HALFWORD)
@@ -86,16 +86,16 @@ constraint hwstrb_logic {
      soft   hwstrb == 8'hFF; 
     else if (hsize >= LINE4)
     soft    hwstrb == {DATA_WIDTH/8{1'b1}}; 
-}
+}*/
 
-constraint hselx_logic {
+/*constraint hselx_logic {
     if (htrans == IDLE)
      soft hselx == '0;
     else 
         $onehot(hselx);
-}
+}*/
 
-constraint addr_4beat_wrap {
+/*constraint addr_4beat_wrap {
     if (hburst == WRAP4) {
         if (hsize == BYTE)
             soft haddr[1:0] == haddr[1:0] + 1;
@@ -107,10 +107,10 @@ constraint addr_4beat_wrap {
             soft haddr[3:2] == haddr[3:2] + 1;
             soft haddr[ADDR_WIDTH-1:4] == haddr[ADDR_WIDTH-1:4];
  }
-}
+}*/
 
 
-constraint addr_8beat_wrap {
+/*constraint addr_8beat_wrap {
     if (hburst == WRAP8) {
         if (hsize == BYTE)
             soft haddr[2:0] == haddr[2:0] + 1;
@@ -122,7 +122,7 @@ constraint addr_8beat_wrap {
             soft haddr[4:2] == haddr[4:2] + 1;
             soft haddr[ADDR_WIDTH-1:5] == haddr[ADDR_WIDTH-1:5];
 }    
-}
+}*/
 
 constraint strobleValue{foreach(hwstrb[i]) { if(hsize == BYTE) $countones(hwstrb[i]) == 1;
 											 else if(hsize == HALFWORD) $countones(hwstrb[i]) == 2;
@@ -145,7 +145,7 @@ constraint strobesize{if(hburst == WRAP4 || hburst == INCR4) hwstrb.size() == 4;
 constraint busyState{if(hburst == WRAP4 || hburst == INCR4) busyControl.size() == 4;
                      else if(hburst == WRAP8 || hburst == INCR8) busyControl.size() == 8;
 					 else if(hburst == WRAP16 || hburst == INCR16) busyControl.size() == 16;
-					 
+					 else busyControl.size()==1;
 					}
 
 constraint busyControlValue{foreach(busyControl[i]) if(i == 0 || i == busyControl.size - 1) busyControl[i] == 0;}
@@ -155,7 +155,7 @@ constraint busyControldistribution{foreach(busyControl[i]) busyControl[i] dist {
 constraint busyControlNextCycle{foreach(busyControl[i]) if(i < busyControl.size()) if(busyControl[i]) busyControl[i + 1] != 1;}
 //constraint busyControlvalues{foreach(busyControl[i]) busyControl[i] inside {[0:1]};}
 
-*/
+
 endclass : AhbMasterTransaction
 
 function AhbMasterTransaction::new(string name = "AhbMasterTransaction");

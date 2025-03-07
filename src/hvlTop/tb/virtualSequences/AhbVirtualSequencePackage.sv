@@ -13,7 +13,9 @@ package AhbVirtualSequencePackage;
   import AhbEnvironmentPackage::*;
 
   `include "AhbVirtualBaseSequence.sv"
-  `include "AhbVirtual32bitSingleWriteSequence.sv"
+  `include "AhbVirtualWriteSequence.sv"
+  `include "AhbVirtualReadSequence.sv"
+
 
 endpackage : AhbVirtualSequencePackage
 

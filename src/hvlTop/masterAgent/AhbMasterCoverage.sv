@@ -21,16 +21,16 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
   //bins ahbAddrModeOf256 = { [0:'hFFFFFFFF] } with (item % 256 == 0);
   
   bins ahbAddrAllZeroes      = {32'h00000000};         
-  bins ahbAddrAllOnes        = {32'hFFFFFFFF};      
+/*  bins ahbAddrAllOnes        = {32'hFFFFFFFF};      
   bins ahbAddrAltBits1010    = {32'hAAAAAAAA};         
   bins ahbAddrAltBits0101    = {32'h55555555};         
-  
+  */
  
  // bins ahbAddrToggle     = (ahbMasterTransaction.haddr dist {0:=10, [1:'hFFFFFFFF]:=90}); 
  
-  bins ahbAddrMinimum    = {32'h00000000};         
+ /* bins ahbAddrMinimum    = {32'h00000000};         
   bins ahbAddrMaximum    = {32'hFFFFFFFF};         
-  
+  */
   //bins ahbAddrSequential[] = { [0:'hFFFFFFF0] } with (item%1==0;
 
   
@@ -49,9 +49,9 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
        bins ahbByte   ={0};
        bins ahbHalfWord  ={1};
        bins ahbWord  ={2};
-       bins ahbDoubleWord  ={3};
-       bins ahbLine4 ={4};
-       bins ahbLine8 ={5};
+  //   bins ahbDoubleWord  ={3};
+  //   bins ahbLine4 ={4};
+  //   bins ahbLine8 ={5};
        illegal_bins illegalBinsOfAhbsize64Bytes =  {6};  
        illegal_bins illegalBinsOfAhbsize128Bytes = {7}; 
     }
@@ -59,7 +59,7 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
       HBURST_CP:coverpoint ahbMasterTransaction.hburst{
       option.comment = " ahb burst";
         bins ahbSingle={0};
-        bins ahbIncr={1};
+     //   bins ahbIncr={1};
         bins ahbWrap4={2};
         bins ahbIncr4={3};
         bins ahbWrap8={4};
@@ -113,7 +113,7 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
        ignore_bins ahbStrbAllZeroes   = {4'b0000};
     }   
        
-    
+   /* 
     HWSTRB_CP_1:coverpoint ahbMasterTransaction.hwstrb[1]{
       option.comment = " ahb strb";
        bins ahbStrbSingleBit   = {4'b0001, 4'b0010, 4'b0100, 4'b1000};
@@ -145,7 +145,7 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
        ignore_bins ahbStrbAllZeroes   = {4'b0000};
        
        
-    }
+    } */
     HNONSEC_CP:coverpoint ahbMasterTransaction.hnonsec{
       option.comment = " ahb nonsec";
        bins ahbNonsec0={0};

@@ -23,11 +23,10 @@ task AhbVirtual32bitSingleWriteSequence::body();
   ahbSlaveSequence  = AhbSlaveSequence::type_id::create("ahbSlaveSequence");
  repeat(20) begin 
   if(!ahbMasterSequence.randomize() with {
-                                                              hwriteSeq ==1;
+                                                              hsizeSeq dist {BYTE:=1, HALFWORD:=1, WORD:=1};
+							      hwriteSeq ==1;
                                                               htransSeq == NONSEQ;
-                                                              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0 := 50,1 := 50};
-							      hsizeSeq == WORD;
-                                                              hburstSeq inside {[2:7]};} 
+                                                              hburstSeq dist { 2:=1, 3:=1, 4:=1, 5:=2, 6:=2, 7:=2};} 
                                                         ) begin
        `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtual32bitSingleWriteSequence")
   end

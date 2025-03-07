@@ -22,6 +22,16 @@ class AhbMasterSequence extends AhbMasterBaseSequence;
   rand bit hexokaySeq;
   rand bit busyControlSeq[];
 
+/*constraint addr_size {
+    soft haddrSeq > 0;
+  //  if (hburst == SINGLE) soft haddr == 1;
+    if (hburstSeq == INCR) soft haddrSeq < (1024 / (2 ** hsizeSeq));
+    if (hburstSeq == INCR4 || hburstSeq == WRAP4) soft haddrSeq == 4;
+    if (hburstSeq == INCR8 || hburstSeq == WRAP8) soft haddrSeq == 32'h34;
+    if (hburstSeq == INCR16 || hburstSeq == WRAP16) soft haddrSeq == 16;
+}
+*/
+
   constraint haddr_alignment1 {
   // Ensure address alignment based on transfer size
    if (hsizeSeq == HALFWORD) {
@@ -86,17 +96,18 @@ constraint strobesize1{if(hburstSeq == WRAP4 || hburstSeq == INCR4) hwstrbSeq.si
 					 else hwstrbSeq.size() == 1;
 					}
 
-/*constraint busyState1{if(hburstSeq == WRAP4 || hburstSeq == INCR4) busyControlSeq.size() == 4;
+constraint busyState1{if(hburstSeq == WRAP4 || hburstSeq == INCR4) busyControlSeq.size() == 4;
                      else if(hburstSeq == WRAP8 || hburstSeq == INCR8) busyControlSeq.size() == 8;
-					 else if(hburstSeq == WRAP16 || hburstSeq == INCR16) busyControlSeq.size() == 16;		 
-					}*/
-/*
+					 else if(hburstSeq == WRAP16 || hburstSeq == INCR16) busyControlSeq.size() == 16;
+                      else 	busyControlSeq.size()==1;
+					}
+
 constraint busyControlValue1{foreach(busyControlSeq[i]) if(i == 0 || i == busyControlSeq.size - 1) busyControlSeq[i] == 0;}
 
-constraint busyControldistribution1{foreach(busyControlSeq[i]) busyControlSeq[i] dist {0 := 100,1 := 0};}
+//constraint busyControldistribution1{foreach(busyControlSeq[i]) busyControlSeq[i] dist {0 := 100,1 := 0};}
 
 constraint busyControlNextCycle1{foreach(busyControlSeq[i]) if(i < busyControlSeq.size()) if(busyControlSeq[i]) busyControlSeq[i + 1] != 1;}
-*/
+
   extern function new(string name ="AhbMasterSequence");
   extern task body();
   

@@ -29,13 +29,13 @@
   extern function void do_copy(uvm_object rhs);
   extern function bit  do_compare(uvm_object rhs, uvm_comparer comparer);
   extern function void do_print(uvm_printer printer);
-  
-/*constraint addr_size {
+/*  
+constraint addr_size {
     soft haddr > 0;
   //  if (hburst == SINGLE) soft haddr == 1;
     if (hburst == INCR) soft haddr < (1024 / (2 ** hsize));
     if (hburst == INCR4 || hburst == WRAP4) soft haddr == 4;
-    if (hburst == INCR8 || hburst == WRAP8) soft haddr== 8;
+    if (hburst == INCR8 || hburst == WRAP8) soft haddr== 32'h34;
     if (hburst == INCR16 || hburst == WRAP16) soft haddr== 16;
 }
 
@@ -148,11 +148,11 @@ constraint busyState{if(hburst == WRAP4 || hburst == INCR4) busyControl.size() =
 					 else busyControl.size()==1;
 					}
 
-constraint busyControlValue{foreach(busyControl[i]) if(i == 0 || i == busyControl.size - 1) busyControl[i] == 0;}
+//constraint busyControlValue{foreach(busyControl[i]) if(i == 0 || i == busyControl.size - 1) busyControl[i] == 0;}
 
-constraint busyControldistribution{foreach(busyControl[i]) busyControl[i] dist {0 := 50,1 := 50};}
+//constraint busyControldistribution{foreach(busyControl[i]) busyControl[i] dist {0 := 50,1 := 50};}
 
-constraint busyControlNextCycle{foreach(busyControl[i]) if(i < busyControl.size()) if(busyControl[i]) busyControl[i + 1] != 1;}
+//constraint busyControlNextCycle{foreach(busyControl[i]) if(i < busyControl.size()) if(busyControl[i]) busyControl[i + 1] != 1;}
 //constraint busyControlvalues{foreach(busyControl[i]) busyControl[i] inside {[0:1]};}
 
 

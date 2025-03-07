@@ -27,7 +27,7 @@ task AhbVirtualWriteWithBusySequence::body();
 							      hwriteSeq ==1;
                                                               htransSeq == NONSEQ;
                                                               hburstSeq dist { 2:=1, 3:=1, 4:=1, 5:=2, 6:=2, 7:=2}; 
-                                                              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0 := 50,1 := 50};}
+                                                              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=50, 1:=50};}
                                                         ) begin
        `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualWriteWithBusySequence")
   end

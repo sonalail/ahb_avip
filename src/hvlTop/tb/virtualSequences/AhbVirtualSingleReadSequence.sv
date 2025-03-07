@@ -26,7 +26,9 @@ task AhbVirtualSingleReadSequence::body();
                                                               hsizeSeq dist {BYTE:=1, HALFWORD:=1, WORD:=1};
 							      hwriteSeq ==0;
                                                               htransSeq == NONSEQ;
-                                                              hburstSeq == SINGLE;} 
+                                                              hburstSeq == SINGLE;
+							      foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}
+ 
                                                         ) begin
        `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualSingleReadSequence")
   end

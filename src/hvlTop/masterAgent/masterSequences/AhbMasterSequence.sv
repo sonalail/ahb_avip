@@ -104,7 +104,7 @@ constraint busyState1{if(hburstSeq == WRAP4 || hburstSeq == INCR4) busyControlSe
 
 constraint busyControlValue1{foreach(busyControlSeq[i]) if(i == 0 || i == busyControlSeq.size - 1) busyControlSeq[i] == 0;}
 
-constraint busyControldistribution1{ foreach(busyControlSeq[i]) soft busyControlSeq[i] dist {0 := 100,1 := 0};}
+//constraint busyControldistribution1{ foreach(busyControlSeq[i]) soft busyControlSeq[i] == 0;}
 
 constraint busyControlNextCycle1{foreach(busyControlSeq[i]) if(i < busyControlSeq.size()) if(busyControlSeq[i]) busyControlSeq[i + 1] != 1;}
 

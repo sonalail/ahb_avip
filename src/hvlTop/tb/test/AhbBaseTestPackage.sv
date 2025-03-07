@@ -17,6 +17,12 @@ package AhbBaseTestPackage;
   `include "AhbBaseTest.sv"
   `include "AhbWriteTest.sv"
   `include "AhbReadTest.sv"
+  `include "AhbSingleWriteTest.sv"
+  `include "AhbSingleReadTest.sv"
+  `include "AhbWriteWithBusyTest.sv"
+  `include "AhbReadWithBusyTest.sv"
+
+
 endpackage : AhbBaseTestPackage
 
 `endif

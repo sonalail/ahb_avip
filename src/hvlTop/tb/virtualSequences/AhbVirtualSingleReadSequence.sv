@@ -1,34 +1,34 @@
-`ifndef AHBVIRTUALWRITESEQUENCE_INCLUDED_
-`define AHBVIRTUALWRITESEQUENCE_INCLUDED_
+`ifndef AHBVIRTUALSINGLEREADSEQUENCE_INCLUDED_
+`define AHBVIRTUALSINGLEREADSEQUENCE_INCLUDED_
  
-class AhbVirtualWriteSequence extends AhbVirtualBaseSequence;
-  `uvm_object_utils(AhbVirtualWriteSequence)
+class AhbVirtualSingleReadSequence extends AhbVirtualBaseSequence;
+  `uvm_object_utils(AhbVirtualSingleReadSequence)
  
   AhbMasterSequence ahbMasterSequence;
  
   AhbSlaveSequence ahbSlaveSequence;
  
-  extern function new(string name ="AhbVirtualWriteSequence");
+  extern function new(string name ="AhbVirtualSingleReadSequence");
   extern task body();
  
-endclass : AhbVirtualWriteSequence
+endclass : AhbVirtualSingleReadSequence
  
-function AhbVirtualWriteSequence::new(string name ="AhbVirtualWriteSequence");
+function AhbVirtualSingleReadSequence::new(string name ="AhbVirtualSingleReadSequence");
   super.new(name);
 endfunction : new
  
-task AhbVirtualWriteSequence::body();
+task AhbVirtualSingleReadSequence::body();
   super.body();
   ahbMasterSequence = AhbMasterSequence::type_id::create("ahbMasterSequence");
   ahbSlaveSequence  = AhbSlaveSequence::type_id::create("ahbSlaveSequence");
  repeat(40) begin 
   if(!ahbMasterSequence.randomize() with {
                                                               hsizeSeq dist {BYTE:=1, HALFWORD:=1, WORD:=1};
-							      hwriteSeq ==1;
+							      hwriteSeq ==0;
                                                               htransSeq == NONSEQ;
-                                                              hburstSeq dist { 2:=1, 3:=1, 4:=1, 5:=2, 6:=2, 7:=2};
+                                                              hburstSeq == SINGLE;} 
                                                         ) begin
-       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualWriteSequence")
+       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualSingleReadSequence")
   end
     fork
        ahbSlaveSequence.start(p_sequencer.ahbSlaveSequencer);

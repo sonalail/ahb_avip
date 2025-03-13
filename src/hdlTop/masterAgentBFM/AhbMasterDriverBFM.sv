@@ -143,11 +143,13 @@ interface AhbMasterDriverBFM (input  bit  hclk,
            htrans <= 2'b11; // Sequential transfer
          end
     end
-    
+   if(i==0) 
     WaitStates(configPacket);
+    
      @(posedge hclk);
       hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[i], dataPacket.hwstrb[i]) : '0;
       //hwdata      <= dataPacket.hwrite ? dataPacket.hwdata[i] : '0;
+//WaitStates(configPacket);
 
     end
 

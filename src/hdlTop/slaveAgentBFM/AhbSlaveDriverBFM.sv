@@ -123,9 +123,10 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
 	`uvm_info(name, $sformatf("Busy = %0b",dataPacket.busyControl), UVM_LOW);
    // for (int i = 0; i < burst_length - 1; i++) begin
       
-  
+if(i==0)  
     waitCycles(configPacket);
-     
+    //	@(posedge hclk);
+ 
       if(hwrite) begin
 	@(posedge hclk);
         dataPacket.hwdata[i]  <= hwdata;

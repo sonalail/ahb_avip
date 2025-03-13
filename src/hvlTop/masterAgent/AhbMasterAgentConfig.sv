@@ -15,7 +15,9 @@ class AhbMasterAgentConfig extends uvm_object;
  bit [ADDR_WIDTH-1:0]masterMinimumAddressRangeArray[int];
 
  bit [ADDR_WIDTH-1:0]masterMaximumAddressRangeArray[int];
-
+ 
+ int noOfWaitStates;
+ 
   extern function new(string name = "AhbMasterAgentConfig");
   extern function void do_print(uvm_printer printer);
   extern function void masterMinimumAddressRange(int slaveNumber, bit [ADDR_WIDTH-1:0]slaveMinimumAddressRange);

@@ -34,13 +34,14 @@ function void AhbBaseTest::setupAhbEnvironmentConfig();
   ahbEnvironmentConfig.noOfMasters     = NO_OF_MASTERS;
   ahbEnvironmentConfig.hasScoreboard    = 1;
   ahbEnvironmentConfig.hasVirtualSequencer  = 1;
-
+  
 
   
   ahbEnvironmentConfig.ahbMasterAgentConfig = new[ahbEnvironmentConfig.noOfMasters];
   foreach(ahbEnvironmentConfig.ahbMasterAgentConfig[i]) begin
     ahbEnvironmentConfig.ahbMasterAgentConfig[i] = AhbMasterAgentConfig::type_id::create($sformatf("AhbMasterAgentConfig[%0d]",i));
-	end
+    	
+   end
 
    setupAhbMasterAgentConfig();
 

@@ -23,6 +23,7 @@ endfunction : new
   outputConv.minimumAddress = inputConv.minimumAddress; 
 
   outputConv.maximumAddress = inputConv.maximumAddress; 
+  outputConv.noOfWaitStates = inputConv.noOfWaitStates;
 
   //output_conv_h.slave_id = input_conv_h.slave_id;
   

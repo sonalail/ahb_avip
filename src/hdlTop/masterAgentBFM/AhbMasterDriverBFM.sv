@@ -47,14 +47,14 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
      if (dataPacket.hburst == SINGLE)
 	 begin
-	 	driveSingleTransfer(dataPacket);
+	 	driveSingleTransfer(dataPacket,configPacket);
 	end
      else if (dataPacket.hburst != SINGLE) begin
-	 	driveBurstTransfer(dataPacket);
+	 	driveBurstTransfer(dataPacket,configPacket);
 		end
   endtask: driveToBFM
  
-  task driveSingleTransfer(inout ahbTransferCharStruct dataPacket);
+  task driveSingleTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);
 	`uvm_info("INSIDESINGLETRANSFER","BFM",UVM_LOW);
   //countWaitStates(dataPacket);
    @(posedge hclk); 
@@ -73,8 +73,8 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	hselx       <= 1'b1;
  
    //`uvm_info(name,$sformatf("DRIVING IS DONE"),UVM_LOW)
-   //countWaitStates(dataPacket);
-    wait(hready);  
+   WaitStates(configPacket);
+    //wait(hready);  
  
    @(posedge hclk);
         hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.hwstrb[0]) : '0;
@@ -89,7 +89,8 @@ interface AhbMasterDriverBFM (input  bit  hclk,
     driveIdle();
   endtask
  
-  task driveBurstTransfer(inout ahbTransferCharStruct dataPacket);
+  task driveBurstTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);
+
     int burst_length;
     automatic logic [ADDR_WIDTH-1:0] current_address = dataPacket.haddr;
      case (dataPacket.hburst)
@@ -115,10 +116,11 @@ interface AhbMasterDriverBFM (input  bit  hclk,
 	hwrite      <= dataPacket.hwrite;
 	hselx       <= 1;
  
+         //WaitStates(configPacket);
 	
 	/*`uvm_info(name, $sformatf("Burst Transfer Initiated: Address=%0h, Burst=%0b, Size=%0b, Write=%0b",dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite), UVM_LOW);*/
     
-	wait(hready);
+	
       if (hresp == 1) begin
         `uvm_info(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr),UVM_LOW);
       end
@@ -141,7 +143,8 @@ interface AhbMasterDriverBFM (input  bit  hclk,
            htrans <= 2'b11; // Sequential transfer
          end
     end
-
+    
+    WaitStates(configPacket);
      @(posedge hclk);
       hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[i], dataPacket.hwstrb[i]) : '0;
       //hwdata      <= dataPacket.hwrite ? dataPacket.hwdata[i] : '0;
@@ -177,7 +180,8 @@ endfunction
   
   task driveIdle();
     @(posedge hclk);
-    htrans <= IDLE; 
+    htrans <= IDLE;
+    hselx <= 0; 
     haddr  <= 0;
     hwrite <= 0;
     hwdata <= 0;
@@ -186,14 +190,13 @@ endfunction
     `uvm_info(name, "Bus is now IDLE", UVM_LOW);
   endtask
  
-task countWaitStates(inout ahbTransferCharStruct dataPacket);
-//  @(posedge hclk); 
+task WaitStates(input ahbTransferConfigStruct configPacket);
+ 
   //dataPacket.noOfWaitStates = 0;
-    while (hready == 0) begin
-        dataPacket.noOfWaitStates++;
-		@(posedge hclk);
+    repeat(configPacket.noOfWaitStates) begin
+    //`uvm_info(name, $sformatf("Wait states counted: %0d", dataPacket.noOfWaitStates), UVM_LOW);
+      @(posedge hclk);
     end
-    `uvm_info(name, $sformatf("Wait states counted: %0d", dataPacket.noOfWaitStates), UVM_LOW);
 endtask
  
 endinterface

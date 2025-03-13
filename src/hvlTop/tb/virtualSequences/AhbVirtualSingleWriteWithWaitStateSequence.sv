@@ -1,36 +1,37 @@
-`ifndef AHBVIRTUALSINGLEWRITESEQUENCE_INCLUDED_
-`define AHBVIRTUALSINGLEWRITESEQUENCE_INCLUDED_
+`ifndef AHBVIRTUALSINGLEWRITEWITHWAITSTATESEQUENCE_INCLUDED_
+`define AHBVIRTUALSINGLEWRITEWITHWAITSTATESEQUENCE_INCLUDED_
  
-class AhbVirtualSingleWriteSequence extends AhbVirtualBaseSequence;
-  `uvm_object_utils(AhbVirtualSingleWriteSequence)
+class AhbVirtualSingleWriteWithWaitStateSequence extends AhbVirtualBaseSequence;
+  `uvm_object_utils(AhbVirtualSingleWriteWithWaitStateSequence)
  
   AhbMasterSequence ahbMasterSequence;
  
   AhbSlaveSequence ahbSlaveSequence;
  
-  extern function new(string name ="AhbVirtualSingleWriteSequence");
+  extern function new(string name ="AhbVirtualSingleWriteWithWaitStateSequence");
   extern task body();
  
-endclass : AhbVirtualSingleWriteSequence
+endclass : AhbVirtualSingleWriteWithWaitStateSequence
  
-function AhbVirtualSingleWriteSequence::new(string name ="AhbVirtualSingleWriteSequence");
+function AhbVirtualSingleWriteWithWaitStateSequence::new(string name ="AhbVirtualSingleWriteWithWaitStateSequence");
   super.new(name);
 endfunction : new
  
-task AhbVirtualSingleWriteSequence::body();
+task AhbVirtualSingleWriteWithWaitStateSequence::body();
   super.body();
   ahbMasterSequence = AhbMasterSequence::type_id::create("ahbMasterSequence");
   ahbSlaveSequence  = AhbSlaveSequence::type_id::create("ahbSlaveSequence");
- repeat(2) begin 
+ repeat(4) begin 
   if(!ahbMasterSequence.randomize() with {
                                                               hsizeSeq dist {BYTE:=1, HALFWORD:=1, WORD:=1};
 							      hwriteSeq ==1;
                                                               htransSeq == NONSEQ;
                                                               hburstSeq == SINGLE;
-						              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}
+						              foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};
+}
  
                                                         ) begin
-       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualSingleWriteSequence")
+       `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualSingleWriteWithWaitStateSequence")
   end
     fork
        ahbSlaveSequence.start(p_sequencer.ahbSlaveSequencer);

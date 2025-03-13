@@ -17,7 +17,11 @@ endfunction : new
 
 
 task AhbSingleWriteTest::run_phase(uvm_phase phase);
-  
+
+  foreach(ahbEnvironment.ahbSlaveAgentConfig[i]) begin
+    ahbEnvironment.ahbSlaveAgentConfig[i].randomize() with {noOfWaitStates==0;};
+    ahbEnvironment.ahbMasterAgentConfig[i].noOfWaitStates = ahbEnvironment.ahbSlaveAgentConfig[i].noOfWaitStates ;
+  end
   ahbVirtualSingleWriteSequence = AhbVirtualSingleWriteSequence::type_id::create("ahbVirtualSingleWriteSequence");
  `uvm_info(get_type_name(),$sformatf("AhbSingleWriteTest"),UVM_LOW);
   phase.raise_objection(this);

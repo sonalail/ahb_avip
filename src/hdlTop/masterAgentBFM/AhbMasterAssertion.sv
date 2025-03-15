@@ -31,7 +31,7 @@ interface AhbMasterAssertion (
 
   property checkHwdataValid;
     @(posedge hclk) disable iff (!hresetn)
-    (hwrite && hready && (htrans != 2'b00) && hselx == 1) |=> (!$isunknown(hwdata));
+    (hwrite && hready && (htrans != 2'b00) && hselx == 1) ##1 $stable(hready)|-> (!$isunknown(hwdata));
   endproperty
 
   assert property (checkHwdataValid)
@@ -155,7 +155,7 @@ interface AhbMasterAssertion (
 
   property checkAddrStability;
     @(posedge hclk) disable iff (!hresetn)
-    (htrans == 2'b10||htrans ==2'b11) && hready==0 |=> $stable(haddr);
+    (htrans == 2'b10||htrans ==2'b11) && (hready==0) ##1 $stable(hready) |-> $stable(haddr) ;
   endproperty
 
   assert property (checkAddrStability)

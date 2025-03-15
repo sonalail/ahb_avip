@@ -21,7 +21,7 @@ task AhbVirtualWriteWithBusySequence::body();
   super.body();
   ahbMasterSequence = AhbMasterSequence::type_id::create("ahbMasterSequence");
   ahbSlaveSequence  = AhbSlaveSequence::type_id::create("ahbSlaveSequence");
- repeat(20) begin 
+ repeat(40) begin 
   if(!ahbMasterSequence.randomize() with {
                                                               hsizeSeq == WORD;
 							      hwriteSeq ==1;

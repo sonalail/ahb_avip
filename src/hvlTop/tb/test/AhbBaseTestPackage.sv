@@ -21,9 +21,10 @@ package AhbBaseTestPackage;
   `include "AhbSingleReadTest.sv"
   `include "AhbWriteWithBusyTest.sv"
   `include "AhbReadWithBusyTest.sv"
-
   `include "AhbSingleWriteWithWaitStateTest.sv"
+  `include "AhbSingleReadWithWaitStateTest.sv"
   `include "AhbWriteWithWaitStateTest.sv"
+  `include "AhbReadWithWaitStateTest.sv"
 endpackage : AhbBaseTestPackage
 
 `endif

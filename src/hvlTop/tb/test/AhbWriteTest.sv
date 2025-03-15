@@ -19,7 +19,9 @@ endfunction : new
 task AhbWriteTest::run_phase(uvm_phase phase);
   
   foreach(ahbEnvironment.ahbSlaveAgentConfig[i]) begin
-    ahbEnvironment.ahbSlaveAgentConfig[i].randomize() with {noOfWaitStates==0;};
+    if(!ahbEnvironment.ahbSlaveAgentConfig[i].randomize() with {noOfWaitStates==0;}) begin
+      `uvm_fatal(get_type_name(),"Unable to randomise noOfWaitStates")
+    end
     ahbEnvironment.ahbMasterAgentConfig[i].noOfWaitStates = ahbEnvironment.ahbSlaveAgentConfig[i].noOfWaitStates ;
   end
   ahbVirtualWriteSequence = AhbVirtualWriteSequence::type_id::create("ahbVirtualWriteSequence");
@@ -32,4 +34,3 @@ task AhbWriteTest::run_phase(uvm_phase phase);
 endtask : run_phase
 
 `endif
-

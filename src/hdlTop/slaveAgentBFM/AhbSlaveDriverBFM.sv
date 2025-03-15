@@ -81,7 +81,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
 
      
      waitCycles(configPacket);
-    @(posedge hclk);
+   // @(posedge hclk);
     if(hwrite) begin
       dataPacket.hwdata[0] <= hwdata;
       dataPacket.hwstrb[0] <= hwstrb;
@@ -134,10 +134,12 @@ if(i==0)
         hresp  <= 0;
       end
       else if(!hwrite)begin
-	@(posedge hclk);
-	if(htrans == 2'b01)begin
-           @(posedge hclk);
-    	end
+        if(i!=0) begin
+	  @(posedge hclk);
+        end
+	//if(htrans == 2'b01)begin
+          // @(posedge hclk);
+    	//end
 	`uvm_info(name, $sformatf("DEBUG Address=%0h, Burst=%0b, Size=%0b, Write=%0b,hrdata[%0d] = %0d",
 				  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite,i,dataPacket.hrdata[i]), UVM_LOW);
        hrdata <=dataPacket.hrdata[i];

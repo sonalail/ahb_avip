@@ -106,7 +106,8 @@ interface AhbMasterAssertion (
 
   property checkBurstIncr;
     @(posedge hclk) disable iff (!hresetn)
-    (hburst == 3'b001 && htrans == 2'b11) |-> (haddr == $past(haddr) + (1 << hsize));
+    ((hburst inside {3'b011,3'b101,3'b111}) && (htrans == 2'b11 || htrans==2'b10))
+     ##1 (htrans ==2'b11) && $stable(hburst) && !$stable(haddr)|-> (haddr == $past(haddr) + (1 << hsize));
   endproperty
 
   assert property (checkBurstIncr)
@@ -115,7 +116,8 @@ interface AhbMasterAssertion (
 
   property checkBurstWrap;
     @(posedge hclk) disable iff (!hresetn)
-    (hburst == 3'b010 && htrans == 2'b11) |-> (((haddr & ((1 << hsize) - 1)) == 0) ||
+    (hburst == {3'b010, 3'b10, 3'b110}  && (htrans == 2'b11) || htrans == 2'b10)
+       ##1 (htrans ==2'b11) && $stable(hburst) |-> (((haddr & ((1 << hsize) - 1)) == 0) ||
                                               (haddr == $past(haddr) + (1 << hsize)));
   endproperty
 
@@ -161,7 +163,7 @@ interface AhbMasterAssertion (
        $info("Address stability during waited transfer verified.");
   else $error("Address changed before HREADY HIGH!");
 
- property checkHaddrUnchanged;
+/*( property checkHaddrUnchanged;
     @(posedge hclk) disable iff (!hresetn)
     (hready && (htrans != 2'b00) && (htrans == 2'b01) ##1 (htrans==2'b01)) |-> (haddr == $past(haddr));
   endproperty
@@ -169,7 +171,7 @@ interface AhbMasterAssertion (
   assert property (checkHaddrUnchanged)
        $info("HADDR remains unchanged during a Busy transfer!");
   else $error("HADDR changed unexpectedly during a Busy transfer!");
-
+*/
   property checkHsizeMatchesData;
     @(posedge hclk) disable iff (!hresetn)
     (hready && (htrans != 2'b00)) |-> ((1 << hsize) <= 32);

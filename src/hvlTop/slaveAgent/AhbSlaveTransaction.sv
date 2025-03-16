@@ -16,8 +16,8 @@ class AhbSlaveTransaction extends uvm_sequence_item;
     bit hexcl;
     bit [HMASTER_WIDTH-1:0] hmaster;
     ahbTransferEnum htrans;
-    bit [DATA_WIDTH-1:0] hwdata[$:2**LENGTH];
-    bit [(DATA_WIDTH/8)-1:0] hwstrb[$:2**LENGTH];
+    rand bit [DATA_WIDTH-1:0] hwdata[$:2**LENGTH];
+    rand bit [(DATA_WIDTH/8)-1:0] hwstrb[$:2**LENGTH];
     ahbWriteEnum hwrite;
     rand bit [DATA_WIDTH-1:0] hrdata[$:2**LENGTH];
     rand bit hreadyout;
@@ -37,6 +37,8 @@ class AhbSlaveTransaction extends uvm_sequence_item;
 constraint chooseDataPacketC1 {soft choosePacketData==0;}//0 indicating Random address to be taken.1 indicating Particular address need to be specified. 
 
 constraint readDataSize{hrdata.size() == 16;}
+constraint writeDataSize{hwdata.size() == 16;}
+constraint hwstrbSize{hwstrb.size() == 16;}
 
 /*constraint burstsize{if(hburst == WRAP4 || hburst == INCR4) hrdata.size() == 4;
                       else if(hburst == WRAP8 || hburst == INCR8) hrdata.size() == 8;

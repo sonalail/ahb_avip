@@ -154,6 +154,7 @@ if(i==0)
  
 task waitCycles(inout ahbTransferConfigStruct configPacket);
   @(posedge hclk);
+  hresp <= 0;
 // while(hselx[0] !==1) begin
    //   `uvm_info(name, "Bus is now selecting salve", UVM_HIGH)
   //    @(posedge hclk);
@@ -162,7 +163,7 @@ task waitCycles(inout ahbTransferConfigStruct configPacket);
   repeat(configPacket.noOfWaitStates) begin
 	  `uvm_info(name,$sformatf(" DRIVING WAIT STATE"),UVM_LOW);
     	  hreadyout <= 0;
-             hresp <= #1 ~hreadyout;
+             hresp <=  ~hreadyout;
     	  @(posedge hclk);
   end
     hreadyout<=1;

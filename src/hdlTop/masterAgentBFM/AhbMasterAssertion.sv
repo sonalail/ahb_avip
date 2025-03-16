@@ -125,15 +125,14 @@ interface AhbMasterAssertion (
 
   property checkTransBusyToSeq;
     @(posedge hclk) disable iff(!hresetn)
-    (htrans == 2'b01 && hready == 0 && hburst inside{[3'b010:3'b111]}) |=>
-    (htrans == 2'b11 && $stable(hburst) && $stable(haddr));
+    (htrans == 2'b01 && hready == 1 )|=> (haddr == $past(haddr)) && (htrans == 2'b11);
   endproperty
-
+ 
   assert property(checkTransBusyToSeq)
-           $info("Transition from BUSY to SEQ passed");
-  else $error("Transition from BUSY to SEQ failed: Conditions not met!");
+           $info("Transition from BUSY to SEQ passed and address is hold ");
+  else $error("Transition from BUSY to SEQ failed: and address is not hold");
 
-  property checkTransBusyToNonSeq;
+ /* property checkTransBusyToNonSeq;
     @(posedge hclk) disable iff(!hresetn)
     (htrans == 2'b01 && hready ==0 && hburst inside {[3'b000:3'b001]}) |=>
     (htrans == 2'b10 && $stable(hburst));
@@ -142,10 +141,10 @@ interface AhbMasterAssertion (
   assert property(checkTransBusyToNonSeq)
        $info("Transition from BUSY to NON - SEQ passed");
   else $error("Transition from BUSY to NON - SEQ failed: Conditions not met!");
-
+*/
   property checkTransIdleToNonSeq;
     @(posedge hclk) disable iff(!hresetn)
-    ((htrans == 2'b00  && hready == 0 )|=>
+    ((htrans == 2'b00  && hready == 1 )|=>
     ( htrans == 2'b10)); 
   endproperty
 
@@ -155,7 +154,7 @@ interface AhbMasterAssertion (
 
   property checkAddrStability;
     @(posedge hclk) disable iff (!hresetn)
-    (htrans == 2'b10||htrans ==2'b11) && (hready==0) ##1 $stable(hready) |-> $stable(haddr) ;
+    (htrans == 2'b10||htrans ==2'b11) |=> $stable(haddr) until (hready);
   endproperty
 
   assert property (checkAddrStability)

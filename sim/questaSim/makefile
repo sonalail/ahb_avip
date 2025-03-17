@@ -163,7 +163,7 @@ simulate:
 	# vsim -view waveform.wlf -do apb_waves.do &
 
 clean_simulate:
-	rm -rf *_test*
+	rm -r A* work/ ahb_compile.log test_names_trace.txt merged_cov_html_report/ merged_coverage.ucdb
 
 clean_compile:
 	rm -rf work/ *_compile.log transcript waveform.wlf

@@ -52,7 +52,7 @@ interface AhbSlaveAssertion (
 
   property checkSlaveHrdataValid;
     @(posedge hclk) disable iff (!hresetn)
-    (!hwrite && hreadyout && (htrans != 2'b00)) |-> (!$isunknown(hrdata) || $isunknown(hrdata));
+    (!hwrite && hreadyout && (htrans != 2'b00) && hselx) ##1 $stable(hreadyout) |-> (!$isunknown(hrdata));
 
   endproperty
 

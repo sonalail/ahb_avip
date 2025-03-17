@@ -55,4 +55,5 @@ function void AhbSlaveAgent::connect_phase(uvm_phase phase);
  end
   
 endfunction : connect_phase
+
 `endif

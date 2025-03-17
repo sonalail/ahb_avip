@@ -1,14 +1,13 @@
-
 `ifndef APBMASTERMONITORPROXY_INCLUDED_
 `define APBMASTERMONITORPROXY_INCLUDED_
 
 class AhbMasterMonitorProxy extends uvm_monitor; 
   `uvm_component_utils(AhbMasterMonitorProxy)
-  
+
   virtual AhbMasterMonitorBFM ahbMasterMonitorBFM;
-   
+
   AhbMasterAgentConfig ahbMasterAgentConfig;
-    
+
   uvm_analysis_port#(AhbMasterTransaction) ahbMasterAnalysisPort;
   
   extern function new(string name = "AhbMasterMonitorProxy", uvm_component parent);
@@ -32,7 +31,7 @@ endfunction : build_phase
 
 function void AhbMasterMonitorProxy::end_of_elaboration_phase(uvm_phase phase);
   super.end_of_elaboration_phase(phase);
-ahbMasterMonitorBFM.ahbMasterMonitorProxy = this;
+  ahbMasterMonitorBFM.ahbMasterMonitorProxy = this;
 endfunction : end_of_elaboration_phase
 
 task AhbMasterMonitorProxy::run_phase(uvm_phase phase);
@@ -40,14 +39,14 @@ task AhbMasterMonitorProxy::run_phase(uvm_phase phase);
 
   `uvm_info(get_type_name(), $sformatf("Inside the master_monitor_proxy"), UVM_LOW);
   ahbMasterPacket = AhbMasterTransaction::type_id::create("ahbMasterPacket");
-  
+
   ahbMasterMonitorBFM.waitForResetn();
 
   forever begin
     ahbTransferCharStruct structDataPacket;
     ahbTransferConfigStruct  structConfigPacket; 
     AhbMasterTransaction  ahbMasterClonePacket;
-    
+
     AhbMasterConfigConverter :: fromClass(ahbMasterAgentConfig,  structConfigPacket);
     ahbMasterMonitorBFM.sampleData (structDataPacket,  structConfigPacket);
     $display("&&&&values inside master monitor proxy %p&&&",structDataPacket);
@@ -56,7 +55,6 @@ task AhbMasterMonitorProxy::run_phase(uvm_phase phase);
 
     $cast(ahbMasterClonePacket, ahbMasterPacket.clone());
     `uvm_info(get_type_name(),$sformatf("Sending packet via analysis_port: , \n %s", ahbMasterClonePacket.sprint()),UVM_HIGH)
-	//`uvm_info("RESET",$sformatf("RESET =%0d",hresetn),UVM_HIGH)
     ahbMasterAnalysisPort.write(ahbMasterClonePacket);
   end
 

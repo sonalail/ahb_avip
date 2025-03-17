@@ -7,9 +7,8 @@ class AhbMasterVirtualSequencer extends uvm_sequencer;
   extern function new(string name = "AhbMasterVirtualSequencer", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void connect_phase(uvm_phase phase);
-
 endclass : AhbMasterVirtualSequencer
-
+    
 function AhbMasterVirtualSequencer::new(string name = "AhbMasterVirtualSequencer", uvm_component parent = null);
   super.new(name, parent);
 endfunction : new

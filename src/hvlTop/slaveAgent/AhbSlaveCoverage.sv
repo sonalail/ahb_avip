@@ -18,7 +18,7 @@ class AhbSlaveCoverage extends uvm_subscriber #(AhbSlaveTransaction);
     HRESP_CP:coverpoint ahbSlaveTransaction.hresp{
       option.comment="ahb response";
       bins ahbResp0={0};
-      ignore_bins ahbResp1={1};
+      bins ahbResp1={1};
     }
 
 /*     HRDATA_CP:coverpoint ahbSlaveTransaction.hrdata{

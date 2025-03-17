@@ -18,14 +18,14 @@ class AhbMasterSequencer extends uvm_sequencer #(AhbMasterTransaction);
     
 endclass : AhbMasterSequencer
  
-//--------------------------------------------------------------------------------------------
-// Construct: new
-//  Initializes the AhbMasterSequencer class component
-//
-// Parameters:
-//  name - AhbMasterSequencer
-//  parent - parent under which this component is created
-//--------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------
+    // Construct: new
+    //  Initializes the AhbMasterSequencer class component
+    //
+    // Parameters:
+    //  name - AhbMasterSequencer
+    //  parent - parent under which this component is created
+    //--------------------------------------------------------------------------------------------
 function AhbMasterSequencer::new(string name = "AhbMasterSequencer",uvm_component parent);
   super.new(name,parent);
 endfunction : new

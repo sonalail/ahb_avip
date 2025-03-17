@@ -21,5 +21,5 @@ endfunction : build_phase
 function void AhbSlaveVirtualSequencer::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
 endfunction : connect_phase
-
+   
 `endif

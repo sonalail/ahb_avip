@@ -54,6 +54,9 @@ usage:
 	echo "To simulate individual test:"
 	echo "make simulate test=<test_name> uvm_verbosity=<VERBOSITY_LEVEL>";
 	echo "";
+	echo "To Provide seed number (default is random):"
+	echo "make simulate test=<test_name> uvm_verbosity=<VERBOSITY_LEVEL> seed=<value>";
+	echo "";
 	echo "Example:":
 	echo "make simulate test=base_test uvm_verbosity=UVM_HIGH";
 	echo "";
@@ -109,7 +112,9 @@ endif
 # TODO(mshariff): 
 #Add this line after -sva 
 #-sv_seed random 
-
+ifndef seed
+override seed = random
+endif
 # Setting the default test folder to test name 
 ifndef test_folder
 override test_folder = $(test)
@@ -124,6 +129,7 @@ simulate:
 	work.HvlTop \
 	work.HdlTop \
 	-voptargs=+acc=npr \
+	-sv_seed $(seed) \
 	-assertdebug \
 	+UVM_TESTNAME=$(test) \
 	+UVM_VERBOSITY=$(uvm_verbosity) \
@@ -172,8 +178,8 @@ clean_compile:
 ##
 regression:
 	# Run compilation
-	#make compile
 	make clean_simulate
+	make compile
 	# Run simualtion - regression 
 	python regression_handling.py $(testlist_name)
 	#	# Get the tests from regression list

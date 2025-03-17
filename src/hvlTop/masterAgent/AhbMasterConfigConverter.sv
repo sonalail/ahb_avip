@@ -13,37 +13,34 @@ class AhbMasterConfigConverter extends uvm_object;
   // Externally defined Tasks and Functions
   //-------------------------------------------------------
   extern function new(string name = "AhbMasterConfigConverter");
-    extern static function void fromClass(input AhbMasterAgentConfig inputConv, output ahbTransferConfigStruct outputConv);
+  extern static function void fromClass(input AhbMasterAgentConfig inputConv, output ahbTransferConfigStruct outputConv);
   extern function void do_print(uvm_printer printer);
 
 endclass : AhbMasterConfigConverter
 
-//--------------------------------------------------------------------------------------------
-// Construct: new
-//
-// Parameters:
-// name - AhbMasterConfigConverter
-//--------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------
+    // Construct: new
+    //
+    // Parameters:
+    // name - AhbMasterConfigConverter
+    //--------------------------------------------------------------------------------------------
 function AhbMasterConfigConverter::new(string name = "AhbMasterConfigConverter");
   super.new(name);
 endfunction : new
 
-//-------------------------------------------------------------------------------------------
-// Function: fromClass
-//  Converting AhbMasterConfig configurations into structure configutrations
-//--------------------------------------------------------------------------------------------
-    function void AhbMasterConfigConverter::fromClass(input AhbMasterAgentConfig inputConv,output ahbTransferConfigStruct outputConv);
-     outputConv.haddr = inputConv.haddr;
-     outputConv.noOfWaitStates = inputConv.noOfWaitStates;
-      
-//  `uvm_info("AhbMasterConfigConverter",$sformatf("after randomizing addr = \n %p",outputConv.haddr),UVM_HIGH);
-
+    //-------------------------------------------------------------------------------------------
+    // Function: fromClass
+    //  Converting AhbMasterConfig configurations into structure configutrations
+    //--------------------------------------------------------------------------------------------
+function void AhbMasterConfigConverter::fromClass(input AhbMasterAgentConfig inputConv,output ahbTransferConfigStruct outputConv);
+  outputConv.haddr = inputConv.haddr;
+  outputConv.noOfWaitStates = inputConv.noOfWaitStates;
 endfunction : fromClass
 
-//---------------------------------------------------------------------------------------------
-// Function: do_print method
-// print method can be added to display the data members values
-//---------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------
+    // Function: do_print method
+    // print method can be added to display the data members values
+    //---------------------------------------------------------------------------------------------
 function void AhbMasterConfigConverter::do_print(uvm_printer printer);
 
   ahbTransferConfigStruct ahbStruct;

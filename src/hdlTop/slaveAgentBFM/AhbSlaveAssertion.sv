@@ -60,25 +60,6 @@ interface AhbSlaveAssertion (
        $info("HRDATA is valid during read transfer!");
   else $error("HRDATA is invalid during read transfer!");
 
- /*  property checkHsizeMatchesData;
-    @(posedge hclk) disable iff (!hresetn)
-    (hreadyout && (htrans != 2'b00)) |-> ((1 << hsize) <= 32);
-  endproperty
-
-  assert property (checkHsizeMatchesData)
-       $info("HSIZE matches the data width supported by the slave!");
-  else $error("HSIZE does not match the data width supported by the slave!");
-*/
- /* property checkBurstTypeValid;
-    @(posedge hclk) disable iff (!hresetn)
-    (hreadyout && (htrans != 2'b00)) |-> (hburst inside {[0:7]});
-  endproperty
-
-  assert property (checkBurstTypeValid)
-       $info("Valid burst type!");
-  else $error("Invalid burst type detected!");
-*/
-
 endinterface : AhbSlaveAssertion
 
 `endif

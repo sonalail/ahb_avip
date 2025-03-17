@@ -21,8 +21,8 @@ task AhbVirtualSingleWriteSequence::body();
   super.body();
   ahbMasterSequence = AhbMasterSequence::type_id::create("ahbMasterSequence");
   ahbSlaveSequence  = AhbSlaveSequence::type_id::create("ahbSlaveSequence");
- repeat(40) begin 
-  if(!ahbMasterSequence.randomize() with {
+  repeat(40) begin 
+    if(!ahbMasterSequence.randomize() with {
                                                               hsizeSeq dist {BYTE:=1, HALFWORD:=1, WORD:=1};
 							      hwriteSeq ==1;
                                                               htransSeq == NONSEQ;
@@ -31,7 +31,7 @@ task AhbVirtualSingleWriteSequence::body();
  
                                                         ) begin
        `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualSingleWriteSequence")
-  end
+    end
     fork
        ahbSlaveSequence.start(p_sequencer.ahbSlaveSequencer);
       ahbMasterSequence.start(p_sequencer.ahbMasterSequencer); 

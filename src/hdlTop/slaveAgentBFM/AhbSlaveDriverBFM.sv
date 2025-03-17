@@ -5,8 +5,8 @@ import AhbGlobalPackage::*;
  
 interface AhbSlaveDriverBFM (input  bit   hclk,
                              input  bit  hresetn,
-			                 input logic [2:0] hburst,
-			                 input logic hmastlock,
+			     input logic [2:0] hburst,
+			     input logic hmastlock,
                              input logic [ADDR_WIDTH-1:0] haddr,                             
                              input logic [HPROT_WIDTH-1:0] hprot,
                              input logic [2:0] hsize,
@@ -14,12 +14,12 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
                              input logic hexcl,
                              input logic [HMASTER_WIDTH-1:0] hmaster,
                              input logic [1:0] htrans, 
-   			                 input logic [DATA_WIDTH-1:0] hwdata,
+   			     input logic [DATA_WIDTH-1:0] hwdata,
                              input logic [(DATA_WIDTH/8)-1:0]hwstrb,
                              input logic hwrite,                             
                              output logic [DATA_WIDTH-1:0] hrdata,
-			                 output logic hreadyout,
-			                 output logic hresp,
+			     output logic hreadyout,
+			     output logic hresp,
                              output logic hexokay,
                              input logic hready,                                                           
                              input logic [NO_OF_SLAVES-1:0]hselx
@@ -41,22 +41,13 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
   task waitForResetn();
 	@(negedge hresetn);
    	 	`uvm_info(name,$sformatf("SYSTEM RESET DETECTED"),UVM_LOW)  
-   	//	 hready=0;
         @(posedge hresetn);
     		`uvm_info(name,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_LOW)
   endtask: waitForResetn
 
   task slaveDriveToBFM(inout ahbTransferCharStruct dataPacket, input ahbTransferConfigStruct configPacket);
-//	  `uvm_info(name,$sformatf("dataPacket = \n%p",dataPacket), UVM_LOW);
-//	  `uvm_info(name,$sformatf("configPacket = \n%p",configPacket), UVM_LOW);
 	  `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
-	
-	/*do begin
-		@(posedge hclk);
-	end while(hselx === 1'b0);*/
-
 	wait(hselx)
-
     	`uvm_info(name,$sformatf("AFTERHSELASSERTED HTRANSFER = %0d",htrans), UVM_LOW);
     if(hburst===SINGLE) 
 	begin
@@ -69,7 +60,6 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
  
   task slaveDriveSingleTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
-	//waitCycles(dataPacket);
     hreadyout 		   <= 1;
     dataPacket.haddr       <= haddr;
     dataPacket.htrans      <= ahbTransferEnum'(htrans);
@@ -77,11 +67,8 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     dataPacket.hburst      <= ahbBurstEnum'(hburst);
     dataPacket.hwrite      <= ahbWriteEnum'(hwrite);  
     dataPacket.hmastlock   <= hmastlock; 
-    dataPacket.hselx       <= hselx;
-
-     
+    dataPacket.hselx       <= hselx;    
      waitCycles(configPacket);
-   // @(posedge hclk);
     if(hwrite) begin
       dataPacket.hwdata[0] <= hwdata;
       dataPacket.hwstrb[0] <= hwstrb;
@@ -89,7 +76,6 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     end
 
     else if(!hwrite) begin
-//	@(posedge hclk);
       hrdata <= dataPacket.hrdata[0];
 	  hresp  <= 0;
     end
@@ -107,11 +93,8 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
       default: burst_length = 1;
     endcase
  
-   
-    //@(posedge hclk);
 	for(int i = 0;i < burst_length;i++)
 	begin
-//@(posedge hclk);
     hreadyout <= 1;
     dataPacket.haddr       <= haddr;
     dataPacket.hburst      <= ahbBurstEnum'(hburst);  
@@ -120,13 +103,9 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     dataPacket.htrans      <= ahbTransferEnum'(htrans); 
     dataPacket.hmastlock   <= hmastlock; 
     dataPacket.hselx       <= hselx;
-	`uvm_info(name, $sformatf("Busy = %0b",dataPacket.busyControl), UVM_LOW);
-   // for (int i = 0; i < burst_length - 1; i++) begin
-      
+	`uvm_info(name, $sformatf("Busy = %0b",dataPacket.busyControl), UVM_LOW);      
 if(i==0)  
     waitCycles(configPacket);
-    //	@(posedge hclk);
- 
       if(hwrite) begin
 	@(posedge hclk);
         dataPacket.hwdata[i]  <= hwdata;
@@ -137,9 +116,6 @@ if(i==0)
         if(i!=0) begin
 	  @(posedge hclk);
         end
-	//if(htrans == 2'b01)begin
-          // @(posedge hclk);
-    	//end
 	`uvm_info(name, $sformatf("DEBUG Address=%0h, Burst=%0b, Size=%0b, Write=%0b,hrdata[%0d] = %0d",
 				  dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite,i,dataPacket.hrdata[i]), UVM_LOW);
        hrdata <=dataPacket.hrdata[i];
@@ -155,11 +131,6 @@ if(i==0)
 task waitCycles(inout ahbTransferConfigStruct configPacket);
   @(posedge hclk);
   hresp <= 0;
-// while(hselx[0] !==1) begin
-   //   `uvm_info(name, "Bus is now selecting salve", UVM_HIGH)
-  //    @(posedge hclk);
-//   end
- 
   repeat(configPacket.noOfWaitStates) begin
 	  `uvm_info(name,$sformatf(" DRIVING WAIT STATE"),UVM_LOW);
     	  hreadyout <= 0;

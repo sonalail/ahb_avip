@@ -24,37 +24,40 @@ endfunction : new
 
 function void AhbSlaveMonitorProxy::build_phase(uvm_phase phase);
   super.build_phase(phase);
+      
   if(!uvm_config_db #(virtual AhbSlaveMonitorBFM)::get(this,"","AhbSlaveMonitorBFM", ahbSlaveMonitorBFM)) begin
     `uvm_fatal("FATAL MDP CANNOT GET AHBSLAVE MONITOR BFM","cannot get() ahbSlaveMonitorBFM");
   end
+      
 endfunction : build_phase
 
 function void AhbSlaveMonitorProxy::end_of_elaboration_phase(uvm_phase phase);
-  super.end_of_elaboration_phase(phase);
+ super.end_of_elaboration_phase(phase);
   ahbSlaveMonitorBFM.ahbSlaveMonitorProxy = this;
 endfunction : end_of_elaboration_phase
 
 task AhbSlaveMonitorProxy::run_phase(uvm_phase phase);
+      
   AhbSlaveTransaction ahbSlavePacket;
 
   ahbSlavePacket = AhbSlaveTransaction::type_id::create("slave Packet");
-  
+
   ahbSlaveMonitorBFM.waitForResetn();
 
   forever begin
     ahbTransferCharStruct structDataPacket;
     ahbTransferConfigStruct  structConfigPacket; 
     AhbSlaveTransaction  ahbSlaveClonePacket;
-    
+
     AhbSlaveConfigConverter :: fromClass (ahbSlaveAgentConfig, structConfigPacket);
     ahbSlaveMonitorBFM.slaveSampleData (structDataPacket, structConfigPacket);
-    
-	$display("&&&&values inside monitor proxy %p&&&",structDataPacket);
-	AhbSlaveSequenceItemConverter :: toClass (structDataPacket, ahbSlavePacket);
+
+    $display("&&&&values inside monitor proxy %p&&&",structDataPacket);
+    AhbSlaveSequenceItemConverter :: toClass (structDataPacket, ahbSlavePacket);
 
 
     $cast(ahbSlaveClonePacket, ahbSlavePacket.clone());
-	`uvm_info(get_type_name(),$sformatf("Sending packet via analysis_port: , \n %s", ahbSlaveClonePacket.sprint()),UVM_HIGH)
+    `uvm_info(get_type_name(),$sformatf("Sending packet via analysis_port: , \n %s", ahbSlaveClonePacket.sprint()),UVM_HIGH)
     ahbSlaveAnalysisPort.write(ahbSlaveClonePacket);
   end
 

@@ -7,7 +7,7 @@ class AhbSingleReadWithWaitStateTest extends AhbBaseTest;
   
   AhbVirtualSingleReadWithWaitStateSequence ahbVirtualSingleReadWithWaitStateSequence; 
  
-extern function new(string name = "AhbSingleReadWithWaitStateTest", uvm_component parent = null);
+  extern function new(string name = "AhbSingleReadWithWaitStateTest", uvm_component parent = null);
   extern virtual task run_phase(uvm_phase phase);
 
 endclass : AhbSingleReadWithWaitStateTest

@@ -17,11 +17,9 @@ package AhbMasterPackage;
   `include "AhbMasterMonitorProxy.sv"
   `include "AhbMasterCoverage.sv"
   `include "AhbMasterAgent.sv"
-  
+ 
 endpackage : AhbMasterPackage
 
 `endif
-
-
 
 

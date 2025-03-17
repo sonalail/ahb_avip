@@ -54,14 +54,17 @@ usage:
 	echo "To simulate individual test:"
 	echo "make simulate test=<test_name> uvm_verbosity=<VERBOSITY_LEVEL>";
 	echo "";
+	echo "To Provide seed number (default is random):"
+	echo "make simulate test=<test_name> uvm_verbosity=<VERBOSITY_LEVEL> seed=<value>";
+	echo "";
 	echo "Example:":
 	echo "make simulate test=base_test uvm_verbosity=UVM_HIGH";
 	echo "";
 	echo "To run regression:"
-	echo "make regression testlist_name=<regression_testlist_name.list>";
+	echo "make regression testlist_name=AhbRegression.list";
 	echo "";
 	echo "Example:":
-	echo "make regression testlist_name=apb_regression.list";
+	echo "make regression testlist_name=AhbRegression.list";
 	echo "";
 	echo "-----------------------------------------------------------------";
 	echo "-----------------------------------------------------------------";
@@ -97,7 +100,7 @@ endif
 
 # Setting the default uvm_verbosity to UVM_MEDIUM
 ifndef uvm_verbosity
-override uvm_verbosity = UVM_MEDIUM
+override uvm_verbosity = UVM_HIGH
 endif
 
 
@@ -109,7 +112,9 @@ endif
 # TODO(mshariff): 
 #Add this line after -sva 
 #-sv_seed random 
-
+ifndef seed
+override seed = random
+endif
 # Setting the default test folder to test name 
 ifndef test_folder
 override test_folder = $(test)
@@ -124,6 +129,7 @@ simulate:
 	work.HvlTop \
 	work.HdlTop \
 	-voptargs=+acc=npr \
+	-sv_seed $(seed) \
 	-assertdebug \
 	+UVM_TESTNAME=$(test) \
 	+UVM_VERBOSITY=$(uvm_verbosity) \
@@ -157,7 +163,7 @@ simulate:
 	# vsim -view waveform.wlf -do apb_waves.do &
 
 clean_simulate:
-	rm -rf *_test*
+	rm -r A* work/ ahb_compile.log test_names_trace.txt merged_cov_html_report/ merged_coverage.ucdb
 
 clean_compile:
 	rm -rf work/ *_compile.log transcript waveform.wlf
@@ -172,8 +178,8 @@ clean_compile:
 ##
 regression:
 	# Run compilation
-	#make compile
 	make clean_simulate
+	make compile
 	# Run simualtion - regression 
 	python regression_handling.py $(testlist_name)
 	#	# Get the tests from regression list

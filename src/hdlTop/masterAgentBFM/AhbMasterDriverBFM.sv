@@ -1,95 +1,178 @@
+
 `ifndef AHBMASTERDRIVERBFM_INCLUDED_
 `define AHBMASTERDRIVERBFM_INCLUDED_
-
-//-------------------------------------------------------
-// Importing ahb global package
-//-------------------------------------------------------
 import AhbGlobalPackage::*;
-
-//--------------------------------------------------------------------------------------------
-// Interface : AhbMasterDriverBFM
-//  Used as the HDL driver for ahb
-//  It connects with the HVL driver_proxy for driving the stimulus
-//--------------------------------------------------------------------------------------------
 interface AhbMasterDriverBFM (input  bit  hclk,
                               input  bit  hresetn,
-                              input logic [ADDR_WIDTH-1:0] haddr,
-                              input logic [2:0] hburst,
-                              input logic hmastlock,
-                              input logic [HPROT_WIDTH-1:0] hprot,
-                              input logic [2:0] hsize,
-                              input logic hnonsec,
-                              input logic hexcl,
-                              input logic [HMASTER_WIDTH-1:0] hmaster,
-                              input logic [1:0] htrans,     
-                              input logic hwrite,
-                              input logic [DATA_WIDTH-1:0] hwdata,
-                              input logic [(DATA_WIDTH/8)-1:0]hwstrb,
-                              output logic [DATA_WIDTH-1:0] hrdata,
-                              output logic hready,
-                              output logic hreadyout,
-                              output logic hresp,
-                              output logic hexokay,
-                              input logic [NO_OF_SLAVES-1:0]hselx
-                              );
-
-  //-------------------------------------------------------
-  // Importing uvm package file
-  //-------------------------------------------------------
+                              output logic [ADDR_WIDTH-1:0] haddr,
+                              output logic [2:0] hburst,
+                              output logic hmastlock,
+                              output logic [HPROT_WIDTH-1:0] hprot,
+                              output logic [2:0] hsize,
+                              output logic hnonsec,
+                              output logic hexcl,
+                              output logic [HMASTER_WIDTH-1:0] hmaster,
+                              output logic [1:0] htrans,     
+                              output logic hwrite,
+                              output logic [DATA_WIDTH-1:0] hwdata,
+                              output logic [(DATA_WIDTH/8)-1:0] hwstrb,
+                              input logic [DATA_WIDTH-1:0] hrdata,
+                              input logic hready,
+                              input logic hreadyout,
+                              input logic hresp,
+                              input logic hexokay,
+                              output logic [NO_OF_SLAVES-1:0] hselx
+                             );
   import AhbMasterPackage::*;
   `include "uvm_macros.svh"
   import uvm_pkg::*; 
-  //-------------------------------------------------------
-  // Importing the master package file
-  //-------------------------------------------------------
-  import AhbMasterPackage::*;
-  
-  //Variable: name
-  //Used to store the name of the interface
-  string name = "AHB_MASTER_DRIVER_BFM"; 
-  
-  //Variable: ahb_master_drv_proxy_h
-  //Creating the handle for the proxy_driver
+  string name = "AHB_MASTER_DRIVER_BFM";
+
   AhbMasterDriverProxy ahbMasterDriverProxy;
-   
-  //-------------------------------------------------------
-  // Used to display the name of the interface
-  //-------------------------------------------------------
+
   initial begin
-    `uvm_info(name, $sformatf(name),UVM_LOW)
+    `uvm_info(name, $sformatf(name), UVM_LOW)
   end
- 
-  //-------------------------------------------------------
-  // Task: waitForResetn
-  //  Waiting for the system reset to be active low
-  //-------------------------------------------------------
+
   task waitForResetn();
     @(negedge hresetn);
     `uvm_info(name ,$sformatf("SYSTEM RESET DETECTED"),UVM_HIGH)
- 
-   @(posedge hresetn);
+    htrans      <= IDLE;  
+    @(posedge hresetn);
     `uvm_info(name ,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_HIGH)
-  endtask:waitForResetn
-  
-  //--------------------------------------------------------------------------------------------
-  // Task: driveToBFM
-  //  This task will drive the data from bfm to proxy using converters
-  //
-  // Parameters:
-  // dataPacket - handle for ahbTransferCharStruct
-  // configPacket - handle for ahbTransferConfigStruct
-  //--------------------------------------------------------------------------------------------
+  endtask: waitForResetn
+
   task driveToBFM(inout ahbTransferCharStruct dataPacket, input ahbTransferConfigStruct configPacket);
-    `uvm_info(name,$sformatf("dataPacket = \n%p",dataPacket),UVM_HIGH);
-    `uvm_info(name,$sformatf("configPacket = \n%p",configPacket),UVM_HIGH);
-    `uvm_info(name,$sformatf("DRIVE TO BFM TASK"),UVM_HIGH);
-
-    //logic to be written
-
+    `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
+    if (dataPacket.hburst == SINGLE)
+      begin
+        driveSingleTransfer(dataPacket,configPacket);
+      end
+    else if (dataPacket.hburst != SINGLE) begin
+      driveBurstTransfer(dataPacket,configPacket);
+    end
   endtask: driveToBFM
 
- 
+  task driveSingleTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);
+    `uvm_info("INSIDESINGLETRANSFER","BFM",UVM_LOW);
+    @(posedge hclk); 
+    `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
+    haddr       <= dataPacket.haddr;
+    hburst      <= dataPacket.hburst;
+    hmastlock   <= dataPacket.hmastlock;
+    hprot       <= dataPacket.hprot;
+    hsize       <= dataPacket.hsize;
+    hnonsec     <= dataPacket.hnonsec;
+    hexcl       <= dataPacket.hexcl;
+    hmaster     <= dataPacket.hmaster;
+    htrans      <= dataPacket.htrans; 
+    hwstrb      <= dataPacket.hwstrb[0];
+    hwrite      <= dataPacket.hwrite;
+    hselx       <= 1'b1;
 
-endinterface : AhbMasterDriverBFM
+    WaitStates(configPacket); 
 
+    @(posedge hclk);
+    hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.hwstrb[0]) : '0;
+
+    if (hresp == 1) begin  
+      `uvm_info(name, $sformatf("error Response Detected on Single Transfer at Address: %0h", haddr),UVM_LOW);
+    end else if (!dataPacket.hwrite) begin  
+      `uvm_info(name, $sformatf("Read Data: %0h from Address: %0h", hrdata[0], haddr), UVM_LOW);
+    end else begin `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata, haddr), UVM_LOW);
+      `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata[0], haddr), UVM_LOW);
+    end
+    driveIdle();
+  endtask
+
+  task driveBurstTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);
+
+    int burst_length;
+    automatic logic [ADDR_WIDTH-1:0] current_address = dataPacket.haddr;
+    case (dataPacket.hburst)
+      3'b010, 3'b011 : burst_length = 4;  // INCR4, WRAP4
+      3'b100, 3'b101 : burst_length = 8;  // INCR8, WRAP8
+      3'b110, 3'b111 : burst_length = 16; // INCR16, WRAP16
+      default: burst_length = 1;
+    endcase
+    @(posedge hclk);
+    for(int i = 0;i < burst_length; i++)
+      begin
+
+        haddr       <= current_address;
+        hburst      <= dataPacket.hburst;
+        hmastlock   <= dataPacket.hmastlock;
+        hprot       <= dataPacket.hprot;
+        hsize       <= dataPacket.hsize;
+        hnonsec     <= dataPacket.hnonsec;
+        hexcl       <= dataPacket.hexcl;
+        hmaster     <= dataPacket.hmaster;
+        htrans      <= dataPacket.htrans; 
+        hwstrb      <= dataPacket.hwstrb[i];
+        hwrite      <= dataPacket.hwrite;
+        hselx       <= 1;
+        
+        if (hresp == 1) begin
+          `uvm_info(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr),UVM_LOW);
+        end
+        if (dataPacket.hburst == 3'b010 || dataPacket.hburst == 3'b100 || dataPacket.hburst == 3'b110) begin
+          current_address = (current_address & ~(burst_length * (1 << dataPacket.hsize) - 1)) | ((current_address + (1 << dataPacket.hsize)) & (burst_length * (1 << dataPacket.hsize) - 1));
+        end 
+        else begin
+          current_address += (1 << dataPacket.hsize); 
+        end
+        if(i > 0)begin
+          if(dataPacket.busyControl[i]>0) begin
+            driveBusyTransfer(dataPacket, current_address) ;
+          end
+          else begin
+            htrans <= 2'b11; // Sequential transfer
+          end
+        end
+        if(i==0) 
+          WaitStates(configPacket);
+
+        @(posedge hclk);
+        hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[i], dataPacket.hwstrb[i]) : '0;
+      end
+
+    driveIdle();    
+    `uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
+  endtask
+
+  function logic [DATA_WIDTH-1:0] maskingStrobe(logic [DATA_WIDTH-1:0] data, logic [(DATA_WIDTH/8)-1:0] strobe);
+    logic [DATA_WIDTH-1:0] masked_data;
+    for (int j = 0; j < (DATA_WIDTH/8); j++) begin
+      masked_data[j*8 +: 8] = strobe[j] ? data[j*8 +: 8] : 8'h00;
+    end
+    return masked_data;
+  endfunction
+
+  task driveBusyTransfer(inout ahbTransferCharStruct dataPacket, inout logic [ADDR_WIDTH-1:0] current_address);
+    htrans     <= 2'b01;             // Busy transfer
+    `uvm_info(name, $sformatf("Driving BUSY Transfer at Address: %0h", haddr), UVM_LOW);
+    @(posedge hclk);
+    htrans <= 2'b11 ;  
+  endtask
+
+
+  task driveIdle();
+    @(posedge hclk);
+    htrans <= IDLE;
+    hselx <= 0; 
+    haddr  <= 0;
+    hwrite <= 0;
+    hwdata <= 0;
+    hburst <=  SINGLE;
+    hmastlock <= 0;
+    `uvm_info(name, "Bus is now IDLE", UVM_LOW);
+  endtask
+
+  task WaitStates(input ahbTransferConfigStruct configPacket);
+    repeat(configPacket.noOfWaitStates) begin
+      @(posedge hclk);
+    end
+  endtask
+
+endinterface
 `endif

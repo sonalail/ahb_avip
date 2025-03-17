@@ -1,61 +1,51 @@
 `ifndef AHBSLAVECOVERAGE_INCLUDED_
 `define AHBSLAVECOVERAGE_INCLUDED_
 
-//--------------------------------------------------------------------------------------------
-// Class: AhbMasterCoverage
-// This class is used to include covergroups and bins required for functional coverage
-//--------------------------------------------------------------------------------------------
 class AhbSlaveCoverage extends uvm_subscriber #(AhbSlaveTransaction);
   `uvm_component_utils(AhbSlaveCoverage)
  
-  //Variable: apbSlaveAgentConfig
-  //Declaring handle for slave agent configuration class 
   AhbSlaveAgentConfig ahbSlaveAgentConfig;
   
-  //-------------------------------------------------------
-  covergroup ahbSlaveCovergroup;
+    covergroup ahbSlaveCovergroup with function sample (AhbSlaveAgentConfig AhbSlaveAgentConfig , AhbSlaveTransaction ahbSlaveTransaction);
+    option.per_instance=1;
+    
+    HREADY_CP:coverpoint ahbSlaveTransaction.hreadyout{
+      option.comment="ahb ready";
+      bins ahbReady0={0};
+      bins ahbReady1={1};
+    }
+
+    HRESP_CP:coverpoint ahbSlaveTransaction.hresp{
+      option.comment="ahb response";
+      bins ahbResp0={0};
+      bins ahbResp1={1};
+    }
   
   endgroup: ahbSlaveCovergroup
 
-  //-------------------------------------------------------
-  // Externally defined Tasks and Functions
-  //-------------------------------------------------------
   extern function new(string name = "AhbSlaveCoverage", uvm_component parent = null);
   extern function void write(AhbSlaveTransaction t);
   extern virtual function void report_phase(uvm_phase phase);
 
 endclass : AhbSlaveCoverage
 
-//--------------------------------------------------------------------------------------------
-// Construct: new
-//  Initializes memory for new object
-//
-// Parameters:
-//  name - ahbSlaveCoverage
-//  parent - parent under which this component is created
-//--------------------------------------------------------------------------------------------
 function  AhbSlaveCoverage::new(string name = "AhbSlaveCoverage", uvm_component parent = null);
   super.new(name, parent);
   ahbSlaveCovergroup = new();
 endfunction : new
 
-//-------------------------------------------------------------------------------------------
-// Function: write
-// Overriding the write method declared in the parent class
-//
-// Parameters:
-//  t - ahb_slave_tx
-//--------------------------------------------------------------------------------------------
 function void AhbSlaveCoverage::write(AhbSlaveTransaction t);
+
+  `uvm_info(get_type_name(),"AHB SLAVE COVERAGE",UVM_LOW);
+  ahbSlaveCovergroup .sample(ahbSlaveAgentConfig,t);
+
 endfunction : write
 
-//--------------------------------------------------------------------------------------------
-// Function: report_phase
-// Used for reporting the coverage instance percentage values
-//--------------------------------------------------------------------------------------------
 function void AhbSlaveCoverage::report_phase(uvm_phase phase);
+      
   `uvm_info(get_type_name(), $sformatf("Entered the report_phase of AHB Slave Coverage"), UVM_NONE);
-  //`uvm_info(get_type_name(), $sformatf("APB Slave Agent Coverage = %0.2f %%", apbSlaveCovergroup.get_coverage()), UVM_NONE);
+  `uvm_info(get_type_name(), $sformatf("AHB Slave Agent Coverage = %0.2f %%", ahbSlaveCovergroup.get_coverage()), UVM_NONE);
+      
 endfunction: report_phase
 
 `endif

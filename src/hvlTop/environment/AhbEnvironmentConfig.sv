@@ -60,11 +60,11 @@ endfunction : new
 //--------------------------------------------------------------------------------------------
 function void AhbEnvironmentConfig::do_print(uvm_printer printer);
   super.do_print(printer);
-  
+
   printer.print_field ("hasScoreboard", hasScoreboard, $bits(hasScoreboard), UVM_DEC);
   printer.print_field ("hasVirtualSequencer", hasVirtualSequencer, $bits(hasVirtualSequencer), UVM_DEC);
   printer.print_field ("noOfMasters",  noOfMasters,  $bits(noOfMasters), UVM_DEC);
-printer.print_field ("noOfSlaves",  noOfSlaves,  $bits(noOfSlaves), UVM_DEC);
+  printer.print_field ("noOfSlaves",  noOfSlaves,  $bits(noOfSlaves), UVM_DEC);
 
 endfunction : do_print
 

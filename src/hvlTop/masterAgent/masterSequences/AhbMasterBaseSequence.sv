@@ -38,7 +38,7 @@ endfunction : new
 
 task AhbMasterBaseSequence::body();
 
-  //dynamic casting of p_sequencer and m_sequencer
+  // casting of p_sequencer and m_sequencer
   if(!$cast(p_sequencer,m_sequencer))begin
     `uvm_error(get_full_name(),"Virtual sequencer pointer cast failed")
   end

@@ -51,10 +51,7 @@ endfunction: new
 
       $cast(outputConv.hresp, inputConv.hresp);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hresp = %b", outputConv.hresp), UVM_FULL);
-      
-/*      output_conv.hexokay = input_conv.hexokay;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformat("After randomizing hexokay = %b", output_conv.hexokay), UVM_FULL);
-  */    
+         
       outputConv.hready =  inputConv.hready;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hready = %b", outputConv.hready), UVM_FULL);
       
@@ -136,9 +133,6 @@ endfunction : fromClass
       $cast(outputConv.hresp, inputConv.hresp);
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hresp = %b", outputConv.hresp), UVM_FULL);
       
-    /*  output_conv.hexokay = input_conv.hexokay;
-      `uvm_info("ahbSlaveSequeceItemconverterClass", $sformat("After randomizing hexokay = %b", output_conv.hexokay), UVM_FULL);
-      */
       outputConv.hready =  inputConv.hready;
       `uvm_info("ahbSlaveSequeceItemconverterClass", $sformatf("After randomizing hready = %b", outputConv.hready), UVM_FULL);
       
@@ -182,21 +176,20 @@ endfunction : toClass
 function void AhbSlaveSequenceItemConverter::do_print(uvm_printer printer);
   ahbTransferCharStruct ahbStruct;
   super.do_print(printer);
-
-printer.print_field("hprot", ahbStruct.hprot, $bits(ahbStruct.hprot), UVM_BIN);
-printer.print_field("hburst", ahbStruct.hburst, $bits(ahbStruct.hburst), UVM_BIN);
-printer.print_field("hmastlock", ahbStruct.hmastlock, $bits(ahbStruct.hmastlock), UVM_BIN);
-printer.print_field("hsize", ahbStruct.hsize, $bits(ahbStruct.hsize), UVM_BIN);
-printer.print_field("hnonsec", ahbStruct.hnonsec, $bits(ahbStruct.hnonsec), UVM_BIN);
-printer.print_field("hexcl", ahbStruct.hexcl, $bits(ahbStruct.hexcl), UVM_BIN);
-printer.print_field("hmaster", ahbStruct.hmaster, $bits(ahbStruct.hmaster), UVM_BIN);
-printer.print_field("htrans", ahbStruct.htrans, $bits(ahbStruct.htrans), UVM_BIN);
-printer.print_field("hwrite", ahbStruct.hwrite, $bits(ahbStruct.hwrite), UVM_BIN);
-printer.print_field("hreadyout", ahbStruct.hreadyout, $bits(ahbStruct.hreadyout), UVM_BIN);
-printer.print_field("hresp", ahbStruct.hresp, $bits(ahbStruct.hresp), UVM_BIN);
-printer.print_field("hexokay", ahbStruct.hexokay, $bits(ahbStruct.hexokay), UVM_BIN);
-printer.print_field("hready", ahbStruct.hready, $bits(ahbStruct.hready), UVM_BIN);
-printer.print_field("hselx", ahbStruct.hselx, $bits(ahbStruct.hselx), UVM_BIN);
+  printer.print_field("hprot", ahbStruct.hprot, $bits(ahbStruct.hprot), UVM_BIN);
+  printer.print_field("hburst", ahbStruct.hburst, $bits(ahbStruct.hburst), UVM_BIN);
+  printer.print_field("hmastlock", ahbStruct.hmastlock, $bits(ahbStruct.hmastlock), UVM_BIN);
+  printer.print_field("hsize", ahbStruct.hsize, $bits(ahbStruct.hsize), UVM_BIN);
+  printer.print_field("hnonsec", ahbStruct.hnonsec, $bits(ahbStruct.hnonsec), UVM_BIN);
+  printer.print_field("hexcl", ahbStruct.hexcl, $bits(ahbStruct.hexcl), UVM_BIN);
+  printer.print_field("hmaster", ahbStruct.hmaster, $bits(ahbStruct.hmaster), UVM_BIN);
+  printer.print_field("htrans", ahbStruct.htrans, $bits(ahbStruct.htrans), UVM_BIN);
+  printer.print_field("hwrite", ahbStruct.hwrite, $bits(ahbStruct.hwrite), UVM_BIN);
+  printer.print_field("hreadyout", ahbStruct.hreadyout, $bits(ahbStruct.hreadyout), UVM_BIN);
+  printer.print_field("hresp", ahbStruct.hresp, $bits(ahbStruct.hresp), UVM_BIN);
+  printer.print_field("hexokay", ahbStruct.hexokay, $bits(ahbStruct.hexokay), UVM_BIN);
+  printer.print_field("hready", ahbStruct.hready, $bits(ahbStruct.hready), UVM_BIN);
+  printer.print_field("hselx", ahbStruct.hselx, $bits(ahbStruct.hselx), UVM_BIN);
 
 foreach(ahbStruct.hwdata[i])begin
   printer.print_field  ($sformatf("hwdata[%0d]",i), ahbStruct.hwdata[i], $bits(ahbStruct.hwdata[i]), UVM_HEX);

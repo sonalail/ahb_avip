@@ -49,24 +49,12 @@ interface AhbMasterAssertion (
 
   property checkHaddrAlignment;
     @(posedge hclk) disable iff (!hresetn)
-    (hready && (htrans != 2'b00) && hburst != 3'b000 && hsize != 3'b000) |-> ((hsize == 3'b001) && (haddr[0] == 1'b0)) || 
-                                                          ((hsize == 3'b010) && (haddr[1:0] == 2'b00));
+    (hready && (htrans != 2'b00) && hburst != 3'b000 && hsize != 3'b000) |-> ((hsize == 3'b001) && (haddr[0] == 1'b0)) || ((hsize == 3'b010) && (haddr[1:0] == 2'b00));
   endproperty
 
   assert property (checkHaddrAlignment)
-       $info("HADDR is aligned based on HSIZE");
+    $info("HADDR is aligned based on HSIZE");
   else $error("HADDR is not aligned based on HSIZE!");
-
-  /*property ifHaddrValidAndWithinRange;
-    @(posedge hclk) disable iff (!hresetn)
-    (hready && (htrans != 2'b00)) |-> ((haddr >= AHB_ADDR_MIN) &&
-                                      (haddr <= AHB_ADDR_MAX));
-  endproperty
-
-  assert property (ifHaddrValidAndWithinRange)
-       $info("HADDR is within the valid range");
-  else $error("HADDR is not within the valid range!");
- */
 
   property checkHmastlockCheck;
     @(posedge hclk) disable iff (!hresetn)
@@ -74,7 +62,7 @@ interface AhbMasterAssertion (
   endproperty
 
   assert property (checkHmastlockCheck)
-       $info("HMASTLOCK is asserted during a locked transfer");
+    $info("HMASTLOCK is asserted during a locked transfer");
   else $error("HMASTLOCK is not asserted during a locked transfer!");
 
   property checkBurstIncr;
@@ -84,7 +72,7 @@ interface AhbMasterAssertion (
   endproperty
 
   assert property (checkBurstIncr)
-       $info("INCR burst type passed: Address incremented correctly");
+    $info("INCR burst type passed: Address incremented correctly");
   else $error("INCR burst type failed: Address not incremented correctly!");
 
   property checkBurstWrap;
@@ -95,7 +83,7 @@ interface AhbMasterAssertion (
   endproperty
 
   assert property (checkBurstWrap)
-       $info("WRAP burst type passed: Address wrapping is done correctly");
+    $info("WRAP burst type passed: Address wrapping is done correctly");
   else $error("WRAP burst type failed: Address wrapping incorrect!");
 
   property checkTransBusyToSeq;
@@ -104,17 +92,15 @@ interface AhbMasterAssertion (
   endproperty
  
   assert property(checkTransBusyToSeq)
-           $info("Transition from BUSY to SEQ passed and address is hold ");
+    $info("Transition from BUSY to SEQ passed and address is hold ");
   else $error("Transition from BUSY to SEQ failed: and address is not hold");
 
   property checkTransIdleToNonSeq;
-    @(posedge hclk) disable iff(!hresetn)
-    ((htrans == 2'b00  && hready == 1 )|=>
-    ( htrans == 2'b10)); 
+    @(posedge hclk) disable iff(!hresetn) ((htrans == 2'b00  && hready == 1 )|=> ( htrans == 2'b10)); 
   endproperty
 
   assert property(checkTransIdleToNonSeq)
-       $info("Transition from IDLE to NON-SEQ passed");
+    $info("Transition from IDLE to NON-SEQ passed");
   else $error("Transition from IDLE to NON-SEQ failed: Conditions not met!");
 
   property checkAddrStability;
@@ -123,7 +109,7 @@ interface AhbMasterAssertion (
   endproperty
 
   assert property (checkAddrStability)
-       $info("Address stability during waited transfer verified.");
+    $info("Address stability during waited transfer verified.");
   else $error("Address changed before HREADY HIGH!");
 
   property checkHsizeMatchesData;
@@ -132,7 +118,7 @@ interface AhbMasterAssertion (
   endproperty
 
   assert property (checkHsizeMatchesData)
-       $info("HSIZE matches the data width supported by the slave!");
+    $info("HSIZE matches the data width supported by the slave!");
   else $error("HSIZE does not match the data width supported by the slave!");
 
   property checkBurstTypeValid;
@@ -141,17 +127,17 @@ interface AhbMasterAssertion (
   endproperty
 
   assert property (checkBurstTypeValid)
-       $info("Valid burst type!");
+    $info("Valid burst type!");
   else $error("Invalid burst type detected!");
  
- property checkStrobe;
-   @(posedge hclk) disable iff (!hresetn)
-   (htrans != 2'b00) |->((hsize == 3'b000 -> $countones(hwstrb)== 1 )) || ((hsize ==3'b001 -> $countones(hwstrb)==2)) || ((hsize==3'b010 -> $countones(hwstrb)==4));
- endproperty
+  property checkStrobe;
+    @(posedge hclk) disable iff (!hresetn)
+    (htrans != 2'b00) |->((hsize == 3'b000 -> $countones(hwstrb)== 1 )) || ((hsize ==3'b001 -> $countones(hwstrb)==2)) || ((hsize==3'b010 -> $countones(hwstrb)==4));
+  endproperty
  
- assert property (checkStrobe)
-   $info("Hwstrb valid ");
- else $error("Hwstrb is not valid for hsize");
+  assert property (checkStrobe)
+    $info("Hwstrb valid ");
+  else $error("Hwstrb is not valid for hsize");
 
 endinterface : AhbMasterAssertion
 

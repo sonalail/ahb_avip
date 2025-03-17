@@ -60,16 +60,7 @@ interface AhbSlaveAssertion (
        $info("HRDATA is valid during read transfer!");
   else $error("HRDATA is invalid during read transfer!");
 
- /* property checkHaddrUnchanged;
-    @(posedge hclk) disable iff (!hresetn)
-    (hreadyout && (htrans != 2'b00) && (htrans == 2'b01) ##1 (htrans==2'b01)) |-> (haddr == $past(haddr));
-  endproperty
-
-  assert property (checkHaddrUnchanged)
-       $info("HADDR remains unchanged during a Busy transfer!");
-  else $error("HADDR changed unexpectedly during a Busy transfer!");
-*/
-/*  property checkHsizeMatchesData;
+ /*  property checkHsizeMatchesData;
     @(posedge hclk) disable iff (!hresetn)
     (hreadyout && (htrans != 2'b00)) |-> ((1 << hsize) <= 32);
   endproperty

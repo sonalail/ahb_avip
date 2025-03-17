@@ -68,33 +68,6 @@ interface AhbMasterAssertion (
   else $error("HADDR is not within the valid range!");
  */
 
- /* property checkHrespOkay;
-    @(posedge hclk) disable iff (!hresetn)
-    (hready && (htrans != 2'b00)) |-> (hresp == 1'b0);
-  endproperty
-
-  assert property (checkHrespOkay)
-       $info("HRESP is OKAY during a successful transfer");
-  else $error("HRESP is Error");
-*/
-  /*property checkHrespErrorFixed;
-    @(posedge hclk) disable iff (!hresetn)
-    (hready && hresp) |-> (htrans != 2'b00);
-  endproperty
-
-  assert property (checkHrespErrorFixed)
-       $info("HRESP is ERROR during error conditions");
-  else $error("Unexpected HRESP ERROR when transfer is IDLE!");
-*/
-  /*property checkHreadyStability;
-    @(posedge hclk) disable iff (!hresetn)
-    (hready) |=> hready;
-  endproperty
-
-  assert property (checkHreadyStability)
-       $info("HREADY remains stable during wait states");
-  else $error("HREADY unexpectedly changed when slave was not ready!");
-*/
   property checkHmastlockCheck;
     @(posedge hclk) disable iff (!hresetn)
     (hready && htrans != 2'b00 && hmastlock) |-> (hmastlock == 1);
@@ -107,7 +80,7 @@ interface AhbMasterAssertion (
   property checkBurstIncr;
     @(posedge hclk) disable iff (!hresetn)
     ((hburst inside {3'b011,3'b101,3'b111}) && (htrans == 2'b11 || htrans==2'b10))
-     ##1 (htrans ==2'b11) && $stable(hburst) && !$stable(haddr)|-> (haddr == $past(haddr) + (1 << hsize));
+     ##1 (htrans ==2'b11) && $stable(hburst) && !$stable(haddr) |-> (haddr == $past(haddr) + (1 << hsize));
   endproperty
 
   assert property (checkBurstIncr)
@@ -134,16 +107,6 @@ interface AhbMasterAssertion (
            $info("Transition from BUSY to SEQ passed and address is hold ");
   else $error("Transition from BUSY to SEQ failed: and address is not hold");
 
- /* property checkTransBusyToNonSeq;
-    @(posedge hclk) disable iff(!hresetn)
-    (htrans == 2'b01 && hready ==0 && hburst inside {[3'b000:3'b001]}) |=>
-    (htrans == 2'b10 && $stable(hburst));
-  endproperty
-
-  assert property(checkTransBusyToNonSeq)
-       $info("Transition from BUSY to NON - SEQ passed");
-  else $error("Transition from BUSY to NON - SEQ failed: Conditions not met!");
-*/
   property checkTransIdleToNonSeq;
     @(posedge hclk) disable iff(!hresetn)
     ((htrans == 2'b00  && hready == 1 )|=>
@@ -163,15 +126,6 @@ interface AhbMasterAssertion (
        $info("Address stability during waited transfer verified.");
   else $error("Address changed before HREADY HIGH!");
 
-/*( property checkHaddrUnchanged;
-    @(posedge hclk) disable iff (!hresetn)
-    (hready && (htrans != 2'b00) && (htrans == 2'b01) ##1 (htrans==2'b01)) |-> (haddr == $past(haddr));
-  endproperty
-
-  assert property (checkHaddrUnchanged)
-       $info("HADDR remains unchanged during a Busy transfer!");
-  else $error("HADDR changed unexpectedly during a Busy transfer!");
-*/
   property checkHsizeMatchesData;
     @(posedge hclk) disable iff (!hresetn)
     (hready && (htrans != 2'b00)) |-> ((1 << hsize) <= 32);
@@ -197,8 +151,7 @@ interface AhbMasterAssertion (
  
  assert property (checkStrobe)
    $info("Hwstrb valid ");
- else 
-   $error("Hwstrb is not valid for hsize");
+ else $error("Hwstrb is not valid for hsize");
 
 endinterface : AhbMasterAssertion
 

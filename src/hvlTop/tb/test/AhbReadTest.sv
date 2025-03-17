@@ -6,7 +6,7 @@ class AhbReadTest extends AhbBaseTest;
   
   AhbVirtualReadSequence ahbVirtualReadSequence; 
  
-extern function new(string name = "AhbReadTest", uvm_component parent = null);
+  extern function new(string name = "AhbReadTest", uvm_component parent = null);
   extern virtual task run_phase(uvm_phase phase);
 
 endclass : AhbReadTest

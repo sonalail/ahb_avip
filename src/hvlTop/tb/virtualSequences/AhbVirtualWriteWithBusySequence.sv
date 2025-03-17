@@ -21,8 +21,8 @@ task AhbVirtualWriteWithBusySequence::body();
   super.body();
   ahbMasterSequence = AhbMasterSequence::type_id::create("ahbMasterSequence");
   ahbSlaveSequence  = AhbSlaveSequence::type_id::create("ahbSlaveSequence");
- repeat(40) begin 
-  if(!ahbMasterSequence.randomize() with {
+  repeat(40) begin 
+    if(!ahbMasterSequence.randomize() with {
                                                               hsizeSeq == WORD;
 							      hwriteSeq ==1;
                                                               htransSeq == NONSEQ;
@@ -30,7 +30,7 @@ task AhbVirtualWriteWithBusySequence::body();
                                                               foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=50, 1:=50};}
                                                         ) begin
        `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualWriteWithBusySequence")
-  end
+    end
     fork
        ahbSlaveSequence.start(p_sequencer.ahbSlaveSequencer);
       ahbMasterSequence.start(p_sequencer.ahbMasterSequencer); 

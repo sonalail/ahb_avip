@@ -6,7 +6,7 @@ class AhbWriteWithWaitStateTest extends AhbBaseTest;
   
   AhbVirtualWriteWithWaitStateSequence ahbVirtualWriteWithWaitStateSequence; 
  
-extern function new(string name = "AhbWriteWithWaitStateTest", uvm_component parent = null);
+  extern function new(string name = "AhbWriteWithWaitStateTest", uvm_component parent = null);
   extern virtual task run_phase(uvm_phase phase);
 
 endclass : AhbWriteWithWaitStateTest
@@ -27,8 +27,8 @@ task AhbWriteWithWaitStateTest::run_phase(uvm_phase phase);
   ahbVirtualWriteWithWaitStateSequence = AhbVirtualWriteWithWaitStateSequence::type_id::create("ahbVirtualWriteWithWaitStateSequence");
   `uvm_info(get_type_name(),$sformatf("AhbWriteWithWaitStateTest"),UVM_LOW);
   phase.raise_objection(this);
-    ahbVirtualWriteWithWaitStateSequence.start(ahbEnvironment.ahbVirtualSequencer);
-	#10;
+  ahbVirtualWriteWithWaitStateSequence.start(ahbEnvironment.ahbVirtualSequencer);
+  #10;
   phase.drop_objection(this);
 
 endtask : run_phase

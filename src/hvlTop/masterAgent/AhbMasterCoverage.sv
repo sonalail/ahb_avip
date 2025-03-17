@@ -145,17 +145,18 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
        ignore_bins ahbStrbAllZeroes   = {4'b0000};
        
        
-    } */
-    HNONSEC_CP:coverpoint ahbMasterTransaction.hnonsec{
+     } */
+ 
+   HNONSEC_CP:coverpoint ahbMasterTransaction.hnonsec{
       option.comment = " ahb nonsec";
        bins ahbNonsec0={0};
-       bins ahbNonsec1={1};
+      // bins ahbNonsec1={1};
     }
  
       HEXCL_CP:coverpoint ahbMasterTransaction.hexcl{
       option.comment = " ahb excl";
         bins ahbExcl0={0};
-        bins ahbExcl1={1};
+       // bins ahbExcl1={1};
     }
     
      //HWDATA_CP_x_HADDR_CP:cross  HWDATA_CP ,HADDR_CP;

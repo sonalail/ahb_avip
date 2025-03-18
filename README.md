@@ -31,7 +31,7 @@ git version
 
 # Get the VIP collateral
 git@github.com:sonalail/ahb_avip.git
-
+```
 ## Running the test
 ## Using Questasim simulator
 ```bash
@@ -64,3 +64,4 @@ ex: make regression testlist_name=AhbRegression.list
 
  ## Regression:
  ffirefox merged_cov_html_report/index.html &
+```

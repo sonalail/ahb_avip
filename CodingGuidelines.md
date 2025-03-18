@@ -1,4 +1,4 @@
-// Coding Guidelines
+##Coding Guidelines
 
 1.Only one statement per line. // Variable definition: logic enable; logic completed; logic in_progress.
 

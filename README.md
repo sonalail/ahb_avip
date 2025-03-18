@@ -30,7 +30,7 @@ git version
 git@github.com:sonalail/ahb_avip.git
 ```
 ## Running the test
-## Using Questasim simulator
+### Using Questasim simulator
 ```bash
 cd ahb_avip/sim/questaSim
 

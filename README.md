@@ -4,7 +4,7 @@ This project deals with the ahb protocol
 # Accelerated VIP for ahb Protocol
 The idea of using Accelerated VIP is to push the synthesizable part of the testbench into the separate top module along with the interface and it is named as HDL TOP and the unsynthesizable part is pushed into the HVL TOP. This setup provides the ability to run longer tests quickly. This particular testbench can be used for the simulation as well as the emulation based on the mode of operation.
 
-# Key Features
+## Key Features
 - **Supports 32-bit and 64-bit address bus (To do)**
 - **Pipelined structure for high-performance data transfers**
 - **Multi-master, multi-slave architecture with centralized arbitration (To do)**

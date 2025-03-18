@@ -19,6 +19,7 @@ The idea of using Accelerated VIP is to push the synthesizable part of the testb
 
 ## Developers, Welcome
 We believe in growing together and if you'd like to contribute, please do check out the contributing guide below:
+https://github.com/sonalail/ahb_avip/blob/main/contribution_guidelines.md
 
 ## Installation - Get the VIP collateral from the GitHub repository
 ```bash

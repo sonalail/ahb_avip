@@ -1,4 +1,5 @@
 // Coding Guidelines
+
 1.Only one statement per line. // Variable definition: logic enable; logic completed; logic in_progress;
 2.Always use a begin-end pair to bracket conditional statements.
 3.Use the end label for classes, functions, tasks etc., called closing identifiers. Ex: function name () endfunction: Name

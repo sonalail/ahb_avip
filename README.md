@@ -24,10 +24,43 @@ The idea of using Accelerated VIP is to push the synthesizable part of the testb
 ## Developers, Welcome
 We believe in growing together and if you'd like to contribute, please do check out the contributing guide below:
 
-##Installation - Get the VIP collateral from the GitHub repository
+## Installation - Get the VIP collateral from the GitHub repository
 ```bash
 # Checking for git software, open the terminal type the command
 git version
 
 # Get the VIP collateral
 git@github.com:sonalail/ahb_avip.git
+
+## Running the test
+## Using Questasim simulator
+```bash
+cd ahb_avip/sim/questaSim
+
+# Compilation:  
+make compile
+
+# Simulation:
+make simulate test=<test_name> uvm_verbosity=<VERBOSITY_LEVEL>
+
+ex: make simulate test=AhbWriteTest uvm_verbosity=UVM_HIGH
+
+# Note: You can find all the test case names in the path given below
+ahb_avip/src/hvlTop/tb/testList/AhbRegression.list
+
+# Wavefrom:  
+vsim -view <test_name>/waveform.wlf &
+
+ex:  vsim -view AhbWriteTest/waveform.wlf &
+
+# Regression:
+make regression testlist_name=<regression_testlist_name.list>
+ex: make regression testlist_name=AhbRegression.list
+
+# Coverage: 
+ ## Individual test:
+ firefox <test_name>/html_cov_report/index.html &
+ ex: firefox AhbWriteTest/html_cov_report/index.html &
+
+ ## Regression:
+ ffirefox merged_cov_html_report/index.html &

@@ -55,13 +55,15 @@ ex:  vsim -view AhbWriteTest/waveform.wlf &
 
 # Regression:
 make regression testlist_name=<regression_testlist_name.list>
+
 ex: make regression testlist_name=AhbRegression.list
 
 # Coverage: 
  ## Individual test:
  firefox <test_name>/html_cov_report/index.html &
+
  ex: firefox AhbWriteTest/html_cov_report/index.html &
 
  ## Regression:
- ffirefox merged_cov_html_report/index.html &
+ firefox merged_cov_html_report/index.html &
 ```

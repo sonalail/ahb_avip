@@ -27,7 +27,7 @@ https://github.com/mbits-mirafra/ahb_avip/blob/main/ContributionGuidelines.md
 git version
 
 # Get the VIP collateral
-git@github.com:sonalail/ahb_avip.git
+git clone git@github.com:mbits-mirafra/ahb_avip.git
 ```
 ## Running the test
 ### Using Questasim simulator

@@ -11,7 +11,7 @@ module HvlTop;
   // Importing UVM Package and test Package
   //-------------------------------------------------------
   import uvm_pkg::*;
-  import AhbBaseTestPackage::*;
+  import AhbTestPackage::*;
   
   //-------------------------------------------------------
   // Calling run_test for simulation

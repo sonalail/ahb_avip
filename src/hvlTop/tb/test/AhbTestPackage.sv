@@ -1,7 +1,7 @@
 `ifndef AHBBASETESTPACKAGE_INCLUDED_
 `define AHBBASETESTPACKAGE_INCLUDED_
 
-package AhbBaseTestPackage;
+package AhbTestPackage;
 
   `include "uvm_macros.svh"
   import uvm_pkg::*;
@@ -25,6 +25,7 @@ package AhbBaseTestPackage;
   `include "AhbSingleReadWithWaitStateTest.sv"
   `include "AhbWriteWithWaitStateTest.sv"
   `include "AhbReadWithWaitStateTest.sv"
-endpackage : AhbBaseTestPackage
+  `include "AhbWriteFollowedByReadTest.sv"
+endpackage : AhbTestPackage
 
 `endif

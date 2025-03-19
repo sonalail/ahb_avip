@@ -96,7 +96,7 @@ interface AhbMasterAssertion (
   else $error("Transition from BUSY to SEQ failed: and address is not hold");
 
   property checkTransIdleToNonSeq;
-    @(posedge hclk) disable iff(!hresetn) ((htrans == 2'b00  && hready == 1 )|=> ( htrans == 2'b10)); 
+    @(posedge hclk) disable iff(!hresetn) ((htrans == 2'b00) ##1 hselx) |-> ( htrans == 2'b10); 
   endproperty
 
   assert property(checkTransIdleToNonSeq)
@@ -105,7 +105,7 @@ interface AhbMasterAssertion (
 
   property checkAddrStability;
     @(posedge hclk) disable iff (!hresetn)
-    (htrans == 2'b10||htrans ==2'b11) |=> $stable(haddr) until (hready);
+    ((htrans == 2'b10||htrans ==2'b11) && hselx) |-> !$isunknown(haddr);
   endproperty
 
   assert property (checkAddrStability)

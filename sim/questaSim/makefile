@@ -178,7 +178,7 @@ clean_compile:
 ##
 regression:
 	# Run compilation
-	make clean_simulate
+	# make clean_simulate
 	make compile
 	# Run simualtion - regression 
 	python regression_handling.py $(testlist_name)

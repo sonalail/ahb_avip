@@ -64,3 +64,11 @@ ex: make regression testlist_name=AhbRegression.list
  ## Regression:
  firefox merged_cov_html_report/index.html &
 ```
+## Latest regression coverage report and How to check report link
+[Click here for the report link](https://github.com/mbits-mirafra/ahb_avip/issues/4)
+
+## Contact Mirafra Team
+You can reach out to us over mbits@mirafra.com
+
+For more information regarding Mirafra Technologies please do check out our official website:
+https://mirafra.com/

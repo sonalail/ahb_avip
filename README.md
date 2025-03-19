@@ -19,7 +19,7 @@ The idea of using Accelerated VIP is to push the synthesizable part of the testb
 
 ## Developers, Welcome
 We believe in growing together and if you'd like to contribute, please do check out the contributing guide below:
-https://github.com/sonalail/ahb_avip/blob/main/contribution_guidelines.md
+https://github.com/mbits-mirafra/ahb_avip/blob/main/ContributionGuidelines.md
 
 ## Installation - Get the VIP collateral from the GitHub repository
 ```bash
@@ -27,7 +27,7 @@ https://github.com/sonalail/ahb_avip/blob/main/contribution_guidelines.md
 git version
 
 # Get the VIP collateral
-git@github.com:sonalail/ahb_avip.git
+git clone git@github.com:mbits-mirafra/ahb_avip.git
 ```
 ## Running the test
 ### Using Questasim simulator

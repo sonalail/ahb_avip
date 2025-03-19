@@ -1,9 +1,9 @@
-
 `ifndef AHBMASTERDRIVERBFM_INCLUDED_
 `define AHBMASTERDRIVERBFM_INCLUDED_
+
 import AhbGlobalPackage::*;
-interface AhbMasterDriverBFM (input  bit  hclk,
-                              input  bit  hresetn,
+interface AhbMasterDriverBFM (input  bit   hclk,
+                              input  bit   hresetn,
                               output logic [ADDR_WIDTH-1:0] haddr,
                               output logic [2:0] hburst,
                               output logic hmastlock,
@@ -16,13 +16,14 @@ interface AhbMasterDriverBFM (input  bit  hclk,
                               output logic hwrite,
                               output logic [DATA_WIDTH-1:0] hwdata,
                               output logic [(DATA_WIDTH/8)-1:0] hwstrb,
-                              input logic [DATA_WIDTH-1:0] hrdata,
-                              input logic hready,
-                              input logic hreadyout,
-                              input logic hresp,
-                              input logic hexokay,
+                              input  logic [DATA_WIDTH-1:0] hrdata,
+                              input  logic hready,
+                              input  logic hreadyout,
+                              input  logic hresp,
+                              input  logic hexokay,
                               output logic [NO_OF_SLAVES-1:0] hselx
                              );
+
   import AhbMasterPackage::*;
   `include "uvm_macros.svh"
   import uvm_pkg::*; 
@@ -37,56 +38,55 @@ interface AhbMasterDriverBFM (input  bit  hclk,
   task waitForResetn();
     @(negedge hresetn);
     `uvm_info(name ,$sformatf("SYSTEM RESET DETECTED"),UVM_HIGH)
-    htrans      <= IDLE;  
+    htrans <= IDLE;  
     @(posedge hresetn);
     `uvm_info(name ,$sformatf("SYSTEM RESET DEACTIVATED"),UVM_HIGH)
   endtask: waitForResetn
 
   task driveToBFM(inout ahbTransferCharStruct dataPacket, input ahbTransferConfigStruct configPacket);
     `uvm_info(name,$sformatf("DRIVE TO BFM TASK"), UVM_LOW);
-    if (dataPacket.hburst == SINGLE)
-      begin
-        driveSingleTransfer(dataPacket,configPacket);
-      end
-    else if (dataPacket.hburst != SINGLE) begin
+    if(dataPacket.hburst == SINGLE) begin
+      driveSingleTransfer(dataPacket,configPacket);
+    end
+    else if(dataPacket.hburst != SINGLE) begin
       driveBurstTransfer(dataPacket,configPacket);
     end
   endtask: driveToBFM
 
   task driveSingleTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);
     `uvm_info("INSIDESINGLETRANSFER","BFM",UVM_LOW);
-    @(posedge hclk); 
+
     `uvm_info(name,$sformatf("DRIVING THE Single Transfer"),UVM_LOW)
-    haddr       <= dataPacket.haddr;
-    hburst      <= dataPacket.hburst;
-    hmastlock   <= dataPacket.hmastlock;
-    hprot       <= dataPacket.hprot;
-    hsize       <= dataPacket.hsize;
-    hnonsec     <= dataPacket.hnonsec;
-    hexcl       <= dataPacket.hexcl;
-    hmaster     <= dataPacket.hmaster;
-    htrans      <= dataPacket.htrans; 
-    hwstrb      <= dataPacket.hwstrb[0];
-    hwrite      <= dataPacket.hwrite;
-    hselx       <= 1'b1;
+    haddr     <= dataPacket.haddr;
+    hburst    <= dataPacket.hburst;
+    hmastlock <= dataPacket.hmastlock;
+    hprot     <= dataPacket.hprot;
+    hsize     <= dataPacket.hsize;
+    hnonsec   <= dataPacket.hnonsec;
+    hexcl     <= dataPacket.hexcl;
+    hmaster   <= dataPacket.hmaster;
+    htrans    <= dataPacket.htrans; 
+    hwstrb    <= dataPacket.hwstrb[0];
+    hwrite    <= dataPacket.hwrite;
+    hselx     <= 1'b1;
 
     WaitStates(configPacket); 
 
     @(posedge hclk);
     hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.hwstrb[0]) : '0;
 
-    if (hresp == 1) begin  
+    if(hresp == 1) begin  
       `uvm_info(name, $sformatf("error Response Detected on Single Transfer at Address: %0h", haddr),UVM_LOW);
     end else if (!dataPacket.hwrite) begin  
       `uvm_info(name, $sformatf("Read Data: %0h from Address: %0h", hrdata[0], haddr), UVM_LOW);
-    end else begin `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata, haddr), UVM_LOW);
+    end else begin 
+      `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata, haddr), UVM_LOW);
       `uvm_info(name, $sformatf("Write Data: %0h to Address: %0h", hwdata[0], haddr), UVM_LOW);
     end
     driveIdle();
   endtask
 
   task driveBurstTransfer(inout ahbTransferCharStruct dataPacket,input ahbTransferConfigStruct configPacket);
-
     int burst_length;
     automatic logic [ADDR_WIDTH-1:0] current_address = dataPacket.haddr;
     case (dataPacket.hburst)
@@ -95,46 +95,45 @@ interface AhbMasterDriverBFM (input  bit  hclk,
       3'b110, 3'b111 : burst_length = 16; // INCR16, WRAP16
       default: burst_length = 1;
     endcase
-    @(posedge hclk);
-    for(int i = 0;i < burst_length; i++)
-      begin
 
-        haddr       <= current_address;
-        hburst      <= dataPacket.hburst;
-        hmastlock   <= dataPacket.hmastlock;
-        hprot       <= dataPacket.hprot;
-        hsize       <= dataPacket.hsize;
-        hnonsec     <= dataPacket.hnonsec;
-        hexcl       <= dataPacket.hexcl;
-        hmaster     <= dataPacket.hmaster;
-        htrans      <= dataPacket.htrans; 
-        hwstrb      <= dataPacket.hwstrb[i];
-        hwrite      <= dataPacket.hwrite;
-        hselx       <= 1;
-        
-        if (hresp == 1) begin
-          `uvm_info(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr),UVM_LOW);
-        end
-        if (dataPacket.hburst == 3'b010 || dataPacket.hburst == 3'b100 || dataPacket.hburst == 3'b110) begin
-          current_address = (current_address & ~(burst_length * (1 << dataPacket.hsize) - 1)) | ((current_address + (1 << dataPacket.hsize)) & (burst_length * (1 << dataPacket.hsize) - 1));
-        end 
-        else begin
-          current_address += (1 << dataPacket.hsize); 
-        end
-        if(i > 0)begin
-          if(dataPacket.busyControl[i]>0) begin
-            driveBusyTransfer(dataPacket, current_address) ;
-          end
-          else begin
-            htrans <= 2'b11; // Sequential transfer
-          end
-        end
-        if(i==0) 
-          WaitStates(configPacket);
-
-        @(posedge hclk);
-        hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[i], dataPacket.hwstrb[i]) : '0;
+    for(int i = 0;i < burst_length; i++) begin
+      haddr     <= current_address;
+      hburst    <= dataPacket.hburst;
+      hmastlock <= dataPacket.hmastlock;
+      hprot     <= dataPacket.hprot;
+      hsize     <= dataPacket.hsize;
+      hnonsec   <= dataPacket.hnonsec;
+      hexcl     <= dataPacket.hexcl;
+      hmaster   <= dataPacket.hmaster;
+      htrans    <= dataPacket.htrans; 
+      hwstrb    <= dataPacket.hwstrb[i];
+      hwrite    <= dataPacket.hwrite;
+      hselx     <= 1;
+      
+      if (hresp == 1) begin
+        `uvm_info(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr),UVM_LOW);
       end
+
+      if (dataPacket.hburst == 3'b010 || dataPacket.hburst == 3'b100 || dataPacket.hburst == 3'b110) begin
+        current_address = (current_address & ~(burst_length * (1 << dataPacket.hsize) - 1)) | ((current_address + (1 << dataPacket.hsize)) & (burst_length * (1 << dataPacket.hsize) - 1));
+      end 
+      else begin
+        current_address += (1 << dataPacket.hsize); 
+      end
+      if(i > 0)begin
+        if(dataPacket.busyControl[i]>0) begin
+          driveBusyTransfer(dataPacket, current_address) ;
+        end
+        else begin
+          htrans <= 2'b11; // Sequential transfer
+        end
+      end
+      if(i==0) 
+        WaitStates(configPacket);
+
+      @(posedge hclk);
+      hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[i], dataPacket.hwstrb[i]) : '0;
+    end
 
     driveIdle();    
     `uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
@@ -149,12 +148,11 @@ interface AhbMasterDriverBFM (input  bit  hclk,
   endfunction
 
   task driveBusyTransfer(inout ahbTransferCharStruct dataPacket, inout logic [ADDR_WIDTH-1:0] current_address);
-    htrans     <= 2'b01;             // Busy transfer
+    htrans <= 2'b01;   // Busy transfer
     `uvm_info(name, $sformatf("Driving BUSY Transfer at Address: %0h", haddr), UVM_LOW);
     @(posedge hclk);
     htrans <= 2'b11 ;  
   endtask
-
 
   task driveIdle();
     @(posedge hclk);

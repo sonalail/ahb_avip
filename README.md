@@ -11,7 +11,6 @@ The idea of using Accelerated VIP is to push the synthesizable part of the testb
 - Programmable wait states for slower slaves
 - Error reporting using HRESP signal 
 - Separate address and data phases for improved efficiency
-- Flexibility for high-speed memory access
 - Supports large data widths (32, 64 bits or more)
 
 ## Testbench Architecture Diagram

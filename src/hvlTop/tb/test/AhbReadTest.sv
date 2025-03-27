@@ -21,7 +21,7 @@ task AhbReadTest::run_phase(uvm_phase phase);
     if(!ahbEnvironment.ahbSlaveAgentConfig[i].randomize() with {noOfWaitStates==0;}) begin
       `uvm_fatal(get_type_name(),"Unable to randomise noOfWaitStates")
     end
-    ahbEnvironment.ahbMasterAgentConfig[i].noOfWaitStates = ahbEnvironment.ahbSlaveAgentConfig[i].noOfWaitStates ;
+    //ahbEnvironment.ahbMasterAgentConfig[i].noOfWaitStates = ahbEnvironment.ahbSlaveAgentConfig[i].noOfWaitStates ;
   end
   ahbVirtualReadSequence = AhbVirtualReadSequence::type_id::create("ahbVirtualReadSequence");
  `uvm_info(get_type_name(),$sformatf("AhbReadTest"),UVM_LOW);

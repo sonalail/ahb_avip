@@ -8,7 +8,7 @@ class AhbMasterAgentConfig extends uvm_object;
 
   bit hasCoverage;
 
-  bit [ADDR_WIDTH-1:0]haddr;
+  //bit [ADDR_WIDTH-1:0]haddr;
 
   bit [MEMORY_WIDTH-1:0]masterMemory[(SLAVE_MEMORY_SIZE+SLAVE_MEMORY_GAP)*NO_OF_SLAVES:0];
 
@@ -16,7 +16,7 @@ class AhbMasterAgentConfig extends uvm_object;
 
   bit [ADDR_WIDTH-1:0]masterMaximumAddressRangeArray[int];
 
-  int noOfWaitStates;
+  //int noOfWaitStates;
 
   extern function new(string name = "AhbMasterAgentConfig");
   extern function void do_print(uvm_printer printer);

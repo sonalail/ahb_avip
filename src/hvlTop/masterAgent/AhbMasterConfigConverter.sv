@@ -33,8 +33,8 @@ endfunction : new
     //  Converting AhbMasterConfig configurations into structure configutrations
     //--------------------------------------------------------------------------------------------
 function void AhbMasterConfigConverter::fromClass(input AhbMasterAgentConfig inputConv,output ahbTransferConfigStruct outputConv);
-  outputConv.haddr = inputConv.haddr;
-  outputConv.noOfWaitStates = inputConv.noOfWaitStates;
+ // outputConv.haddr = inputConv.haddr;
+ // outputConv.noOfWaitStates = inputConv.noOfWaitStates;
 endfunction : fromClass
 
     //---------------------------------------------------------------------------------------------

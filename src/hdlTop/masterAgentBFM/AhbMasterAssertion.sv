@@ -40,7 +40,7 @@ interface AhbMasterAssertion (
 
   property checkHtransValidity;
     @(posedge hclk) disable iff (!hresetn)
-    (htrans == 2'b10 || htrans == 2'b11) |-> ##[1:$] hready;
+    ((htrans == 2'b10 || htrans == 2'b11) && hselx == 1) |-> ##[1:$] hready;
   endproperty
 
   assert property (checkHtransValidity)

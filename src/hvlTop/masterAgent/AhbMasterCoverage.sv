@@ -53,6 +53,17 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
       bins ahbTransNonsequential ={2};
       bins ahbTransSequential    ={3};
     }
+   
+  HTRANS_TRANSITION_CP: coverpoint ahbMasterTransaction.htrans {
+    option.comment = "AHB HTRANS state transitions";
+    bins BusyToSeq   = (BUSY => SEQ);
+    bins SeqToBusy   = (SEQ => BUSY);
+    bins NonSeqToSeq = (NONSEQ => SEQ);
+    bins SeqToIdle = (SEQ => IDLE);
+    bins NonSeqToIdle =(NONSEQ => IDLE);
+   // bins IdleToSeq = (IDLE => SEQ);   
+  //  bins BusyToBusy   = (BUSY => BUSY); 
+}
 
     HPROT_CP:coverpoint ahbMasterTransaction.hprot{
       option.comment = " ahb prot";

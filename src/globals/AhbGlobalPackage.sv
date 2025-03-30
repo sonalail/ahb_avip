@@ -27,6 +27,8 @@ package AhbGlobalPackage;
 
   parameter int LENGTH = 4;
 
+  parameter int waitForStateValue = 16;
+
   typedef enum logic [2:0] {
     SINGLE      = 3'b000,
     INCR        = 3'b001,

@@ -15,16 +15,15 @@ interface AhbSlaveAssertion (
   input            [2:0] hsize,
   input            [2:0] hburst,
   input                  hselx,
-  input           [DATA_WIDTH-1:0] hwdata,
+  input [DATA_WIDTH-1:0] hwdata,
   input            [3:0] hprot,
   input                  hexokay,
   input            [3:0] hwstrb
 );
 
-
   property checkHreadyoutValid;
     @(posedge hclk) disable iff (!hresetn)
-    (htrans != 2'b00)  &&  hreadyout ##1 $stable(hreadyout) |-> !$isunknown(hwdata);
+    (htrans != IDLE)  &&  hreadyout ##1 $stable(hreadyout) |-> !$isunknown(hwdata);
   endproperty
 
   assert property (checkHreadyoutValid)
@@ -33,7 +32,8 @@ interface AhbSlaveAssertion (
 
   property checkHrespErrorOnInvalid;
     @(posedge hclk) disable iff (!hresetn)
-    (hreadyout==0) |-> ##[1:$](hresp == 1'b1);
+    //(hreadyout==0) |-> ##[1:waitForStateValue](hresp == ERROR);
+    (hreadyout==0) |=> (hresp == ERROR);
   endproperty
 
   assert property (checkHrespErrorOnInvalid)
@@ -43,7 +43,7 @@ interface AhbSlaveAssertion (
 
   property checkHrespOkayForValid;
     @(posedge hclk) disable iff (!hresetn)
-    (hreadyout && (htrans != 2'b00)) |=> (hresp == 1'b0);
+    (hreadyout && (htrans != IDLE)) |=> (hresp == OKAY);
   endproperty
 
   assert property (checkHrespOkayForValid)
@@ -52,7 +52,7 @@ interface AhbSlaveAssertion (
 
   property checkSlaveHrdataValid;
     @(posedge hclk) disable iff (!hresetn)
-    (!hwrite && hreadyout && (htrans != 2'b00) && hselx) ##1 $stable(hreadyout) |-> (!$isunknown(hrdata));
+    (!hwrite && hreadyout && (htrans != IDLE) && hselx) ##1 $stable(hreadyout) |-> (!$isunknown(hrdata));
 
   endproperty
 

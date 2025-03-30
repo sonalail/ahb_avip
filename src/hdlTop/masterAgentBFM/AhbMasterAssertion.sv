@@ -31,7 +31,7 @@ interface AhbMasterAssertion (
 
   property checkHwdataValid;
     @(posedge hclk) disable iff (!hresetn)
-    (hwrite && hready && (htrans != 2'b00) && hselx == 1) ##1 $stable(hready)|-> (!$isunknown(hwdata));
+    (hwrite && hready && (htrans != IDLE) && hselx == 1) ##1 $stable(hready)|-> (!$isunknown(hwdata));
   endproperty
 
   assert property (checkHwdataValid)
@@ -40,7 +40,7 @@ interface AhbMasterAssertion (
 
   property checkHtransValidity;
     @(posedge hclk) disable iff (!hresetn)
-    ((htrans == 2'b10 || htrans == 2'b11) && hselx == 1) |-> ##[1:$] hready;
+    ((htrans == NONSEQ || htrans == SEQ) && hselx == 1) |-> ##[1:waitForStateValue] hready;
   endproperty
 
   assert property (checkHtransValidity)
@@ -49,7 +49,7 @@ interface AhbMasterAssertion (
 
   property checkHaddrAlignment;
     @(posedge hclk) disable iff (!hresetn)
-    (hready && (htrans != 2'b00) && hburst != 3'b000 && hsize != 3'b000) |-> ((hsize == 3'b001) && (haddr[0] == 1'b0)) || ((hsize == 3'b010) && (haddr[1:0] == 2'b00));
+    (hready && (htrans != IDLE) && hburst != SINGLE && hsize != BYTE) |-> ((hsize == HALFWORD) && (haddr[0] == 1'b0)) || ((hsize == WORD) && (haddr[1:0] == 2'b00));
   endproperty
 
   assert property (checkHaddrAlignment)
@@ -58,7 +58,7 @@ interface AhbMasterAssertion (
 
   property checkHmastlockCheck;
     @(posedge hclk) disable iff (!hresetn)
-    (hready && htrans != 2'b00 && hmastlock) |-> (hmastlock == 1);
+    (hready && htrans != IDLE && hmastlock) |-> (hmastlock == 1);
   endproperty
 
   assert property (checkHmastlockCheck)
@@ -67,8 +67,8 @@ interface AhbMasterAssertion (
 
   property checkBurstIncr;
     @(posedge hclk) disable iff (!hresetn)
-    ((hburst inside {3'b011,3'b101,3'b111}) && (htrans == 2'b11 || htrans==2'b10))
-     ##1 (htrans ==2'b11) && $stable(hburst) && !$stable(haddr) |-> (haddr == $past(haddr) + (1 << hsize));
+    ((hburst inside {INCR4,INCR8,INCR16}) && (htrans == SEQ || htrans==NONSEQ))
+     ##1 (htrans ==SEQ) && $stable(hburst) && !$stable(haddr) |-> (haddr == $past(haddr) + (1 << hsize));
   endproperty
 
   assert property (checkBurstIncr)
@@ -77,8 +77,8 @@ interface AhbMasterAssertion (
 
   property checkBurstWrap;
     @(posedge hclk) disable iff (!hresetn)
-    (hburst == {3'b010, 3'b10, 3'b110}  && (htrans == 2'b11) || htrans == 2'b10)
-       ##1 (htrans ==2'b11) && $stable(hburst) |-> (((haddr & ((1 << hsize) - 1)) == 0) ||
+    (hburst == {WRAP4, WRAP8, WRAP16}  && (htrans == SEQ) || htrans == NONSEQ)
+       ##1 (htrans ==SEQ) && $stable(hburst) |-> (((haddr & ((1 << hsize) - 1)) == 0) ||
                                               (haddr == $past(haddr) + (1 << hsize)));
   endproperty
 
@@ -88,7 +88,7 @@ interface AhbMasterAssertion (
 
   property checkTransBusyToSeq;
     @(posedge hclk) disable iff(!hresetn)
-    (htrans == 2'b01 && hready == 1 )|=> (haddr == $past(haddr)) && (htrans == 2'b11);
+    (htrans == BUSY && hready == 1 )|=> (haddr == $past(haddr)) && (htrans == SEQ);
   endproperty
  
   assert property(checkTransBusyToSeq)
@@ -96,7 +96,7 @@ interface AhbMasterAssertion (
   else $error("Transition from BUSY to SEQ failed: and address is not hold");
 
   property checkTransIdleToNonSeq;
-    @(posedge hclk) disable iff(!hresetn) ((htrans == 2'b00) ##1 hselx) |-> ( htrans == 2'b10); 
+    @(posedge hclk) disable iff(!hresetn) ((htrans == IDLE) ##1 hselx) |-> ( htrans == NONSEQ); 
   endproperty
 
   assert property(checkTransIdleToNonSeq)
@@ -105,7 +105,7 @@ interface AhbMasterAssertion (
 
   property checkAddrStability;
     @(posedge hclk) disable iff (!hresetn)
-    ((htrans == 2'b10||htrans ==2'b11) && hselx) |-> !$isunknown(haddr);
+    ((htrans == NONSEQ || htrans == SEQ) && hselx) |-> !$isunknown(haddr);
   endproperty
 
   assert property (checkAddrStability)
@@ -114,7 +114,7 @@ interface AhbMasterAssertion (
 
   property checkHsizeMatchesData;
     @(posedge hclk) disable iff (!hresetn)
-    (hready && (htrans != 2'b00)) |-> ((1 << hsize) <= 32);
+    (hready && (htrans != IDLE)) |-> ((1 << hsize) <= 32);
   endproperty
 
   assert property (checkHsizeMatchesData)
@@ -123,7 +123,7 @@ interface AhbMasterAssertion (
 
   property checkBurstTypeValid;
     @(posedge hclk) disable iff (!hresetn)
-    (hready && (htrans != 2'b00)) |-> (hburst inside {[0:7]});
+    (hready && (htrans != IDLE)) |-> (hburst inside {[SINGLE:INCR16]});
   endproperty
 
   assert property (checkBurstTypeValid)
@@ -132,7 +132,7 @@ interface AhbMasterAssertion (
  
   property checkStrobe;
     @(posedge hclk) disable iff (!hresetn)
-    (htrans != 2'b00) |->((hsize == 3'b000 -> $countones(hwstrb)== 1 )) || ((hsize ==3'b001 -> $countones(hwstrb)==2)) || ((hsize==3'b010 -> $countones(hwstrb)==4));
+    (htrans != IDLE) |->((hsize == SINGLE -> $countones(hwstrb)== 1 )) || ((hsize ==INCR -> $countones(hwstrb)==2)) || ((hsize==WRAP4 -> $countones(hwstrb)==4));
   endproperty
  
   assert property (checkStrobe)

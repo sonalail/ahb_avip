@@ -68,6 +68,10 @@ function void AhbMasterSequenceItemConverter::fromClass(input AhbMasterTransacti
   outputConv.noOfWaitStates = inputConv.noOfWaitStatesDetected;
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf(" noOfWaitStates = %b", outputConv.noOfWaitStates), UVM_FULL);
 
+  outputConv.noOfBusyStates = inputConv.noOfBusyStates;
+  `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf(" noOfBusyStates = %b", outputConv.noOfBusyStates), UVM_FULL);
+
+
   foreach(inputConv.hwdata[i])begin
     if(inputConv.hwdata[i] != 0)begin
       outputConv.hwdata[i] = inputConv.hwdata[i];
@@ -151,6 +155,9 @@ function void AhbMasterSequenceItemConverter::toClass(input ahbTransferCharStruc
 
   outputConv.noOfWaitStatesDetected = inputConv.noOfWaitStates;
   `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf(" noOfWaitStatesDetected = %b", outputConv.noOfWaitStatesDetected), UVM_FULL);
+
+  outputConv.noOfBusyStates = inputConv.noOfBusyStates;
+  `uvm_info("AhbMasterSequenceItemConverterClass", $sformatf(" noOfBusyStates = %b", outputConv.noOfBusyStates), UVM_FULL);
 
   foreach(inputConv.hwdata[i])begin
     if(inputConv.hwdata[i] != 0)begin

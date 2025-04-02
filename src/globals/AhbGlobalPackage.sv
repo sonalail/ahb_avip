@@ -100,6 +100,7 @@ ahbRespEnum             hresp;          // Response status
 logic                   hexokay;        // Exclusive OKAY status
 logic                   hready;         // Combined transfer completion
 int                     noOfWaitStates;
+int                     noOfBusyStates;
 bit [2**LENGTH:0] busyControl;          //indicating When Busy Transfer must be introduced
   } ahbTransferCharStruct;
 
@@ -109,7 +110,7 @@ bit [2**LENGTH:0] busyControl;          //indicating When Busy Transfer must be 
      bit [ADDR_WIDTH-1:0]minimumAddress;
      bit [ADDR_WIDTH-1:0]maximumAddress; 
    // int slave_id;
-    int noOfWaitStates;
+    int noOfWaitStates; 
   } ahbTransferConfigStruct ;
 
 endpackage : AhbGlobalPackage

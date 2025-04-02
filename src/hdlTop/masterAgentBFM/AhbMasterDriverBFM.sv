@@ -151,8 +151,10 @@ interface AhbMasterDriverBFM (input  bit   hclk,
   task driveBusyTransfer(inout ahbTransferCharStruct dataPacket, inout logic [ADDR_WIDTH-1:0] current_address);
     htrans <= 2'b01;   // Busy transfer
     `uvm_info(name, $sformatf("Driving BUSY Transfer at Address: %0h", haddr), UVM_LOW);
-    @(posedge hclk);
-    htrans <= 2'b11 ;  
+    repeat(dataPacket.noOfBusyStates) begin
+       @(posedge hclk);
+    end 
+       htrans <= 2'b11 ; 
   endtask
 
   task driveIdle();

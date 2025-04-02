@@ -21,6 +21,7 @@ class AhbMasterSequence extends AhbMasterBaseSequence;
   rand ahbWriteEnum hwriteSeq;
   rand bit hexokaySeq;
   rand bit busyControlSeq[];
+  rand int noOfBusyStatesSeq;
 
   constraint haddr_alignment1 {
   // Ensure address alignment based on transfer size
@@ -96,6 +97,9 @@ class AhbMasterSequence extends AhbMasterBaseSequence;
 
      constraint busyControlNextCycle1{foreach(busyControlSeq[i]) if(i < busyControlSeq.size()) if(busyControlSeq[i]) soft busyControlSeq[i + 1] != 1;}
 
+
+     constraint busyStatesInBetween{ soft noOfBusyStatesSeq == 1;}
+  
   extern function new(string name ="AhbMasterSequence");
   extern task body();
   
@@ -123,6 +127,7 @@ task AhbMasterSequence::body();
 			      htrans     == htransSeq;
 			      hwrite     == hwriteSeq;
 			      hexokay    == hexokaySeq;
+                              noOfBusyStates ==  noOfBusyStatesSeq;
                               foreach(hwdataSeq[i])
 			      hwdata[i]  == hwdataSeq[i];
                               foreach(hwstrbSeq[i])

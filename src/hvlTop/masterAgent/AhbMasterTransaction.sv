@@ -22,6 +22,7 @@ class AhbMasterTransaction extends uvm_sequence_item;
   ahbRespEnum hresp;
   rand bit hexokay;
   bit hready;
+  rand int noOfBusyStates;
   int noOfWaitStatesDetected; // 
   rand bit busyControl[]; // array for busy Transfer Control 
 
@@ -53,6 +54,7 @@ class AhbMasterTransaction extends uvm_sequence_item;
                          else if(hburst == WRAP16 || hburst == INCR16) busyControl.size() == 16;
                          else busyControl.size()==1;
                         }
+  
 
 endclass:AhbMasterTransaction
 

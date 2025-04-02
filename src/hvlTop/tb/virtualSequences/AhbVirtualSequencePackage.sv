@@ -24,7 +24,7 @@ package AhbVirtualSequencePackage;
   `include "AhbVirtualWriteWithWaitStateSequence.sv"
   `include "AhbVirtualReadWithWaitStateSequence.sv"
   `include "AhbVirtualWriteFollowedByReadSequence.sv"
-
+  `include "AhbVirtualWriteWithBusyToBusySequence.sv"
 endpackage : AhbVirtualSequencePackage
 
 `endif

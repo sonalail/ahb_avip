@@ -34,7 +34,7 @@ interface AhbMasterCoverProperty (input hclk,
 
   property CheckSingleTransferWrite;
     @(posedge hclk) disable iff (!hresetn)
-      ((htrans == 2'b10 && hburst == 3'b000 && hready == 1 && hwrite == 1) |=> !$isunknown(hwdata));
+      ((htrans == NONSEQ && hburst == SINGLE && hready == 1 && hwrite == 1) |=> !$isunknown(hwdata));
   endproperty
   
   cover property (CheckSingleTransferWrite)
@@ -42,7 +42,7 @@ interface AhbMasterCoverProperty (input hclk,
     
   property CheckTransValidWrite;
     @(posedge hclk) disable iff (!hresetn)
-    ( ((htrans == 2'b10 || htrans == 2'b11) && hready == 1) |=> !$isunknown(hwdata));
+    ( ((htrans == NONSEQ || htrans == SEQ) && hready == 1) |=> !$isunknown(hwdata));
   endproperty
     
   cover property (CheckTransValidWrite)
@@ -50,7 +50,7 @@ interface AhbMasterCoverProperty (input hclk,
   
   property CheckHaddrAlignment;
     @(posedge hclk) disable iff (!hresetn)
-   (hready && (htrans != 2'b00) && hburst != 3'b000 && hsize != 3'b000) |-> ((hsize == 3'b001) && (haddr[0] == 1'b0)) || ((hsize == 3'b010) && (haddr[1:0] == 2'b00));
+   (hready && (htrans != IDLE) && hburst != SINGLE && hsize != BYTE) |-> ((hsize == HALFWORD) && (haddr[0] == 1'b0)) || ((hsize == WORD) && (haddr[1:0] == 2'b00));
                                                                             
   endproperty   
 
@@ -59,7 +59,7 @@ interface AhbMasterCoverProperty (input hclk,
  
   property CheckNonSeqToIdle;
    @(posedge hclk) disable iff (!hresetn)
-    (htrans == 2'b10 && hready == 1 && hburst == 3'b000)  |=> htrans == 2'b00;
+    (htrans == NONSEQ && hready == 1 && hburst == SINGLE)  |=> htrans == IDLE;
   endproperty
   
   cover property (CheckNonSeqToIdle)
@@ -67,7 +67,7 @@ interface AhbMasterCoverProperty (input hclk,
 
   property CheckOccurenceOfBusy;
     @(posedge hclk)
-    htrans == 2'b10 |-> ##[1:$] htrans == 2'b01;
+    htrans == SEQ |-> ##[1:$] htrans == BUSY;
   endproperty
 
   cover property (CheckOccurenceOfBusy)
@@ -75,7 +75,7 @@ interface AhbMasterCoverProperty (input hclk,
   
   property CheckHreadyLowInBetween;
     @(posedge hclk)
-    (htrans == 2'b10 && hready == 1) |=> ##[0:$] hready == 0;
+    (htrans == NONSEQ && hready == 1) |=> ##[0:$] hready == 0;
  endproperty
   
   cover property (CheckHreadyLowInBetween)
@@ -83,7 +83,7 @@ interface AhbMasterCoverProperty (input hclk,
 
   property CheckIfHburstIsVaild;
     @(posedge hclk)
-    (htrans == 2'b10 && hburst inside {[1:7]} && hready == 1 ) |=> htrans == 2'b11;
+    (htrans == NONSEQ && hburst inside {[INCR:INCR16]} && hready == 1 ) |=> htrans == SEQ;
   endproperty
 
   cover property (CheckIfHburstIsVaild)
@@ -91,11 +91,19 @@ interface AhbMasterCoverProperty (input hclk,
 
   property CheckHwstrb;
     @(posedge hclk)
-    (htrans == 2'b10 && hwrite == 1 && hready == 1) |-> !$isunknown(hwstrb);
+    (htrans == NONSEQ && hwrite == 1 && hready == 1) |-> !$isunknown(hwstrb);
   endproperty
 
   cover property (CheckHwstrb)
     $info("Hwstrb is valid");
+
+  property CheckBusyTrans;
+    @(posedge hclk)
+    (htrans == NONSEQ && hready == 1) |=> $stable(haddr) && ($stable(hwdata) || $stable(hrdata)) ;
+  endproperty
+
+  cover property (CheckBusyTrans)
+    $info("No New Transaction occur when Htrans is Busy");
 
  
 endinterface : AhbMasterCoverProperty

@@ -142,8 +142,8 @@ interface AhbMasterDriverBFM (input  bit   hclk,
   function logic [DATA_WIDTH-1:0] maskingStrobe(logic [DATA_WIDTH-1:0] data, logic [(DATA_WIDTH/8)-1:0] strobe);
     logic [DATA_WIDTH-1:0] masked_data;
     for (int j = 0; j < (DATA_WIDTH/8); j++) begin
-       masked_data[j*8 +: 8] = strobe[j] ? data[j*8 +: 8] : 8'h00;
-      //masked_data[j*8 +: 8] = strobe[j] ? data[j*8 +: 8] : 8'hxx;
+       //masked_data[j*8 +: 8] = strobe[j] ? data[j*8 +: 8] : 8'h00;
+         masked_data[j*8 +: 8] = strobe[j] ? data[j*8 +: 8] : 8'hxx;
     end
     return masked_data;
   endfunction

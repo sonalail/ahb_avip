@@ -13,4 +13,4 @@ AhbReadWithWaitStateTest
 AhbSingleWriteWithWaitStateTest 
 AhbSingleReadWithWaitStateTest 
 
-AhbWriteFollowedByReadTest.sv
+AhbWriteFollowedByReadTest

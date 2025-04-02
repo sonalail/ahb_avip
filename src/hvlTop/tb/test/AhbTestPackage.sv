@@ -26,6 +26,7 @@ package AhbTestPackage;
   `include "AhbWriteWithWaitStateTest.sv"
   `include "AhbReadWithWaitStateTest.sv"
   `include "AhbWriteFollowedByReadTest.sv"
+  `include "AhbWriteWithBusyToBusyTest.sv"
 endpackage : AhbTestPackage
 
 `endif

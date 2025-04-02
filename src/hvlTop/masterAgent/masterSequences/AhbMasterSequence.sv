@@ -94,7 +94,7 @@ class AhbMasterSequence extends AhbMasterBaseSequence;
 
      constraint busyControlValue1{foreach(busyControlSeq[i]) if(i == 0 || i == busyControlSeq.size - 1) busyControlSeq[i] == 0;}
 
-     constraint busyControlNextCycle1{foreach(busyControlSeq[i]) if(i < busyControlSeq.size()) if(busyControlSeq[i]) busyControlSeq[i + 1] != 1;}
+     constraint busyControlNextCycle1{foreach(busyControlSeq[i]) if(i < busyControlSeq.size()) if(busyControlSeq[i]) soft busyControlSeq[i + 1] != 1;}
 
   extern function new(string name ="AhbMasterSequence");
   extern task body();

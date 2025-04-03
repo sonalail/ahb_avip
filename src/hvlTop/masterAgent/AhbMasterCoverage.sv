@@ -62,7 +62,7 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
     bins SeqToIdle = (SEQ => IDLE);
     bins NonSeqToIdle =(NONSEQ => IDLE);
    // bins IdleToSeq = (IDLE => SEQ);   
-  //  bins BusyToBusy   = (BUSY => BUSY); 
+    bins BusyToBusy   = (BUSY => BUSY); 
 }
 
     HPROT_CP:coverpoint ahbMasterTransaction.hprot{

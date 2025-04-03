@@ -110,7 +110,7 @@ interface AhbMasterAssertion (
 
   property checkTransBusyToSeq;
     @(posedge hclk) disable iff(!hresetn)
-    (htrans == BUSY && hready == 1 )|=> (haddr == $past(haddr)) && (htrans == SEQ);
+    (htrans == BUSY && hready == 1 )|=> (haddr == $past(haddr)) && (htrans == SEQ || htrans == BUSY);
   endproperty
  
   assert property(checkTransBusyToSeq)

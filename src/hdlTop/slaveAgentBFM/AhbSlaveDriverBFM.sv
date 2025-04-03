@@ -127,7 +127,14 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
         hresp  <= 0;
       end
     end
+   if(hwrite == 1) begin
     hreadyout <= 0;
+   end
+   else
+     begin                //needs to changes the logic
+       @(posedge hclk);
+        hreadyout <= 0;
+     end
   endtask: slavedriveBurstTransfer
  
  

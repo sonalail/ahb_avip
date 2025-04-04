@@ -66,14 +66,14 @@ interface AhbMasterDriverBFM (input  bit   hclk,
     hexcl     <= dataPacket.hexcl;
     hmaster   <= dataPacket.hmaster;
     htrans    <= dataPacket.htrans; 
-    hwstrb    <= dataPacket.hwstrb[0];
+//    hwstrb    <= dataPacket.hwstrb[0];
     hwrite    <= dataPacket.hwrite;
     hselx     <= 1'b1;
 
     WaitStates(configPacket); 
 
     @(posedge hclk);
-    hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.hwstrb[0]) : '0;
+    hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.haddr, dataPacket.hsize) : '0;
 
     if(hresp == 1) begin  
       `uvm_info(name, $sformatf("error Response Detected on Single Transfer at Address: %0h", haddr),UVM_LOW);
@@ -90,9 +90,9 @@ interface AhbMasterDriverBFM (input  bit   hclk,
     int burst_length;
     automatic logic [ADDR_WIDTH-1:0] current_address = dataPacket.haddr;
     case (dataPacket.hburst)
-      3'b010, 3'b011 : burst_length = 4;  // INCR4, WRAP4
-      3'b100, 3'b101 : burst_length = 8;  // INCR8, WRAP8
-      3'b110, 3'b111 : burst_length = 16; // INCR16, WRAP16
+      WRAP4, INCR4 : burst_length = 4;  // INCR4, WRAP4
+      WRAP8, INCR8 : burst_length = 8;  // INCR8, WRAP8
+      WRAP16, INCR16 : burst_length = 16; // INCR16, WRAP16
       default: burst_length = 1;
     endcase
 
@@ -106,15 +106,15 @@ interface AhbMasterDriverBFM (input  bit   hclk,
       hexcl     <= dataPacket.hexcl;
       hmaster   <= dataPacket.hmaster;
       htrans    <= dataPacket.htrans; 
-      hwstrb    <= dataPacket.hwstrb[i];
+     // hwstrb    <= dataPacket.hwstrb[i];
       hwrite    <= dataPacket.hwrite;
       hselx     <= 1;
       
-      if (hresp == 1) begin
+      if (hresp == ERROR) begin
         `uvm_info(name, $sformatf("ERROR detected during Burst Transfer at Address: %0h", haddr),UVM_LOW);
       end
 
-      if (dataPacket.hburst == 3'b010 || dataPacket.hburst == 3'b100 || dataPacket.hburst == 3'b110) begin
+      if (dataPacket.hburst == WRAP4 || dataPacket.hburst == WRAP8 || dataPacket.hburst == WRAP16) begin
         current_address = (current_address & ~(burst_length * (1 << dataPacket.hsize) - 1)) | ((current_address + (1 << dataPacket.hsize)) & (burst_length * (1 << dataPacket.hsize) - 1));
       end 
       else begin
@@ -125,36 +125,64 @@ interface AhbMasterDriverBFM (input  bit   hclk,
           driveBusyTransfer(dataPacket, current_address) ;
         end
         else begin
-          htrans <= 2'b11; // Sequential transfer
+          htrans <= SEQ; // Sequential transfer
         end
       end
       if(i==0) 
         WaitStates(configPacket);
 
       @(posedge hclk);
-      hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[i], dataPacket.hwstrb[i]) : '0;
+      hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[i],  haddr, dataPacket.hsize) : '0;
+
     end
 
     driveIdle();    
     `uvm_info(name, "Burst Transfer Completed, Bus in IDLE State", UVM_LOW);
   endtask
 
-  function logic [DATA_WIDTH-1:0] maskingStrobe(logic [DATA_WIDTH-1:0] data, logic [(DATA_WIDTH/8)-1:0] strobe);
+function automatic logic [DATA_WIDTH-1:0] maskingStrobe(logic [DATA_WIDTH-1:0] data,logic [$clog2(DATA_WIDTH/8)-1:0] haddr, logic [2:0] hsize);
+    
     logic [DATA_WIDTH-1:0] masked_data;
-    for (int j = 0; j < (DATA_WIDTH/8); j++) begin
-       //masked_data[j*8 +: 8] = strobe[j] ? data[j*8 +: 8] : 8'h00;
-         masked_data[j*8 +: 8] = strobe[j] ? data[j*8 +: 8] : 8'hxx;
-    end
-    return masked_data;
-  endfunction
+    bit  [(DATA_WIDTH/8)-1:0] strobe; 
+    
+   automatic int num_bytes = (1 << hsize); 
+   automatic  int base_index = haddr & ~(num_bytes - 1);
+    
+    case (hsize)
+        BYTE: begin
+          for (int i = 0; i < num_bytes; i++) begin
+            strobe[base_index + i] = 1'b1;
+          end
+        end
+        HALFWORD: begin
+          for (int i = 0; i < num_bytes; i++) begin
+            strobe[base_index + i] = 1'b1;
+          end
+        end
+        WORD: begin      
+          for (int i = 0; i < num_bytes; i++) begin
+            strobe[base_index + i] = 1'b1;
+          end
+        end
+        default: begin
+            strobe = '0;
+        end
+    endcase
+    
+    
+     for (int j = 0; j < (DATA_WIDTH/8); j++) begin     
+          masked_data[j*8 +: 8] = strobe[j] ? data[j*8 +: 8] : 8'hxx;
+     end
+     return masked_data;
+   endfunction
 
-  task driveBusyTransfer(inout ahbTransferCharStruct dataPacket, inout logic [ADDR_WIDTH-1:0] current_address);
-    htrans <= 2'b01;   // Busy transfer
+ task driveBusyTransfer(inout ahbTransferCharStruct dataPacket, inout logic [ADDR_WIDTH-1:0] current_address);
+    htrans <= BUSY;   // Busy transfer
     `uvm_info(name, $sformatf("Driving BUSY Transfer at Address: %0h", haddr), UVM_LOW);
     repeat(dataPacket.noOfBusyStates) begin
        @(posedge hclk);
     end 
-       htrans <= 2'b11 ; 
+       htrans <= SEQ ; 
   endtask
 
   task driveIdle();

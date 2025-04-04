@@ -78,7 +78,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
 
     else if(!hwrite) begin
       hrdata <= dataPacket.hrdata[0];
-	    hresp  <= 0;
+	    hresp  <= OKAY;
     end
     @(posedge hclk);
     hreadyout <= 0;
@@ -90,9 +90,9 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
     int burst_length;
 	  `uvm_info(name,$sformatf("STARTEDBURSTTRANSFERTASK"),UVM_LOW)
     case (hburst)
-      3'b010, 3'b011: burst_length = 4;  
-      3'b100, 3'b101: burst_length = 8;  
-      3'b110, 3'b111: burst_length = 16; 
+      WRAP4, INCR4: burst_length = 4;  
+      WRAP8, INCR8: burst_length = 8;  
+      WRAP16, INCR16: burst_length = 16; 
       default: burst_length = 1;
     endcase
  
@@ -124,7 +124,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
 				dataPacket.haddr, dataPacket.hburst, dataPacket.hsize, dataPacket.hwrite,i,dataPacket.hrdata[i]), UVM_LOW);
         hrdata <=dataPacket.hrdata[i];
        
-        hresp  <= 0;
+        hresp  <= OKAY;
       end
     end
    if(hwrite == 1) begin
@@ -140,7 +140,7 @@ interface AhbSlaveDriverBFM (input  bit   hclk,
  
   task waitCycles(inout ahbTransferConfigStruct configPacket);
     @(posedge hclk);
-    hresp <= 0;
+    hresp <= OKAY;
     repeat(configPacket.noOfWaitStates) begin
 	    `uvm_info(name,$sformatf(" DRIVING WAIT STATE"),UVM_LOW);
     	hreadyout <= 0;

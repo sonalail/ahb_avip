@@ -49,7 +49,7 @@ interface AhbMasterMonitorBFM(input  bit   hclk,
     
     @(posedge hclk);
 
-    while(hready !== 1 && hresp == 1 && htrans == IDLE) begin
+    while(hready !== 1 && hresp == ERROR && htrans == IDLE) begin
       `uvm_info(name, $sformatf("Inside while loop: hresp =%0d, hready=%0d, hselx=%0d", hresp, hready, hselx), UVM_LOW)
       @(posedge hclk);
       ahbDataPacket.noOfWaitStates++;

@@ -28,7 +28,7 @@ task AhbVirtualReadWithWaitStateSequence::body();
 								hwriteSeq ==0;
                                                                 htransSeq == NONSEQ;
  							//	hburstSeq == INCR4;
-                                                                hburstSeq dist { 2:=1, 3:=1, 4:=1, 5:=2, 6:=2, 7:=2};
+                                                              hburstSeq dist { WRAP4:=1, INCR4:=1, WRAP8:=1, INCR8:=2, WRAP16:=2, INCR16:=2};
  							      foreach(busyControlSeq[i]) busyControlSeq[i] dist {0:=100, 1:=0};}
                                                         ) begin
        `uvm_error(get_type_name(), "Randomization failed : Inside AhbVirtualReadWithWaitStateSequence")

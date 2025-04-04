@@ -34,7 +34,7 @@ interface AhbSlaveCoverProperty (input hclk,
 
   property CheckSingleTransferRead;
     @(posedge hclk) disable iff (!hresetn)
-    ((htrans == 2'b10 && hburst == 3'b000 && hreadyout == 1 && hwrite == 0) |=> !$isunknown(hrdata));
+    ((htrans == NONSEQ && hburst == SINGLE && hreadyout == 1 && hwrite == 0) |=> !$isunknown(hrdata));
   endproperty
   
   cover property (CheckSingleTransferRead)
@@ -42,7 +42,7 @@ interface AhbSlaveCoverProperty (input hclk,
     
   property CheckTransValidWrite;
     @(posedge hclk) disable iff (!hresetn)
-    (((htrans == 2'b10 || htrans == 2'b11) && hreadyout == 1) |=> !$isunknown(hrdata));
+    (((htrans == NONSEQ || htrans == SEQ) && hreadyout == 1) |=> !$isunknown(hrdata));
   endproperty
     
   cover property (CheckTransValidWrite)
@@ -50,7 +50,7 @@ interface AhbSlaveCoverProperty (input hclk,
   
   property CheckHrespIsValid;
    @(posedge hclk)
-   (!$isunknown(haddr)) |-> ##[1:$]hresp == 0;
+   (!$isunknown(haddr)) |-> ##[1:$]hresp == OKAY;
   endproperty
  
   cover property (CheckHrespIsValid)

@@ -27,31 +27,31 @@ class AhbMasterCoverage extends uvm_subscriber #(AhbMasterTransaction);
 
     HSIZE_CP:coverpoint ahbMasterTransaction.hsize{
       option.comment = " ahb size";
-      bins ahbByte   ={0};
-      bins ahbHalfWord  ={1};
-      bins ahbWord  ={2};
+      bins ahbByte   ={BYTE};
+      bins ahbHalfWord  ={HALFWORD};
+      bins ahbWord  ={WORD};
       illegal_bins illegalBinsOfAhbsize64Bytes =  {6};  
       illegal_bins illegalBinsOfAhbsize128Bytes = {7}; 
     }
 
     HBURST_CP:coverpoint ahbMasterTransaction.hburst{
       option.comment = " ahb burst";
-      bins ahbSingle={0};
-      //bins ahbIncr={1};
-      bins ahbWrap4={2};
-      bins ahbIncr4={3};
-      bins ahbWrap8={4};
-      bins ahbIncr8={5};
-      bins ahbWrap16={6};
-      bins ahbIncr16={7};
+      bins ahbSingle={SINGLE};
+      //bins ahbIncr={INCR};
+      bins ahbWrap4={WRAP4};
+      bins ahbIncr4={INCR4};
+      bins ahbWrap8={WRAP8};
+      bins ahbIncr8={INCR8};
+      bins ahbWrap16={WRAP16};
+      bins ahbIncr16={INCR16};
     }
 
     HTRANS_CP:coverpoint ahbMasterTransaction.htrans{
       option.comment = " ahb trans";
-      bins ahbTransIdle          ={0};
-      bins ahbTransBusy          ={1};
-      bins ahbTransNonsequential ={2};
-      bins ahbTransSequential    ={3};
+      bins ahbTransIdle          ={IDLE};
+      bins ahbTransBusy          ={BUSY};
+      bins ahbTransNonsequential ={NONSEQ};
+      bins ahbTransSequential    ={SEQ};
     }
    
   HTRANS_TRANSITION_CP: coverpoint ahbMasterTransaction.htrans {

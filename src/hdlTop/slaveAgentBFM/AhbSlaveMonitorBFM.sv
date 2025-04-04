@@ -51,7 +51,7 @@ interface AhbSlaveMonitorBFM (input  bit   hclk,
 
 	@(posedge hclk);
 	
-	while(hreadyout !=1 && hresp==1 && htrans == IDLE) begin
+	while(hreadyout !=1 && hresp==ERROR && htrans == IDLE) begin
 	    `uvm_info(name, $sformatf("Inside while loop HREADY"), UVM_HIGH)
       @(posedge hclk);
     end   

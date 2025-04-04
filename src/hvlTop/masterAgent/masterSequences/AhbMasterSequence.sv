@@ -17,7 +17,7 @@ class AhbMasterSequence extends AhbMasterBaseSequence;
   rand bit [HMASTER_WIDTH-1:0] hmasterSeq;
   rand ahbTransferEnum htransSeq;
   rand bit [DATA_WIDTH-1:0] hwdataSeq[$:2**LENGTH];
-  rand bit [(DATA_WIDTH/8)-1:0] hwstrbSeq[$:2**LENGTH];
+//  rand bit [(DATA_WIDTH/8)-1:0] hwstrbSeq[$:2**LENGTH];
   rand ahbWriteEnum hwriteSeq;
   rand bit hexokaySeq;
   rand bit busyControlSeq[];
@@ -68,25 +68,25 @@ class AhbMasterSequence extends AhbMasterBaseSequence;
 
 
 
-     constraint strobleValue1{foreach(hwstrbSeq[i]) { if(hsizeSeq == BYTE) $countones(hwstrbSeq[i]) == 1;
+  /*   constraint strobleValue1{foreach(hwstrbSeq[i]) { if(hsizeSeq == BYTE) $countones(hwstrbSeq[i]) == 1;
 											 else if(hsizeSeq == HALFWORD) $countones(hwstrbSeq[i]) == 2;
 											 else if(hsizeSeq == WORD) $countones(hwstrbSeq[i]) == 4;
 											 else if(hsizeSeq == DOUBLEWORD) $countones(hwstrbSeq[i]) == 8;
 											}
 					  }
-
+*/
      constraint burstsize1{if(hburstSeq == WRAP4 || hburstSeq == INCR4) hwdataSeq.size() == 4;
                      else if(hburstSeq == WRAP8 || hburstSeq == INCR8) hwdataSeq.size() == 8;
 					 else if(hburstSeq == WRAP16 || hburstSeq == INCR16) hwdataSeq.size() == 16;
 					 else hwdataSeq.size() == 1;
 					}
 
-     constraint strobesize1{if(hburstSeq == WRAP4 || hburstSeq == INCR4) hwstrbSeq.size() == 4;
+  /*   constraint strobesize1{if(hburstSeq == WRAP4 || hburstSeq == INCR4) hwstrbSeq.size() == 4;
                      else if(hburstSeq == WRAP8 || hburstSeq == INCR8) hwstrbSeq.size() == 8;
 					 else if(hburstSeq == WRAP16 || hburstSeq == INCR16) hwstrbSeq.size() == 16;
 					 else hwstrbSeq.size() == 1;
 					}
-
+*/
      constraint busyState1{if(hburstSeq == WRAP4 || hburstSeq == INCR4) busyControlSeq.size() == 4;
                      else if(hburstSeq == WRAP8 || hburstSeq == INCR8) busyControlSeq.size() == 8;
 					 else if(hburstSeq == WRAP16 || hburstSeq == INCR16) busyControlSeq.size() == 16;
@@ -130,8 +130,9 @@ task AhbMasterSequence::body();
                               noOfBusyStates ==  noOfBusyStatesSeq;
                               foreach(hwdataSeq[i])
 			      hwdata[i]  == hwdataSeq[i];
-                              foreach(hwstrbSeq[i])
+                              /*foreach(hwstrbSeq[i])
 			      hwstrb[i]     == hwstrbSeq[i];
+*/
 			      foreach(busyControlSeq[i])
 			      busyControl[i] == busyControlSeq[i];
                             }) begin

@@ -29,28 +29,6 @@ interface AhbMasterAssertion (
     `uvm_info("MASTER_ASSERTIONS","MASTER_ASSERTIONS",UVM_LOW);
   end
 
-/*  bit sel;
-  logic [31:0]data;
- 
-
-   always @(posedge hclk) begin
-       repeat(1) @(posedge hclk);
-          for(int i=0;i<=3;i++) begin 
-            sel <= hwstrb >> i;
-            data[8*i +: 8] <= sel ? hwdata[8*i +:8] : 'hxx;
-         end
-   end
-  
-  property checkHwdataValid;
-    @(posedge hclk) disable iff (!hresetn)
-    (hwrite && hready && (htrans != IDLE) && hselx == 1) ##1 $stable(hready)|-> strong( (!$isunknown(data)));
-  endproperty
-
-  assert property (checkHwdataValid)
-       $info("HWDATA is Valid When HWRITE IS HIGH");
-  else $error("HWDATA contains X when HWRITE is asserted!");
-*/
-
   property checkHwdataValid;
     @(posedge hclk) disable iff (!hresetn)
     (hwrite && hready && (htrans != IDLE) && hselx == 1 && hwstrb == 4'b1111) ##1 $stable(hready)|-> (!$isunknown(hwdata));

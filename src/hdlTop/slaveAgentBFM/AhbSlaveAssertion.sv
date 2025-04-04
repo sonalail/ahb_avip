@@ -21,7 +21,7 @@ interface AhbSlaveAssertion (
   input            [3:0] hwstrb
 );
 
-/*  property checkHreadyoutValid;
+  property checkHreadyoutValid;
     @(posedge hclk) disable iff (!hresetn)
    ( (htrans != IDLE)  &&  hreadyout && hselx  ##1 $stable(hselx))|-> $stable(hreadyout);
   endproperty
@@ -29,7 +29,7 @@ interface AhbSlaveAssertion (
   assert property (checkHreadyoutValid)
        $info("HREADYOUT is high during valid transactions!");
   else $error("HREADYOUT is not high during valid transactions!");
-*/
+
 
 
   /*property checkHrespErrorOnInvalid;

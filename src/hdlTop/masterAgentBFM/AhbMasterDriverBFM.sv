@@ -70,11 +70,12 @@ interface AhbMasterDriverBFM (input  bit   hclk,
     hwrite    <= dataPacket.hwrite;
     hselx     <= 1'b1;
 
-    WaitStates(configPacket); 
+  //  WaitStates(configPacket); 
 
     @(posedge hclk);
     hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[0], dataPacket.haddr, dataPacket.hsize) : '0;
 
+    WaitStates(configPacket); 
     if(hresp == 1) begin  
       `uvm_info(name, $sformatf("error Response Detected on Single Transfer at Address: %0h", haddr),UVM_LOW);
     end else if (!dataPacket.hwrite) begin  
@@ -128,12 +129,13 @@ interface AhbMasterDriverBFM (input  bit   hclk,
           htrans <= SEQ; // Sequential transfer
         end
       end
-      if(i==0) 
-        WaitStates(configPacket);
+     // if(i==0) 
+       // WaitStates(configPacket);
 
       @(posedge hclk);
       hwdata <= dataPacket.hwrite ? maskingStrobe(dataPacket.hwdata[i],  haddr, dataPacket.hsize) : '0;
 
+        WaitStates(configPacket);
     end
 
     driveIdle();    
@@ -197,11 +199,11 @@ function automatic logic [DATA_WIDTH-1:0] maskingStrobe(logic [DATA_WIDTH-1:0] d
     `uvm_info(name, "Bus is now IDLE", UVM_LOW);
   endtask
 
-  task WaitStates(input ahbTransferConfigStruct configPacket);
-    repeat(configPacket.noOfWaitStates) begin
-      @(posedge hclk);
-    end
-  endtask
-
+task WaitStates(input ahbTransferConfigStruct configPacket);
+  @(negedge hclk);                
+  while (!hreadyout)
+    @(negedge hclk);            
+endtask
+ 
 endinterface
 `endif

@@ -202,7 +202,7 @@ function automatic logic [DATA_WIDTH-1:0] maskingStrobe(logic [DATA_WIDTH-1:0] d
 task WaitStates(input ahbTransferConfigStruct configPacket);
   @(negedge hclk);                
   while (!hreadyout)
-    @(negedge hclk);            
+    @(posedge hclk);            
 endtask
  
 endinterface
